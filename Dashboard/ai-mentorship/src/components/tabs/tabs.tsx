@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
 import { useRouter } from "next/navigation";
 
 export default function LabTabs() {
@@ -25,7 +24,7 @@ export default function LabTabs() {
             <Tab
               label="MATCH"
               value="2"
-              onClick={() => router.push("/match?q=1")}
+              onClick={() => router.push("/match")}
             />
             <Tab label="BIO" value="3" onClick={() => router.push("/bio")} />
           </TabList>

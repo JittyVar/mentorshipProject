@@ -1,9 +1,10 @@
-import Image from "next/image";
+import DataTable from "@/components/table/table";
+import { Box } from "@mui/material";
 
 export default function Home() {
   return (
-    <main>
-      <div>HOME</div>
-    </main>
+    <Box>
+      <DataTable />
+    </Box>
   );
 }
