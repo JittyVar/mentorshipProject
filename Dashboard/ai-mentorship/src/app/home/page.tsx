@@ -1,5 +1,4 @@
 "use client";
-export const dynamic = "force-dynamic";
 import Greetings from "@/components/greeting/greeting";
 import DataTable from "@/components/table/table";
 import { FetchCollection } from "@/redux/dashboard/actions/fetchCollection";
