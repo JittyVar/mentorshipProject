@@ -1,6 +1,7 @@
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { FetchCollection } from "./actions/fetchCollection";
+import { TotalMentees } from "./actions/totalMentees";
 
 export enum APIStatus {
   idle = "idle",
@@ -12,11 +13,13 @@ export enum APIStatus {
 export interface HomeDataRows {
   rows: HomeTableColumns[];
   status: APIStatus;
+  totalMentees: number;
 }
 
 const initialState: HomeDataRows = {
   rows: [],
   status: APIStatus.idle,
+  totalMentees: 0,
 };
 
 export const dashboardSlice = createSlice({
@@ -31,7 +34,7 @@ export const dashboardSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(FetchCollection.pending, (state) => {
-        state.status = APIStatus.idle;
+        state.status = APIStatus.loading;
       })
       .addCase(
         FetchCollection.fulfilled,
@@ -43,6 +46,12 @@ export const dashboardSlice = createSlice({
       .addCase(FetchCollection.rejected, (state) => {
         state.status = APIStatus.error;
       });
+    builder.addCase(
+      TotalMentees.fulfilled,
+      (state, action: PayloadAction<number>) => {
+        state.totalMentees = action.payload;
+      }
+    );
   },
 });
 

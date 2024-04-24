@@ -1,38 +1,47 @@
 "use client";
-
 import * as React from "react";
-import { RootState } from "@/redux/store";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
 import {
   Box,
   Button,
-  CardMedia,
   Chip,
   Paper,
-  Stack,
   Switch,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/hook";
-import { useSelector } from "react-redux";
-import { FetchCollection } from "@/redux/dashboard/actions/fetchCollection";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { Status } from "@/data/Status";
+import { useRouter } from "next/navigation";
 
 // Define the DataTableProps interface
 export interface DataTableProps {
-  changeTab: (data: string) => void;
-  allocateMentee: (data: string) => void;
+  // changeTab: (data: string) => void;
+  // allocateMentee: (data: string) => void;
+  collections: HomeTableColumns[];
 }
 
 // Define the DataTable component
-export default function DataTable() {
+const DataTable: React.FC<DataTableProps> = ({ collections }) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const R = require("ramda");
+  const [filteredRows, setFilteredRows] =
+    useState<HomeTableColumns[]>(collections);
   const [noMentorsChecked, setNoMentorsChecked] = React.useState(false);
   const [noMenteesChecked, setNoMenteesChecked] = React.useState(false);
-  const R = require("ramda");
+  const [chosenRowData, setChosenRowData] = useState<HomeTableColumns>();
+
+  const [loading, setLoading] = React.useState(true);
+  const handleAbleToDisplay = () => {
+    setLoading(false);
+  };
+  const handleUnableToDisplay = () => {
+    setLoading(true);
+  };
 
   const handleNoMentorsChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -46,34 +55,25 @@ export default function DataTable() {
     setNoMenteesChecked(event.target.checked);
   };
 
-  const [tabValue, setTabValue] = useState("1");
-  const rows = useSelector((state: RootState) => state.dashboard.rows);
-  const [chosenRowData, setChosenRowData] = useState<HomeTableColumns>();
-  const [filteredRows, setFilteredRows] = useState<HomeTableColumns[]>(rows);
-
-  const assignButton = (data: HomeTableColumns) => {
-    setChosenRowData(data);
-  };
-
-  useEffect(() => {
-    dispatch(FetchCollection());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   console.log("filteredRows ", filteredRows);
+  // }, [filteredRows]);
 
   useEffect(() => {
     if (noMentorsChecked && noMenteesChecked) {
-      const newRows = rows.filter((data: HomeTableColumns) => {
+      const newRows = collections.filter((data: HomeTableColumns) => {
         return data.status === Status.Incomplete;
       });
       setFilteredRows(newRows);
     } else if (noMentorsChecked) {
-      const newRows = rows.filter((data: HomeTableColumns) => {
+      const newRows = collections.filter((data: HomeTableColumns) => {
         return (
           data.participatingAs === "Mentee" && data.status === Status.Incomplete
         );
       });
       setFilteredRows(newRows);
     } else if (noMenteesChecked) {
-      const newRows = rows.filter((data: HomeTableColumns) => {
+      const newRows = collections.filter((data: HomeTableColumns) => {
         return (
           data.participatingAs === "Mentor" && data.status === Status.Incomplete
         );
@@ -90,10 +90,10 @@ export default function DataTable() {
       });
 
       // Sort the array using the custom sorting function
-      const sortedData = sortByStatus(rows);
+      const sortedData = sortByStatus(collections);
       setFilteredRows(sortedData);
     }
-  }, [R, noMenteesChecked, noMentorsChecked, rows]);
+  }, [R, noMenteesChecked, noMentorsChecked, collections]);
 
   const columns: GridColDef[] = [
     {
@@ -143,7 +143,6 @@ export default function DataTable() {
                 variant="contained"
                 value={params.value}
                 color="secondary"
-                onClick={() => setTabValue("2")}
               >
                 {actions}
               </Button>
@@ -199,7 +198,12 @@ export default function DataTable() {
               },
             }}
             onCellClick={(e) =>
-              e.field === "assignedMentor" && assignButton(e.row)
+              e.field === "assignedMentor" &&
+              router.push(
+                `/match?q=${encodeURIComponent(e.row?.fullName)}&r=${
+                  e.row?.participatingAs
+                }`
+              )
             }
             pageSizeOptions={[20, 25]}
             rowSelection
@@ -215,4 +219,6 @@ export default function DataTable() {
       </Paper>
     </Box>
   );
-}
+};
+
+export default DataTable;

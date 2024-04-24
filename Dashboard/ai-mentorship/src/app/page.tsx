@@ -1,10 +1,7 @@
-import DataTable from "@/components/table/table";
+import Greetings from "@/components/greeting/greeting";
+import Home from "./home/page";
 import { Box } from "@mui/material";
 
-export default function Home() {
-  return (
-    <Box>
-      <DataTable />
-    </Box>
-  );
+export default function InitialPage() {
+  return <Home />;
 }

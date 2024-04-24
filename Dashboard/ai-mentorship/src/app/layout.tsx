@@ -17,7 +17,7 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <Box>
           <LabTabs />
-          <Container maxWidth="lg">
+          <Container maxWidth="xl">
             <Provider store={store}>{children}</Provider>
           </Container>
         </Box>
