@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import React, { Suspense, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
