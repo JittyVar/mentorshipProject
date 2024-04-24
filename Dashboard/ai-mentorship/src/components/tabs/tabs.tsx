@@ -24,7 +24,15 @@ export default function LabTabs() {
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            backgroundColor: "#F4E6F2",
+            borderRadius: "10px",
+            marginBottom: "2%",
+          }}
+        >
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab
               label="HOME"

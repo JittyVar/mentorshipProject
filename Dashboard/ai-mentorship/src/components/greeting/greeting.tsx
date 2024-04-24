@@ -4,6 +4,8 @@ import ProgressComponent from "./progress/progress";
 import Pairings from "./pairings/pairings";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { useEffect } from "react";
+import Image from "next/image";
+import adminpic from "./adminpic.png";
 
 interface GreetingProps {
   totalMentees: number;
@@ -11,12 +13,18 @@ interface GreetingProps {
 const Greetings: React.FC<GreetingProps> = ({ totalMentees }) => {
   return (
     <>
-      <div style={{ display: "flex", gap: "2%" }}>
-        <Paper elevation={3} sx={{ width: "65%", padding: "10px" }}>
+      <div>
+        <Paper
+          elevation={3}
+          sx={{
+            display: "flex",
+            padding: "10px",
+            gap: 5,
+            backgroundColor: "#F4F4FA",
+          }}
+        >
+          <Image src={adminpic} width={250} alt="Logo" />
           <DisplayCalendar />
-        </Paper>
-        <Paper elevation={3} sx={{ width: "35%", padding: "10px" }}>
-          <Pairings />
         </Paper>
       </div>
     </>

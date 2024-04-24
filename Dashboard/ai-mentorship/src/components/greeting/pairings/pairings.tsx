@@ -1,12 +1,13 @@
 import { Stack, Chip, Paper, Alert } from "@mui/material";
+import ProgressComponent from "../progress/progress";
 
 const Pairings = () => {
   return (
-    <>
-      <Alert severity="success" variant="filled">
-        This is a success Alert.
-      </Alert>
-    </>
+    <div>
+      <h1>Hello, Admin! </h1>
+      {/* <Pairings /> */}
+      <ProgressComponent />
+    </div>
   );
 };
 

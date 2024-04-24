@@ -1,13 +1,12 @@
 import { Box, CircularProgress, Grid } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import CircularProgressWithLabel from "./circularprogress/CircularProgressWithLabel";
-
+import CircularWithValueLabel from "./circularprogress/CircularProgressWithLabel";
 const ProgressComponent = () => {
   return (
-    <>
-      <CircularProgressWithLabel />
-      <CircularProgressWithLabel />
-    </>
+    <div style={{ display: "flex", gap: "20%" }}>
+      <CircularWithValueLabel />
+      <CircularWithValueLabel />
+    </div>
   );
 };
 

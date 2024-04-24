@@ -14,7 +14,7 @@ export default function BasicDateCalendar() {
     console.log(value?.format("dddd MMMM D, YYYY"));
   }, [value]);
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", gap: 50 }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
           defaultValue={dayjs("2022-04-17")}
@@ -22,8 +22,10 @@ export default function BasicDateCalendar() {
           onChange={(newValue) => setValue(newValue)}
         />
         <div>
-          <h1>Hello, Admin! </h1>
-          <h2>Pairings made {value?.format("dddd MMMM D, YYYY")} </h2>
+          <h1 style={{ color: "#1E1F42" }}>Hello, Admin! </h1>
+          <h2 style={{ color: "#1E1F42" }}>
+            Pairings made {value?.format("dddd MMMM D, YYYY")}{" "}
+          </h2>
           {/* <Pairings /> */}
           <ProgressComponent />
         </div>

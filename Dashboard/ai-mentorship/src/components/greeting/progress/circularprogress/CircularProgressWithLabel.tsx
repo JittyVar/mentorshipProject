@@ -41,10 +41,12 @@ export default function CircularWithValueLabel() {
   const [progress, setProgress] = useState(50);
 
   return (
-    <>
-      <Chip label="primary" color="primary" variant="outlined" />
-      <Chip label="primary" color="primary" variant="outlined" />
-      <CircularProgressWithLabel value={progress} size={100} />
-    </>
+    <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <Chip label="Total Mentees" color="primary" variant="filled" />
+        <Chip label="With Mentees" color="primary" variant="outlined" />
+      </div>
+      <CircularProgressWithLabel value={progress} size={150} />
+    </div>
   );
 }

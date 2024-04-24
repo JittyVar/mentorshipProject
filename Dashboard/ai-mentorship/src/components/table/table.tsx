@@ -16,6 +16,7 @@ import { useAppDispatch } from "@/redux/hook";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { Status } from "@/data/Status";
 import { useRouter } from "next/navigation";
+import adminpic from "../greeting/adminpic.png";
 
 // Define the DataTableProps interface
 export interface DataTableProps {
@@ -100,7 +101,9 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
       field: "avatar",
       headerName: "Avatar",
       width: 150,
-      renderCell: (avatarIcon) => <Avatar />,
+      renderCell: (avatarIcon) => (
+        <Avatar alt="Remy Sharp" src={adminpic.src} />
+      ),
     },
     { field: "fullName", headerName: "Full Name", width: 220 },
     { field: "registeredOn", headerName: "Registered On", width: 200 },
