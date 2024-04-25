@@ -6,7 +6,6 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import { useRouter } from "next/navigation";
-import { TabPanel } from "@mui/lab";
 
 export default function LabTabs() {
   const [value, setValue] = React.useState("1");
@@ -17,7 +16,7 @@ export default function LabTabs() {
   };
 
   const handleTabClick = (value: string, url: string) => {
-    setValue(value); // Assuming setValue is a state update function
+    setValue(value);
     router.push(url);
   };
 

@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const TotalMentees = createAsyncThunk<number>(
-  "dashboard/TotalMentees",
+export const WithNoMentors = createAsyncThunk<number>(
+  "dashboard/WithNoMentors",
   async () => {
     try {
-      const getData = await fetch("/api/get/mentees/totalMentees");
+      const getData = await fetch("/api/get/mentees/withNoMentors");
       if (!getData.ok) {
         throw new Error("Failed to fetch data");
       }

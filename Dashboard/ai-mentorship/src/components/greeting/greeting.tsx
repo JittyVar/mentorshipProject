@@ -1,11 +1,8 @@
 import Paper from "@mui/material/Paper";
 import DisplayCalendar from "./calendar/calendar";
+import { LineChart } from "@mui/x-charts/LineChart";
+import { Grid, Stack } from "@mui/material";
 import ProgressComponent from "./progress/progress";
-import Pairings from "./pairings/pairings";
-import { HomeTableColumns } from "@/data/HomeTableColumns";
-import { useEffect } from "react";
-import Image from "next/image";
-import adminpic from "./adminpic.png";
 
 interface GreetingProps {
   totalMentees: number;
@@ -13,20 +10,27 @@ interface GreetingProps {
 const Greetings: React.FC<GreetingProps> = ({ totalMentees }) => {
   return (
     <>
-      <div>
-        <Paper
-          elevation={3}
-          sx={{
+      <Paper
+        elevation={3}
+        sx={{
+          display: "flex",
+          padding: 3,
+          gap: 2,
+          backgroundColor: "#F4F4FA",
+        }}
+      >
+        <DisplayCalendar />
+        <div
+          style={{
+            width: "100%",
+            borderRadius: 5,
             display: "flex",
-            padding: "10px",
-            gap: 5,
-            backgroundColor: "#F4F4FA",
+            justifyContent: "center",
           }}
         >
-          <Image src={adminpic} width={250} alt="Logo" />
-          <DisplayCalendar />
-        </Paper>
-      </div>
+          <ProgressComponent />
+        </div>
+      </Paper>
     </>
   );
 };

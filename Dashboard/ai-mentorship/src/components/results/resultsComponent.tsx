@@ -3,6 +3,7 @@
 import {
   Alert,
   Avatar,
+  Box,
   Button,
   Card,
   CircularProgress,
@@ -14,6 +15,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
   styled,
   tableCellClasses,
 } from "@mui/material";
@@ -21,9 +23,12 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { FetchCollection } from "@/redux/dashboard/actions/fetchCollection";
 import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
+import adminPic from "../greeting/adminpic.png";
+import { APIStatus } from "@/redux/dashboard/dashboardSlice";
+import PairingComplete from "./pairingComplete";
 
 export interface MatchRow {
   name: string;
@@ -36,7 +41,7 @@ export interface MatchRow {
 }
 
 interface ResultsProps {
-  data: MatchRow[];
+  data: MatchRow[] | null;
   dataOf?: string | null | undefined;
   participatingAs?: string | null;
 }
@@ -50,6 +55,9 @@ const ResultsComponent: React.FC<ResultsProps> = ({
   const dispatch = useAppDispatch();
   const [chosenDataOf, setChosen] = useState<string | null | undefined>("");
   const [successAlert, setSuccessAlert] = useState(false);
+  const pairingSuccess = useAppSelector(
+    (state) => state.dashboard.completeStatus
+  );
 
   const paramArr: { url: string; param: string | null | undefined }[] = [
     {
@@ -63,16 +71,18 @@ const ResultsComponent: React.FC<ResultsProps> = ({
 
   const changeStatus = async () => {
     try {
-      const result = await dispatch(UpdateStatus(paramArr));
-      if (result.meta.requestStatus === "fulfilled") {
-        await dispatch(FetchCollection()); // await dispatch of FetchCollection
-        setSuccessAlert(true);
-        setTimeout(() => {
-          // After a couple of seconds, set successAlert to false
-          // Assuming successAlert is a state variable
-          setSuccessAlert(false);
-        }, 3000); // Adjust the delay as needed, here 3000 milliseconds (3 seconds)
-      }
+      console.log("participatingAs ", participatingAs);
+      await dispatch(UpdateStatus(paramArr)).then((request) => {
+        dispatch(FetchCollection()); // await dispatch of FetchCollection
+        if (request.meta.requestStatus === "fulfilled") {
+          setSuccessAlert(true);
+          setTimeout(() => {
+            // After a couple of seconds, set successAlert to false
+            // Assuming successAlert is a state variable
+            setSuccessAlert(false);
+          }, 3000); // Adjust the delay as needed, here 3000 milliseconds (3 seconds)
+        }
+      });
     } catch (error) {
       console.error("Error updating status:", error);
       // Handle error appropriately
@@ -94,16 +104,6 @@ const ResultsComponent: React.FC<ResultsProps> = ({
     }
   }, [chosenDataOf, data]); // Add dataOf as a dependency
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: "#F4E6F2",
-      color: "black",
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
-
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
     borderRadius: 5,
@@ -119,21 +119,19 @@ const ResultsComponent: React.FC<ResultsProps> = ({
   }));
 
   return (
-    <TableContainer component={Paper}>
-      {successAlert && (
-        <Alert variant="filled" severity="success">
-          This is a filled success Alert.
-        </Alert>
-      )}
-      <Table aria-label="customized table">
-        <TableHead sx={{ width: "100%" }}>
-          <TableRow>
-            <StyledTableCell>RESULTS</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
+    <Box sx={{ width: "100%", height: "100%" }}>
+      <Paper elevation={3}>
+        {pairingSuccess !== APIStatus.success ? (
+          <Grid sx={{ display: "flex" }} spacing={2}>
+            <Grid
+              item
+              xs={6}
+              md={5}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <div style={{ padding: "10%" }}>
                 <div style={{ position: "relative", display: "inline-block" }}>
                   <CircularProgress
@@ -143,22 +141,21 @@ const ResultsComponent: React.FC<ResultsProps> = ({
                         ? dataArr[0].percentage
                         : 0
                     }
-                    size={150}
+                    size={250}
                     thickness={5}
                     color={"success"}
                   />
                   <Avatar
                     style={{
                       position: "absolute",
-                      top: "48%",
+                      top: "50%",
                       left: "50%",
                       transform: "translate(-50%, -50%)",
-                      width: "100px",
-                      height: "100px",
+                      width: "200px",
+                      height: "200px",
                     }}
-                  >
-                    OP
-                  </Avatar>
+                    src={adminPic.src}
+                  />
                 </div>
                 <div
                   style={{
@@ -173,15 +170,14 @@ const ResultsComponent: React.FC<ResultsProps> = ({
                 </div>
               </div>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={6} md={7}>
               <div
                 style={{ height: "80%", paddingTop: "5%", paddingRight: "5%" }}
               >
                 <Card variant="outlined" sx={{ height: "70%", padding: "5%" }}>
                   <Grid container spacing={2}>
                     <Grid item xs={4}>
-                      {" "}
-                      Skills{" "}
+                      Skills
                     </Grid>
                     <Grid item xs={8}>
                       <BorderLinearProgress
@@ -194,8 +190,7 @@ const ResultsComponent: React.FC<ResultsProps> = ({
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      {" "}
-                      Goals{" "}
+                      Goals
                     </Grid>
                     <Grid item xs={8}>
                       <BorderLinearProgress
@@ -208,8 +203,7 @@ const ResultsComponent: React.FC<ResultsProps> = ({
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      {" "}
-                      Personality{" "}
+                      Personality
                     </Grid>
                     <Grid item xs={8}>
                       <BorderLinearProgress
@@ -222,21 +216,21 @@ const ResultsComponent: React.FC<ResultsProps> = ({
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      {" "}
-                      Result{" "}
+                      Result
                     </Grid>
                     <Grid item xs={8}>
-                      {" "}
-                      30%{" "}
+                      30%
                     </Grid>
                   </Grid>
                 </Card>
               </div>
             </Grid>
           </Grid>
-        </TableBody>
-      </Table>
-    </TableContainer>
+        ) : (
+          <PairingComplete />
+        )}
+      </Paper>
+    </Box>
   );
 };
 
