@@ -11,10 +11,16 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import { Status } from "@/data/Status";
-import { Button, Chip } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  Chip,
+  CircularProgress,
+  Skeleton,
+} from "@mui/material";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
 import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
 
@@ -59,6 +65,9 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
 }) => {
   const [rows, setRows] = useState<any[]>([]);
   const [chosenName, setChosenName] = useState(chosenData);
+  const inProgressStatus = useAppSelector(
+    (state) => state.dashboard.inProgressStatus
+  );
   const R = require("ramda");
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -125,9 +134,16 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
               key={row.fullName}
               sx={
                 row.fullName == chosenName
-                  ? { "& .MuiTableCell-body": { backgroundColor: "#F4E6F2" } }
+                  ? {
+                      "& .MuiTableCell-body": {
+                        backgroundColor: "#F4E6F2",
+                      },
+                    }
                   : { backgroundColor: "white" }
               }
+              onClick={() => {
+                row.status == Status.InProgress && handleClick(row.fullName);
+              }}
             >
               <StyledTableCell component="th" scope="row">
                 {
@@ -160,6 +176,15 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                   </Button>
                 )}
               </StyledTableCell>
+              <Backdrop
+                sx={{
+                  color: "pink",
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={inProgressStatus == APIStatus.loading}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
             </StyledTableRow>
           ))}
         </TableBody>

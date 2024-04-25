@@ -1,5 +1,6 @@
 import { Avatar, Grid, Grow, Paper } from "@mui/material";
 import adminPic from "../greeting/adminpic.png";
+import mentorPic from "../greeting/mentor.jpg";
 const PairingComplete = () => {
   return (
     <Paper>
@@ -42,7 +43,7 @@ const PairingComplete = () => {
                 width: "200px",
                 height: "200px",
               }}
-              src={adminPic.src}
+              src={mentorPic.src}
             />
           </Grid>
         </Grow>
