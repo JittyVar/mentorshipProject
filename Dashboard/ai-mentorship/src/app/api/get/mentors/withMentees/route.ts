@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const q = query(
       collection(database, "Mentors"),
-      where("status", "!=", Status.Completed)
+      where("status", "==", Status.Completed)
     );
 
     const querySnapshot = await getDocs(q);

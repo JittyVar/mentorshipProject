@@ -5,8 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect } from "react";
-import Pairings from "../pairings/pairings";
-import ProgressComponent from "../progress/progress";
+import { Box } from "@mui/material";
 
 export default function BasicDateCalendar() {
   const [value, setValue] = React.useState<Dayjs | null>(dayjs(new Date()));
@@ -14,20 +13,27 @@ export default function BasicDateCalendar() {
     console.log(value?.format("dddd MMMM D, YYYY"));
   }, [value]);
   return (
-    <div style={{ display: "flex" }}>
+    <Box>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
           defaultValue={dayjs("2022-04-17")}
           value={value}
           onChange={(newValue) => setValue(newValue)}
+          sx={{
+            "& .MuiPickersDay-root ": {
+              backgroundColor: "#F4E6F2",
+              borderRadius: "10%",
+            },
+            "& .MuiPickersDay-root.Mui-selected ": {
+              backgroundColor: "#FC8eAC",
+            },
+            backgroundColor: "white",
+            borderRadius: 5,
+            border: 0.2,
+            borderColor: "lightgrey",
+          }}
         />
-        <div>
-          <h1>Hello, Admin! </h1>
-          <h2>Pairings made {value?.format("dddd MMMM D, YYYY")} </h2>
-          {/* <Pairings /> */}
-          <ProgressComponent />
-        </div>
       </LocalizationProvider>
-    </div>
+    </Box>
   );
 }
