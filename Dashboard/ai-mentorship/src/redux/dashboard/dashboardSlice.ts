@@ -8,6 +8,7 @@ import { WithMentors } from "./actions/withMentors";
 import { WithNoMentees } from "./actions/withNoMentees";
 import { WithNoMentors } from "./actions/withNoMentors";
 import { UpdateStatus } from "./actions/updateStatus";
+import { UpdateStatusToInProgress } from "./actions/updateMenteeStatusToInProgress";
 
 export enum APIStatus {
   idle = "idle",
@@ -19,6 +20,7 @@ export enum APIStatus {
 export interface HomeDataRows {
   rows: HomeTableColumns[];
   status: APIStatus;
+  inProgressStatus: APIStatus;
   completeStatus: APIStatus;
   totalMentees: number;
   totalMentors: number;
@@ -31,6 +33,7 @@ export interface HomeDataRows {
 const initialState: HomeDataRows = {
   rows: [],
   status: APIStatus.idle,
+  inProgressStatus: APIStatus.idle,
   completeStatus: APIStatus.idle,
   totalMentees: 0,
   totalMentors: 0,
@@ -66,6 +69,13 @@ export const dashboardSlice = createSlice({
       )
       .addCase(FetchCollection.rejected, (state) => {
         state.status = APIStatus.error;
+      });
+    builder
+      .addCase(UpdateStatusToInProgress.pending, (state) => {
+        state.inProgressStatus = APIStatus.loading;
+      })
+      .addCase(UpdateStatusToInProgress.fulfilled, (state) => {
+        state.inProgressStatus = APIStatus.success;
       });
     builder.addCase(UpdateStatus.fulfilled, (state) => {
       state.completeStatus = APIStatus.success;
