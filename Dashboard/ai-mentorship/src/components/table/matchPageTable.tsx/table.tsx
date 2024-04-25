@@ -16,6 +16,7 @@ import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
+import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,7 +49,7 @@ function createData(
 }
 
 interface MatchTableComponentProps {
-  collectionData: HomeTableColumns[];
+  collectionData: HomeTableColumns[] | null;
   chosenData?: string | null;
 }
 
@@ -58,65 +59,58 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
 }) => {
   const [rows, setRows] = useState<any[]>([]);
   const [chosenName, setChosenName] = useState(chosenData);
-  const [participatingAs, setParticipatingAs] = useState("");
   const R = require("ramda");
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Map over the collectionData and create rows using createData function
-    const updatedRows = collectionData.map((data) =>
-      createData(
-        data.avatar,
-        data.fullName,
-        data.status,
-        data.assignedMentor,
-        data.participatingAs
-      )
-    );
-
-    const filterByStatus = R.filter(
-      (data: HomeTableColumns) =>
-        data.status == Status.Incomplete || data.status == Status.InProgress
-    );
-    setRows(filterByStatus(updatedRows));
+    if (collectionData != null) {
+      const updatedRows = collectionData.map((data) =>
+        createData(
+          data.avatar,
+          data.fullName,
+          data.status,
+          data.assignedMentor,
+          data.participatingAs
+        )
+      );
+      const filterByStatus = R.filter(
+        (data: HomeTableColumns) =>
+          data.status == Status.Incomplete || data.status == Status.InProgress
+      );
+      setRows(filterByStatus(updatedRows));
+    }
   }, [R, chosenName, collectionData]);
 
-  const assignButton = (name: string) => {
-    const foundData = collectionData.find((data: HomeTableColumns) => {
-      if (data.fullName == name) {
-        return data;
-      }
-    });
-    console.log("found data", foundData);
-  };
-
-  const setValues = (name: string, participatingAs: string) => {
+  const handleClick = (name: string) => {
+    dispatch(restartStatus(APIStatus.idle));
     setChosenName(name);
-    setParticipatingAs(participatingAs);
+    router.push(`/match?q=${encodeURIComponent(name)}`);
   };
-
-  useEffect(() => {
-    const foundData = collectionData.find((data: HomeTableColumns) => {
-      if (data.fullName == chosenName && data.status == Status.InProgress) {
-        return data;
-      }
-    });
-  }, [chosenName, collectionData]);
 
   useEffect(() => {
     if (chosenName != null) {
-      router.push(
-        `/match?q=${encodeURIComponent(chosenName)}&r=${participatingAs}`
-      );
-      //dispatch(UpdateStatusToInProgress())
+      router.push(`/match?q=${encodeURIComponent(chosenName)}`);
     }
-  }, [chosenName, participatingAs, router]);
+  }, [chosenName, router]);
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: "100%" }} aria-label="customized table">
-        <TableHead sx={{ width: "100%" }}>
+      <Table
+        sx={{
+          minWidth: "100%",
+        }}
+        aria-label="customized table"
+      >
+        <TableHead
+          sx={{
+            width: "100%",
+            "& .MuiTableCell-head": {
+              backgroundColor: "F4E6F2",
+            },
+          }}
+        >
           <TableRow>
             <StyledTableCell>Progress Status</StyledTableCell>
             <StyledTableCell>Avatar</StyledTableCell>
@@ -129,7 +123,6 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
           {rows.map((row) => (
             <StyledTableRow
               key={row.fullName}
-              onClick={() => setValues(row.fullName, row.participatingAs)}
               sx={
                 row.fullName == chosenName
                   ? { "& .MuiTableCell-body": { backgroundColor: "#F4E6F2" } }
@@ -161,7 +154,7 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                     variant="contained"
                     value={row.assignedMentor}
                     color="secondary"
-                    onClick={() => assignButton(row.fullName)}
+                    onClick={() => handleClick(row.fullName)}
                   >
                     {row.assignedMentor}
                   </Button>

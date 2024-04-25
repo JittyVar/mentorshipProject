@@ -1,10 +1,9 @@
 "use client";
-
 import Greetings from "@/components/greeting/greeting";
 import DataTable from "@/components/table/table";
 import { FetchCollection } from "@/redux/dashboard/actions/fetchCollection";
 import { TotalMentees } from "@/redux/dashboard/actions/totalMentees";
-import { APIStatus } from "@/redux/dashboard/dashboardSlice";
+import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { useEffect, useRef } from "react";
@@ -23,6 +22,7 @@ export default function Home() {
           await Promise.all([
             dispatch(FetchCollection()),
             dispatch(TotalMentees()),
+            dispatch(restartStatus(APIStatus.idle)),
           ]);
         } catch (error) {
           console.error("Error fetching data:", error);

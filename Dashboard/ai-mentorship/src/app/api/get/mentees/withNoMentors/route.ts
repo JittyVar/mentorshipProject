@@ -2,6 +2,7 @@ import database from "@/firestore/firestore";
 import { Status } from "@/data/Status";
 import { query, collection, where, getDocs } from "firebase/firestore";
 
+export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const q = query(

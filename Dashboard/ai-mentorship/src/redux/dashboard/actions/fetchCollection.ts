@@ -7,7 +7,7 @@ export const FetchCollection = createAsyncThunk<HomeTableColumns[]>(
     try {
       console.log("getting collection");
       const getData = await fetch("/api/get/collections", {
-        next: { revalidate: 3600 },
+        next: { revalidate: 60 },
       });
       if (!getData.ok) {
         throw new Error("Failed to fetch data");

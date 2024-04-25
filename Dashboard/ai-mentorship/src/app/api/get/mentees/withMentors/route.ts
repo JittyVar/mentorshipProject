@@ -6,8 +6,8 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const q = query(
-      collection(database, "Mentors"),
-      where("status", "!=", Status.Completed)
+      collection(database, "Mentees"),
+      where("status", "==", Status.Completed)
     );
 
     const querySnapshot = await getDocs(q);

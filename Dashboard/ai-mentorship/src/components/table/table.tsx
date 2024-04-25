@@ -1,6 +1,11 @@
 "use client";
 import * as React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridCellParams,
+  GridColDef,
+  GridTreeNode,
+} from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
 import {
   Box,
@@ -16,6 +21,7 @@ import { useAppDispatch } from "@/redux/hook";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { Status } from "@/data/Status";
 import { useRouter } from "next/navigation";
+import adminpic from "../greeting/adminpic.png";
 
 // Define the DataTableProps interface
 export interface DataTableProps {
@@ -100,7 +106,9 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
       field: "avatar",
       headerName: "Avatar",
       width: 150,
-      renderCell: (avatarIcon) => <Avatar />,
+      renderCell: () => (
+        <Avatar alt="Remy Sharp" src={adminpic.src} sx={{ marginTop: 0.5 }} />
+      ),
     },
     { field: "fullName", headerName: "Full Name", width: 220 },
     { field: "registeredOn", headerName: "Registered On", width: 200 },
@@ -199,20 +207,22 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
             }}
             onCellClick={(e) =>
               e.field === "assignedMentor" &&
-              router.push(
-                `/match?q=${encodeURIComponent(e.row?.fullName)}&r=${
-                  e.row?.participatingAs
-                }`
-              )
+              router.push(`/match?q=${e.row?.fullName}`)
             }
             pageSizeOptions={[20, 25]}
             rowSelection
             sx={{
+              "& .MuiDataGrid-filler": {
+                backgroundColor: "#8F3880",
+              },
               "& .MuiDataGrid-columnHeader": {
                 backgroundColor: "#8F3880",
                 width: "100%",
               },
               "& .MuiDataGrid-columnHeaderTitle  ": { color: "white" },
+              "& .MuiDataGrid-root": {
+                backgroundColor: "pink",
+              },
             }}
           />
         )}

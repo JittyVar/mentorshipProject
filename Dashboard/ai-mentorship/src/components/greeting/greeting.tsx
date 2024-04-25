@@ -1,9 +1,8 @@
 import Paper from "@mui/material/Paper";
 import DisplayCalendar from "./calendar/calendar";
+import { LineChart } from "@mui/x-charts/LineChart";
+import { Grid, Stack } from "@mui/material";
 import ProgressComponent from "./progress/progress";
-import Pairings from "./pairings/pairings";
-import { HomeTableColumns } from "@/data/HomeTableColumns";
-import { useEffect } from "react";
 
 interface GreetingProps {
   totalMentees: number;
@@ -11,14 +10,27 @@ interface GreetingProps {
 const Greetings: React.FC<GreetingProps> = ({ totalMentees }) => {
   return (
     <>
-      <div style={{ display: "flex", gap: "2%" }}>
-        <Paper elevation={3} sx={{ width: "65%", padding: "10px" }}>
-          <DisplayCalendar />
-        </Paper>
-        <Paper elevation={3} sx={{ width: "35%", padding: "10px" }}>
-          <Pairings />
-        </Paper>
-      </div>
+      <Paper
+        elevation={3}
+        sx={{
+          display: "flex",
+          padding: 3,
+          gap: 2,
+          backgroundColor: "#F4F4FA",
+        }}
+      >
+        <DisplayCalendar />
+        <div
+          style={{
+            width: "100%",
+            borderRadius: 5,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <ProgressComponent />
+        </div>
+      </Paper>
     </>
   );
 };

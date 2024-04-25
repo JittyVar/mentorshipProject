@@ -3,6 +3,7 @@ import { Status } from "@/data/Status";
 import database from "@/firestore/firestore";
 import { getDocs, collection, query, where } from "firebase/firestore";
 
+export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const newRows: HomeTableColumns[] = [];

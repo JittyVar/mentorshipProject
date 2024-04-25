@@ -1,6 +1,7 @@
 "use client";
+export const dynamic = "force-dynamic";
 
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { Box, Grid } from "@mui/material";
 import ResultsComponent from "@/components/results/resultsComponent";
@@ -9,17 +10,36 @@ import { FetchCollection } from "@/redux/dashboard/actions/fetchCollection";
 import { arr } from "@/data/dummyArr";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
 import { useSearchParams } from "next/navigation";
+import PairingComplete from "@/components/results/pairingComplete";
 
 const MatchContent = () => {
   const dispatch = useAppDispatch();
   const rows = useAppSelector((state) => state.dashboard.rows);
   const chosenData = useSearchParams()?.get("q");
-  const participatingAs = useSearchParams()?.get("r");
-  const firstLog = useRef(true);
+  const [participatingAs, setParticipatingAs] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState(true); // Add a state variable to track loading state
+  const firstRender = useRef(true);
+
+  useEffect(() => {
+    const fetchDataFirstRender = async () => {
+      if (firstRender) {
+        await dispatch(FetchCollection());
+      }
+    };
+
+    firstRender.current = false;
+    fetchDataFirstRender();
+  }, [dispatch, firstRender]);
+
+  useEffect(() => {
+    const foundData = rows.find((e) => e.fullName === chosenData);
+    setParticipatingAs(foundData?.participatingAs);
+  }, [chosenData, rows]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("received ", participatingAs);
         const paramArr = [
           {
             url:
@@ -30,18 +50,26 @@ const MatchContent = () => {
           },
         ];
 
-        await dispatch(UpdateStatusToInProgress(paramArr));
-        dispatch(FetchCollection());
+        await dispatch(UpdateStatusToInProgress(paramArr)).then(() => {
+          dispatch(FetchCollection());
+        });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    if (firstLog.current) {
+    if (!isLoading) {
+      // Check if the first useEffect has completed
       fetchData();
-      firstLog.current = false;
     }
-  }, [dispatch, firstLog, chosenData, participatingAs]);
+  }, [dispatch, isLoading, chosenData, participatingAs]);
+
+  // Update isLoading state when participatingAs is set
+  useEffect(() => {
+    if (participatingAs !== undefined) {
+      setIsLoading(false);
+    }
+  }, [participatingAs]);
 
   return (
     <Box>
@@ -55,6 +83,7 @@ const MatchContent = () => {
             dataOf={chosenData}
             participatingAs={participatingAs}
           />
+          {/* <PairingComplete /> */}
         </Grid>
       </Grid>
     </Box>
