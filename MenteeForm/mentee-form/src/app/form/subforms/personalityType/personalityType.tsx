@@ -49,7 +49,7 @@ const PersonalityTypeComponent = () => {
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
+      <FormControl fullWidth sx={{ backgroundColor: "white" }}>
         <InputLabel id="demo-simple-select-label">Personality Type</InputLabel>
         <Select
           labelId="demo-simple-select-label"

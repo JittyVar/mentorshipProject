@@ -24,7 +24,7 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { FetchCollection } from "@/redux/dashboard/actions/fetchCollection";
+import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 import adminPic from "../greeting/adminpic.png";
 import { APIStatus } from "@/redux/dashboard/dashboardSlice";
@@ -73,7 +73,7 @@ const ResultsComponent: React.FC<ResultsProps> = ({
     try {
       console.log("participatingAs ", participatingAs);
       await dispatch(UpdateStatus(paramArr)).then((request) => {
-        dispatch(FetchCollection()); // await dispatch of FetchCollection
+        dispatch(FetchCollections()); // await dispatch of FetchCollection
         if (request.meta.requestStatus === "fulfilled") {
           setSuccessAlert(true);
           setTimeout(() => {

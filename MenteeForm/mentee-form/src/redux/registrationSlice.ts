@@ -7,9 +7,6 @@ import { BasicSkills } from "./states/skills/basicSkills";
 import { ExpertSkills } from "./states/skills/expertSkills";
 import { Goals } from "./states/goals";
 import { PersonalityType } from "./states/personalityType";
-import { Status } from "./actions/createMenteeDocument";
-import database from "@/firestore/firestore";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { store } from "./store";
 
 export enum APIStatus {

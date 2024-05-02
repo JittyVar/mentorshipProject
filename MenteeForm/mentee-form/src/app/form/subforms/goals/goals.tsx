@@ -38,6 +38,14 @@ const GoalsComponent = () => {
           label="Long Term Goal"
           variant="outlined"
           onChange={(e) => handleInputChange("longTermGoal", e.target.value)}
+          sx={{
+            "& .MuiOutlinedInput-input": {
+              backgroundColor: "white",
+              border: 1,
+              borderRadius: 2,
+              borderColor: "black",
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -47,6 +55,14 @@ const GoalsComponent = () => {
           onChange={(e) =>
             handleInputChange("firstShortTermGoal", e.target.value)
           }
+          sx={{
+            "& .MuiOutlinedInput-input": {
+              backgroundColor: "white",
+              border: 1,
+              borderRadius: 2,
+              borderColor: "black",
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -56,6 +72,14 @@ const GoalsComponent = () => {
           onChange={(e) =>
             handleInputChange("secondShortTermGoal", e.target.value)
           }
+          sx={{
+            "& .MuiOutlinedInput-input": {
+              backgroundColor: "white",
+              border: 1,
+              borderRadius: 2,
+              borderColor: "black",
+            },
+          }}
         />
       </Container>
     </Box>

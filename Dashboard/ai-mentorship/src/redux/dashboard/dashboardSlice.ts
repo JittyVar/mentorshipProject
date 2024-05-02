@@ -1,6 +1,6 @@
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { FetchCollection } from "./actions/fetchCollection";
+import { FetchMenteeCollections } from "./actions/fetchMenteeCollection";
 import { TotalMentees } from "./actions/totalMentees";
 import { TotalMentors } from "./actions/totalMentors";
 import { WithMentees } from "./actions/withMentees";
@@ -9,6 +9,8 @@ import { WithNoMentees } from "./actions/withNoMentees";
 import { WithNoMentors } from "./actions/withNoMentors";
 import { UpdateStatus } from "./actions/updateStatus";
 import { UpdateStatusToInProgress } from "./actions/updateMenteeStatusToInProgress";
+import { FetchMentorCollections } from "./actions/fetchMentorCollections";
+import { FetchCollections } from "./actions/fetchCollection";
 
 export enum APIStatus {
   idle = "idle",
@@ -18,6 +20,10 @@ export enum APIStatus {
 }
 
 export interface HomeDataRows {
+  mentorRows: HomeTableColumns[];
+  mentorRowsStatus: APIStatus;
+  menteeRows: HomeTableColumns[];
+  menteeRowsStatus: APIStatus;
   rows: HomeTableColumns[];
   status: APIStatus;
   inProgressStatus: APIStatus;
@@ -31,7 +37,11 @@ export interface HomeDataRows {
 }
 
 const initialState: HomeDataRows = {
+  mentorRows: [],
+  menteeRows: [],
   rows: [],
+  mentorRowsStatus: APIStatus.idle,
+  menteeRowsStatus: APIStatus.idle,
   status: APIStatus.idle,
   inProgressStatus: APIStatus.idle,
   completeStatus: APIStatus.idle,
@@ -57,18 +67,46 @@ export const dashboardSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(FetchCollection.pending, (state) => {
+      .addCase(FetchCollections.pending, (state) => {
         state.status = APIStatus.loading;
       })
       .addCase(
-        FetchCollection.fulfilled,
+        FetchCollections.fulfilled,
         (state, action: PayloadAction<HomeTableColumns[]>) => {
           state.rows = action.payload;
           state.status = APIStatus.success;
         }
       )
-      .addCase(FetchCollection.rejected, (state) => {
+      .addCase(FetchCollections.rejected, (state) => {
         state.status = APIStatus.error;
+      });
+    builder
+      .addCase(FetchMenteeCollections.pending, (state) => {
+        state.menteeRowsStatus = APIStatus.loading;
+      })
+      .addCase(
+        FetchMenteeCollections.fulfilled,
+        (state, action: PayloadAction<HomeTableColumns[]>) => {
+          state.menteeRows = action.payload;
+          state.menteeRowsStatus = APIStatus.success;
+        }
+      )
+      .addCase(FetchMenteeCollections.rejected, (state) => {
+        state.menteeRowsStatus = APIStatus.error;
+      });
+    builder
+      .addCase(FetchMentorCollections.pending, (state) => {
+        state.mentorRowsStatus = APIStatus.loading;
+      })
+      .addCase(
+        FetchMentorCollections.fulfilled,
+        (state, action: PayloadAction<HomeTableColumns[]>) => {
+          state.mentorRows = action.payload;
+          state.mentorRowsStatus = APIStatus.success;
+        }
+      )
+      .addCase(FetchMentorCollections.rejected, (state) => {
+        state.mentorRowsStatus = APIStatus.error;
       });
     builder
       .addCase(UpdateStatusToInProgress.pending, (state) => {

@@ -1,7 +1,5 @@
-import database from "@/firestore/firestore";
 import { store } from "../store";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 export enum Status {
   Completed = "COMPLETED",

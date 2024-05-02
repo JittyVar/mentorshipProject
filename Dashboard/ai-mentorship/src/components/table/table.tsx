@@ -7,17 +7,8 @@ import {
   GridTreeNode,
 } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
-import {
-  Box,
-  Button,
-  Chip,
-  Paper,
-  Switch,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Button, Chip, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "@/redux/hook";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { Status } from "@/data/Status";
 import { useRouter } from "next/navigation";
@@ -25,81 +16,16 @@ import adminpic from "../greeting/adminpic.png";
 
 // Define the DataTableProps interface
 export interface DataTableProps {
-  // changeTab: (data: string) => void;
-  // allocateMentee: (data: string) => void;
   collections: HomeTableColumns[];
 }
 
 // Define the DataTable component
 const DataTable: React.FC<DataTableProps> = ({ collections }) => {
-  const dispatch = useAppDispatch();
   const router = useRouter();
-  const R = require("ramda");
-  const [filteredRows, setFilteredRows] =
-    useState<HomeTableColumns[]>(collections);
-  const [noMentorsChecked, setNoMentorsChecked] = React.useState(false);
-  const [noMenteesChecked, setNoMenteesChecked] = React.useState(false);
-  const [chosenRowData, setChosenRowData] = useState<HomeTableColumns>();
-
-  const [loading, setLoading] = React.useState(true);
-  const handleAbleToDisplay = () => {
-    setLoading(false);
-  };
-  const handleUnableToDisplay = () => {
-    setLoading(true);
-  };
-
-  const handleNoMentorsChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setNoMentorsChecked(event.target.checked);
-  };
-
-  const handleNoMenteesChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setNoMenteesChecked(event.target.checked);
-  };
-
-  // useEffect(() => {
-  //   console.log("filteredRows ", filteredRows);
-  // }, [filteredRows]);
 
   useEffect(() => {
-    if (noMentorsChecked && noMenteesChecked) {
-      const newRows = collections.filter((data: HomeTableColumns) => {
-        return data.status === Status.Incomplete;
-      });
-      setFilteredRows(newRows);
-    } else if (noMentorsChecked) {
-      const newRows = collections.filter((data: HomeTableColumns) => {
-        return (
-          data.participatingAs === "Mentee" && data.status === Status.Incomplete
-        );
-      });
-      setFilteredRows(newRows);
-    } else if (noMenteesChecked) {
-      const newRows = collections.filter((data: HomeTableColumns) => {
-        return (
-          data.participatingAs === "Mentor" && data.status === Status.Incomplete
-        );
-      });
-      setFilteredRows(newRows);
-    } else {
-      const sortByStatus = R.sortBy((item: HomeTableColumns) => {
-        if (item.status === Status.InProgress) {
-          return 0; // "In Progress" comes first
-        } else if (item.status === Status.Incomplete) {
-          return 1; // "Incomplete" comes after "In Progress"
-        }
-        return 2; // Other statuses come last
-      });
-
-      // Sort the array using the custom sorting function
-      const sortedData = sortByStatus(collections);
-      setFilteredRows(sortedData);
-    }
-  }, [R, noMenteesChecked, noMentorsChecked, collections]);
+    console.log("collections ", collections);
+  }, [collections]);
 
   const columns: GridColDef[] = [
     {
@@ -171,61 +97,35 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
 
   return (
     <Box>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "right",
-        }}
-      >
-        <Switch
-          checked={noMentorsChecked}
-          onChange={handleNoMentorsChange}
-          inputProps={{ "aria-label": "controlled" }}
-          color="secondary"
-        />
-        <Typography>No Mentors</Typography>
-        <Switch
-          checked={noMenteesChecked}
-          onChange={handleNoMenteesChange}
-          inputProps={{ "aria-label": "controlled" }}
-          color="secondary"
-        />
-        <Typography>No Mentees</Typography>
-      </div>
       <Paper elevation={3}>
-        {filteredRows.length === 0 ? (
-          <div>No results</div>
-        ) : (
-          <DataGrid
-            rows={filteredRows}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 20 },
-              },
-            }}
-            onCellClick={(e) =>
-              e.field === "assignedMentor" &&
-              router.push(`/match?q=${e.row?.fullName}`)
-            }
-            pageSizeOptions={[20, 25]}
-            rowSelection
-            sx={{
-              "& .MuiDataGrid-filler": {
-                backgroundColor: "#8F3880",
-              },
-              "& .MuiDataGrid-columnHeader": {
-                backgroundColor: "#8F3880",
-                width: "100%",
-              },
-              "& .MuiDataGrid-columnHeaderTitle  ": { color: "white" },
-              "& .MuiDataGrid-root": {
-                backgroundColor: "pink",
-              },
-            }}
-          />
-        )}
+        <DataGrid
+          rows={collections}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 20 },
+            },
+          }}
+          onCellClick={(e) =>
+            e.field === "assignedMentor" &&
+            router.push(`/match?q=${e.row?.fullName}`)
+          }
+          pageSizeOptions={[20, 25]}
+          rowSelection
+          sx={{
+            "& .MuiDataGrid-filler": {
+              backgroundColor: "#8F3880",
+            },
+            "& .MuiDataGrid-columnHeader": {
+              backgroundColor: "#8F3880",
+              width: "100%",
+            },
+            "& .MuiDataGrid-columnHeaderTitle  ": { color: "white" },
+            "& .MuiDataGrid-root": {
+              backgroundColor: "pink",
+            },
+          }}
+        />
       </Paper>
     </Box>
   );

@@ -10,54 +10,23 @@ import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { Box, Paper } from "@mui/material";
 import { useEffect } from "react";
 
-const ProgressComponent = () => {
-  const totalMentees = useAppSelector((state) => state.dashboard.totalMentees);
-  const totalMentors = useAppSelector((state) => state.dashboard.totalMentors);
-  const withMentees = useAppSelector((state) => state.dashboard.withMentees);
-  const withMentors = useAppSelector((state) => state.dashboard.withMentors);
-  const withNoMentees = useAppSelector(
-    (state) => state.dashboard.withNoMentees
-  );
-  const withNoMentors = useAppSelector(
-    (state) => state.dashboard.withNoMentors
-  );
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const fetchTotalMenteesData = async () => {
-      try {
-        await Promise.all([
-          dispatch(TotalMentees()),
-          dispatch(TotalMentors()),
-          dispatch(WithMentees()),
-          dispatch(WithMentors()),
-          dispatch(WithNoMentees()),
-          dispatch(WithNoMentors()),
-        ]);
-      } catch (error) {
-        console.error("Error fetching total mentees:", error);
-      }
-    };
-
-    fetchTotalMenteesData();
-  }, [dispatch]);
-
+interface ProgressComponentProps {
+  totalValue: number;
+  withValue: number;
+  withNoValue: number;
+}
+const ProgressComponent: React.FC<ProgressComponentProps> = ({
+  totalValue,
+  withValue,
+  withNoValue,
+}) => {
   return (
     <Box display="flex" justifyContent="center" gap={10}>
       <Box display="flex" alignItems="center">
         <CircularWithValueLabel
-          total={totalMentees}
-          withValue={withMentors}
-          withNoValue={withNoMentors}
-          displayTotalAs={"Mentees"}
-          displayWithAs={"Mentors"}
-        />
-      </Box>
-      <Box display="flex" alignItems="center">
-        <CircularWithValueLabel
-          total={totalMentors}
-          withValue={withMentees}
-          withNoValue={withNoMentees}
+          total={totalValue}
+          withValue={withValue}
+          withNoValue={withNoValue}
           displayTotalAs={"Mentors"}
           displayWithAs={"Mentees"}
         />

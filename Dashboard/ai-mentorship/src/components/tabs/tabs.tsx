@@ -5,58 +5,82 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
-import { useRouter } from "next/navigation";
+import TabPanel from "@mui/lab/TabPanel";
+import Greetings from "../greeting/greeting";
+import DataTable from "../table/table";
+import { useAppSelector } from "@/redux/hook";
+import { Backdrop, CircularProgress } from "@mui/material";
+import { APIStatus } from "@/redux/dashboard/dashboardSlice";
+import { HomeTableColumns } from "@/data/HomeTableColumns";
 
-export default function LabTabs() {
+interface LabTabsProps {
+  mentorRows: HomeTableColumns[];
+  menteeRows: HomeTableColumns[];
+  mentorsData: number[];
+  menteesData: number[];
+}
+const LabTabs: React.FC<LabTabsProps> = ({
+  mentorRows,
+  menteeRows,
+  mentorsData,
+  menteesData,
+}) => {
   const [value, setValue] = React.useState("1");
-  const router = useRouter();
+  const mentorRowsStatus = useAppSelector(
+    (state) => state.dashboard.mentorRowsStatus
+  );
+  const menteeRowsStatus = useAppSelector(
+    (state) => state.dashboard.menteeRowsStatus
+  );
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
-  const handleTabClick = (value: string, url: string) => {
-    setValue(value);
-    router.push(url);
-  };
-
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box
+      sx={{
+        width: "100%",
+        typography: "body1",
+        marginTop: "2%",
+        marginBottom: "2%",
+      }}
+    >
       <TabContext value={value}>
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-            backgroundColor: "#F4E6F2",
-            borderRadius: "10px",
-            marginBottom: "2%",
-          }}
-        >
+        <Box>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab
-              label="HOME"
-              value="1"
-              onClick={() => {
-                handleTabClick(value, "/");
-              }}
-            />
-            <Tab
-              label="MATCH"
-              value="2"
-              onClick={() => {
-                handleTabClick(value, "/match");
-              }}
-            />
-            <Tab
-              label="BIO"
-              value="3"
-              onClick={() => {
-                handleTabClick(value, "/bio");
-              }}
-            />
+            <Tab label="MENTORS" value="1" />
+            <Tab label="MENTEES" value="2" />
           </TabList>
         </Box>
+        <TabPanel value="1">
+          <Greetings menteesData={mentorsData} />
+          {mentorRowsStatus == APIStatus.success && (
+            <DataTable collections={mentorRows} />
+          )}
+          <Backdrop
+            sx={{ color: "pink", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={mentorRowsStatus != APIStatus.success}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </TabPanel>
+        <TabPanel value="2">
+          <Greetings menteesData={menteesData} />
+          {menteeRowsStatus == APIStatus.success && (
+            <DataTable collections={menteeRows} />
+          )}
+          <Backdrop
+            sx={{ color: "pink", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={menteeRowsStatus != APIStatus.success}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </TabPanel>
+        <TabPanel value="3">Item Three</TabPanel>
       </TabContext>
     </Box>
   );
-}
+};
+
+export default LabTabs;

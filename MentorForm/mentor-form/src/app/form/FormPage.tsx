@@ -1,18 +1,12 @@
 import React from "react";
-import RegistrationEnd from "./registrationEndedComponent";
 import VerticalLinearStepper from "@/components/verticalStepper";
 import { Box, Container } from "@mui/material";
 
-interface FormPageProps {
-  isAuthenticated: boolean;
-}
-const FormPage: React.FC<FormPageProps> = async ({ isAuthenticated }) => {
-  if (!isAuthenticated) {
-    return <RegistrationEnd />;
-  }
+const FormPage = () => {
   return (
     <Box>
       <Container>
+        <a href="/api/auth/logout">Logout</a>
         <h1>Form Page Image</h1>
         <VerticalLinearStepper />
       </Container>
