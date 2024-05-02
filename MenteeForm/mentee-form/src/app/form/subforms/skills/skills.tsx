@@ -79,6 +79,14 @@ const SkillsComponent = () => {
               )
             }
             label="Basic Industry Skill"
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
           <TextField
             fullWidth
@@ -87,9 +95,26 @@ const SkillsComponent = () => {
               handleSoftBasicInputChange("firstBasicSoftSkill", e.target.value)
             }
             label="Basic Soft Skill"
+            sx={{
+              marginBottom: "5%",
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
           <TextField
-            sx={{ marginBottom: "5%" }}
+            sx={{
+              marginBottom: "5%",
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
             fullWidth
             helperText="e.g. Event Planning"
             onChange={(e) =>
@@ -119,6 +144,15 @@ const SkillsComponent = () => {
               )
             }
             label="Expert Industry Skill"
+            sx={{
+              marginBottom: "5%",
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
           <TextField
             fullWidth
@@ -127,9 +161,26 @@ const SkillsComponent = () => {
               handleExpertInputChange("firstExpertSoftSkill", e.target.value)
             }
             label="Expert Soft Skill"
+            sx={{
+              marginBottom: "5%",
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
           <TextField
-            sx={{ marginBottom: "5%" }}
+            sx={{
+              marginBottom: "5%",
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
             fullWidth
             helperText="eg. Product Management"
             onChange={(e) =>

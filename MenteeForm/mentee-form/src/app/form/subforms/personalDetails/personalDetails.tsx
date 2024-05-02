@@ -60,43 +60,75 @@ const PersonalDetails = () => {
   return (
     <Box>
       <>
-        <div style={{ display: "flex" }}>
-          <Typography sx={{ m: 1, width: "17ch" }}>Full Name</Typography>
+        <div>
+          <Typography sx={{ m: 1, width: "16ch" }}>Full Name</Typography>
           <TextField
             id="fullName"
             fullWidth
             onChange={(e) => handleChange("fullName", e.target.value)}
             value={menteeState.fullName}
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
         </div>
-        <div style={{ display: "flex", paddingTop: "2%" }}>
+        <div style={{ paddingTop: "2%" }}>
           <Typography sx={{ m: 1, width: "15ch" }}>Age</Typography>
           <TextField
             id="age"
             onChange={(e) => handleChange("age", e.target.value)}
             value={menteeState.age}
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
         </div>
-        <div style={{ display: "flex", paddingTop: "2%" }}>
+        <div style={{ paddingTop: "2%" }}>
           <Typography sx={{ margin: "1%", width: "16ch" }}>
             Email Address
           </Typography>
           <TextField
             id="emailAddress"
-            sx={{ m: 1 }}
+            sx={{
+              m: 1,
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
             onChange={(e) => handleChange("emailAddress", e.target.value)}
             fullWidth
             value={menteeState.emailAddress}
             error={!isValid}
           />
         </div>
-        <div style={{ display: "flex", paddingTop: "2%" }}>
+        <div style={{ paddingTop: "2%" }}>
           <Typography sx={{ margin: "1%", width: "16ch" }}>
             Phone Number
           </Typography>
           <TextField
             id="phoneNumber"
-            sx={{ m: 1 }}
+            sx={{
+              m: 1,
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
             fullWidth
             onChange={(e) => handleChange("phoneNumber", e.target.value)}
             value={

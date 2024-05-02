@@ -57,7 +57,13 @@ const MultipleSelector: React.FC<MultipleSelectorProps> = ({
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: "100%" }}>
+      <FormControl
+        sx={{
+          m: 1,
+          width: "100%",
+          backgroundColor: "white",
+        }}
+      >
         <InputLabel id="demo-multiple-name-label">
           Can be more than 1
         </InputLabel>
@@ -71,7 +77,11 @@ const MultipleSelector: React.FC<MultipleSelectorProps> = ({
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip key={value} label={value} />
+                <Chip
+                  key={value}
+                  label={value}
+                  sx={{ backgroundColor: "#1E1F42", color: "white" }}
+                />
               ))}
             </Box>
           )}
