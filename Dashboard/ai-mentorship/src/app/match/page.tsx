@@ -6,11 +6,10 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { Box, Grid } from "@mui/material";
 import ResultsComponent from "@/components/results/resultsComponent";
 import MatchTableComponent from "@/components/table/matchPageTable.tsx/table";
-import { FetchCollection } from "@/redux/dashboard/actions/fetchCollection";
+import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import { arr } from "@/data/dummyArr";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
 import { useSearchParams } from "next/navigation";
-import PairingComplete from "@/components/results/pairingComplete";
 
 const MatchContent = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +22,7 @@ const MatchContent = () => {
   useEffect(() => {
     const fetchDataFirstRender = async () => {
       if (firstRender) {
-        await dispatch(FetchCollection());
+        await dispatch(FetchCollections());
       }
     };
 
@@ -51,7 +50,7 @@ const MatchContent = () => {
         ];
 
         await dispatch(UpdateStatusToInProgress(paramArr)).then(() => {
-          dispatch(FetchCollection());
+          dispatch(FetchCollections());
         });
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -83,7 +82,6 @@ const MatchContent = () => {
             dataOf={chosenData}
             participatingAs={participatingAs}
           />
-          {/* <PairingComplete /> */}
         </Grid>
       </Grid>
     </Box>

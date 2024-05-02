@@ -51,6 +51,7 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
 
   return (
     <div style={{ display: "flex", gap: 50 }}>
+      <CircularProgressWithLabel value={progress} size={280} />
       <div
         style={{
           display: "flex",
@@ -65,9 +66,11 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
           variant="filled"
           sx={{
             backgroundColor: "#1E1F42",
-            fontSize: "1rem",
+            fontSize: "1.3rem",
             fontWeight: "bold",
-            height: "50px",
+            height: "80px",
+            width: "300px",
+            color: "#B1F5EA",
           }}
         />
         <Chip
@@ -75,11 +78,12 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
           color="primary"
           variant="outlined"
           sx={{
-            borderColor: "#1E1F42",
-            color: "#1E1F42",
-            fontSize: "1rem",
+            backgroundColor: "#1E1F42",
+            fontSize: "1.3rem",
             fontWeight: "bold",
-            height: "50px",
+            height: "80px",
+            width: "300px",
+            color: "#B1F5EA",
           }}
         />
         <Chip
@@ -87,15 +91,15 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
           color="primary"
           variant="outlined"
           sx={{
-            borderColor: "#1E1F42",
-            color: "#1E1F42",
-            fontSize: "1rem",
+            backgroundColor: "#1E1F42",
+            fontSize: "1.3rem",
             fontWeight: "bold",
-            height: "50px",
+            height: "80px",
+            width: "300px",
+            color: "#B1F5EA",
           }}
         />
       </div>
-      <CircularProgressWithLabel value={progress} size={180} />
     </div>
   );
 };
