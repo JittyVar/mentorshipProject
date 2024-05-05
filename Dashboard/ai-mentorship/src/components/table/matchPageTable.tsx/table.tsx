@@ -11,20 +11,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import { Status } from "@/data/Status";
-import {
-  Backdrop,
-  Button,
-  Chip,
-  CircularProgress,
-  Skeleton,
-} from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
+import { useAppDispatch } from "@/redux/hook";
 import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
-import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
-import { GetPairResult } from "@/redux/dashboard/actions/getPairResults";
 import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -95,18 +86,8 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
   }, [R, chosenName, collectionData]);
 
   const handleClick = async (name: string) => {
-    const paramArr: { url: string; param: string | null | undefined }[] = [
-      {
-        url:
-          participatingAs == "Mentee"
-            ? "/api/put/mentees/completeStatus"
-            : "/api/put/mentors/completeStatus",
-        param: name,
-      },
-    ];
     try {
       dispatch(restartStatus(APIStatus.idle));
-      dispatch(UpdateStatus(paramArr));
       setChosenName(name);
       dispatch(FetchCollections());
       router.push(`/match?q=${encodeURIComponent(name)}`);

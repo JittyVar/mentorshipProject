@@ -70,7 +70,7 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
       width: 220,
       renderCell: (params) => {
         const actions = params.value;
-        if (actions !== "Mentor name") {
+        if (actions == "Assign a mentee" || actions == "Assign a mentor") {
           if (actions !== "In progress") {
             return (
               <Button

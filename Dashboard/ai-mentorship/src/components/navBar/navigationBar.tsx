@@ -6,10 +6,9 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 
-const pages = ["Home", "Match", "Bio"];
+const pages = ["Home", "Match"];
 
 function ResponsiveAppBar() {
-  const handleCloseNavMenu = () => {};
   const router = useRouter();
 
   const handleTabClick = (page: string) => {
@@ -21,9 +20,6 @@ function ResponsiveAppBar() {
         break;
       case "Match":
         url = "/match";
-        break;
-      case "Bio":
-        url = "/bio";
         break;
       default:
         return;

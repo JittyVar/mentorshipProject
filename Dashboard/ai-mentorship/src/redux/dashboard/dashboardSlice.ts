@@ -20,6 +20,13 @@ export enum APIStatus {
   error = "error",
 }
 
+export interface PairingResult {
+  mentee_name: string;
+  mentee_email: string;
+  mentor_name: string;
+  mentor_email: string;
+}
+
 export interface HomeDataRows {
   mentorRows: HomeTableColumns[];
   mentorRowsStatus: APIStatus;
@@ -35,7 +42,7 @@ export interface HomeDataRows {
   withMentors: number;
   withNoMentees: number;
   withNoMentors: number;
-  pairingResults: [];
+  pairingResults: PairingResult[];
   pairingResultsStatus: APIStatus;
 }
 

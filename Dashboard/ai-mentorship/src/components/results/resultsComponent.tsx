@@ -78,7 +78,10 @@ const ResultsComponent: React.FC<ResultsProps> = ({
     <Box sx={{ width: "100%", height: "100%" }}>
       <Paper elevation={3}>
         {chosenValue != undefined ? (
-          <PairingComplete />
+          <PairingComplete
+            chosen={chosenDataOf!}
+            participatingAs={participatingAs!}
+          />
         ) : (
           <PairingCompleteSkeleton />
         )}

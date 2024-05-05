@@ -11,7 +11,6 @@ import { arr } from "@/data/dummyArr";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
 import { useSearchParams } from "next/navigation";
 import { GetPairResult } from "@/redux/dashboard/actions/getPairResults";
-import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 
 const MatchContent = () => {
   const dispatch = useAppDispatch();
@@ -49,22 +48,14 @@ const MatchContent = () => {
             param: chosenData,
           },
         ];
-        const completeStatusArr = [
-          {
-            url:
-              participatingAs === "Mentee"
-                ? "/api/put/mentees/completeStatus"
-                : "/api/put/mentors/completeStatus",
-            param: chosenData,
-          },
-        ];
 
-        await dispatch(UpdateStatusToInProgress(paramArr));
+        dispatch(UpdateStatusToInProgress(paramArr)).then(() => {
+          dispatch(FetchCollections());
+        });
 
         // Delay for 5 seconds
         setTimeout(async () => {
-          await dispatch(GetPairResult(chosenData!));
-          dispatch(UpdateStatus(completeStatusArr)).then(() => {
+          dispatch(GetPairResult(chosenData!)).then(() => {
             dispatch(FetchCollections());
           });
         }, 5000); // 5000 milliseconds = 5 seconds
