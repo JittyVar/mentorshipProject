@@ -108,6 +108,10 @@ const MatchContent = () => {
   );
 };
 
-const Match = () => <MatchContent />;
+const Match = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <MatchContent />
+  </Suspense>
+);
 
 export default Match;
