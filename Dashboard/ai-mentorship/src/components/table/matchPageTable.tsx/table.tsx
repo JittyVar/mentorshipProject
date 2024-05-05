@@ -23,6 +23,9 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
 import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
+import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
+import { GetPairResult } from "@/redux/dashboard/actions/getPairResults";
+import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -57,17 +60,16 @@ function createData(
 interface MatchTableComponentProps {
   collectionData: HomeTableColumns[] | null;
   chosenData?: string | null;
+  participatingAs: string | undefined;
 }
 
 const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
   collectionData,
   chosenData,
+  participatingAs,
 }) => {
   const [rows, setRows] = useState<any[]>([]);
   const [chosenName, setChosenName] = useState(chosenData);
-  const inProgressStatus = useAppSelector(
-    (state) => state.dashboard.inProgressStatus
-  );
   const R = require("ramda");
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -92,10 +94,25 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
     }
   }, [R, chosenName, collectionData]);
 
-  const handleClick = (name: string) => {
-    dispatch(restartStatus(APIStatus.idle));
-    setChosenName(name);
-    router.push(`/match?q=${encodeURIComponent(name)}`);
+  const handleClick = async (name: string) => {
+    const paramArr: { url: string; param: string | null | undefined }[] = [
+      {
+        url:
+          participatingAs == "Mentee"
+            ? "/api/put/mentees/completeStatus"
+            : "/api/put/mentors/completeStatus",
+        param: name,
+      },
+    ];
+    try {
+      dispatch(restartStatus(APIStatus.idle));
+      dispatch(UpdateStatus(paramArr));
+      setChosenName(name);
+      dispatch(FetchCollections());
+      router.push(`/match?q=${encodeURIComponent(name)}`);
+    } catch (error) {
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -172,19 +189,10 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                     color="secondary"
                     onClick={() => handleClick(row.fullName)}
                   >
-                    {row.assignedMentor}
+                    MATCH ME
                   </Button>
                 )}
               </StyledTableCell>
-              <Backdrop
-                sx={{
-                  color: "pink",
-                  zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}
-                open={inProgressStatus == APIStatus.loading}
-              >
-                <CircularProgress color="inherit" />
-              </Backdrop>
             </StyledTableRow>
           ))}
         </TableBody>
