@@ -11,6 +11,7 @@ import { UpdateStatus } from "./actions/updateStatus";
 import { UpdateStatusToInProgress } from "./actions/updateMenteeStatusToInProgress";
 import { FetchMentorCollections } from "./actions/fetchMentorCollections";
 import { FetchCollections } from "./actions/fetchCollection";
+import { GetPairResult } from "./actions/getPairResults";
 
 export enum APIStatus {
   idle = "idle",
@@ -34,6 +35,8 @@ export interface HomeDataRows {
   withMentors: number;
   withNoMentees: number;
   withNoMentors: number;
+  pairingResults: [];
+  pairingResultsStatus: APIStatus;
 }
 
 const initialState: HomeDataRows = {
@@ -51,6 +54,8 @@ const initialState: HomeDataRows = {
   withMentors: 0,
   withNoMentees: 0,
   withNoMentors: 0,
+  pairingResults: [],
+  pairingResultsStatus: APIStatus.idle,
 };
 
 export const dashboardSlice = createSlice({
@@ -154,6 +159,17 @@ export const dashboardSlice = createSlice({
         state.withNoMentors = action.payload;
       }
     );
+    builder
+      .addCase(GetPairResult.pending, (state) => {
+        state.pairingResultsStatus = APIStatus.loading;
+      })
+      .addCase(GetPairResult.fulfilled, (state, action) => {
+        state.pairingResults = action.payload;
+        state.pairingResultsStatus = APIStatus.success;
+      })
+      .addCase(GetPairResult.rejected, (state) => {
+        state.pairingResultsStatus = APIStatus.error;
+      });
   },
 });
 

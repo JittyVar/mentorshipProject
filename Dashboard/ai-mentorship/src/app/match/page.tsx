@@ -10,6 +10,8 @@ import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import { arr } from "@/data/dummyArr";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
 import { useSearchParams } from "next/navigation";
+import { GetPairResult } from "@/redux/dashboard/actions/getPairResults";
+import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 
 const MatchContent = () => {
   const dispatch = useAppDispatch();
@@ -38,7 +40,6 @@ const MatchContent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("received ", participatingAs);
         const paramArr = [
           {
             url:
@@ -48,10 +49,25 @@ const MatchContent = () => {
             param: chosenData,
           },
         ];
+        const completeStatusArr = [
+          {
+            url:
+              participatingAs === "Mentee"
+                ? "/api/put/mentees/completeStatus"
+                : "/api/put/mentors/completeStatus",
+            param: chosenData,
+          },
+        ];
 
-        await dispatch(UpdateStatusToInProgress(paramArr)).then(() => {
-          dispatch(FetchCollections());
-        });
+        await dispatch(UpdateStatusToInProgress(paramArr));
+
+        // Delay for 5 seconds
+        setTimeout(async () => {
+          await dispatch(GetPairResult(chosenData!));
+          dispatch(UpdateStatus(completeStatusArr)).then(() => {
+            dispatch(FetchCollections());
+          });
+        }, 5000); // 5000 milliseconds = 5 seconds
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -71,10 +87,14 @@ const MatchContent = () => {
   }, [participatingAs]);
 
   return (
-    <Box>
+    <Box paddingTop={5}>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6}>
-          <MatchTableComponent collectionData={rows} chosenData={chosenData} />
+          <MatchTableComponent
+            collectionData={rows}
+            chosenData={chosenData}
+            participatingAs={participatingAs}
+          />
         </Grid>
         <Grid item xs={6}>
           <ResultsComponent
@@ -88,10 +108,6 @@ const MatchContent = () => {
   );
 };
 
-const Match = () => (
-  <Suspense fallback={<div>Loading...</div>}>
-    <MatchContent />
-  </Suspense>
-);
+const Match = () => <MatchContent />;
 
 export default Match;

@@ -82,4 +82,13 @@ export const arr: MatchRow[] = [
     percentage: 100,
     assignedMentor: "Mentor 7",
   },
+  {
+    name: "mentoring test",
+    participatingAs: "Mentee",
+    skills: 20,
+    goals: 40,
+    personality: 50,
+    percentage: 100,
+    assignedMentor: "Mentor 7",
+  },
 ];

@@ -1,5 +1,4 @@
 "use client";
-import DataTable from "@/components/table/table copy";
 import LabTabs from "@/components/tabs/tabs";
 import { FetchMenteeCollections } from "@/redux/dashboard/actions/fetchMenteeCollection";
 import { FetchMentorCollections } from "@/redux/dashboard/actions/fetchMentorCollections";
@@ -11,7 +10,7 @@ import { WithNoMentees } from "@/redux/dashboard/actions/withNoMentees";
 import { WithNoMentors } from "@/redux/dashboard/actions/withNoMentors";
 import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const dispatch = useAppDispatch();

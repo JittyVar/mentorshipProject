@@ -12,6 +12,7 @@ export const UpdateStatus = createAsyncThunk(
         },
         body: JSON.stringify(param[0].param),
       });
+      if (response.ok) console.log("done complete status collection");
       return response.json(); // Parses JSON response into native JavaScript object
     } catch (error) {
       console.error("Error:", error);
