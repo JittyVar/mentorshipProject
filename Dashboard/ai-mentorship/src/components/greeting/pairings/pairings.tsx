@@ -6,7 +6,6 @@ const Pairings = () => {
     <div>
       <h1>Hello, Admin! </h1>
       {/* <Pairings /> */}
-      <ProgressComponent />
     </div>
   );
 };
