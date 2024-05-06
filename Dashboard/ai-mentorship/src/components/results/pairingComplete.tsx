@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { APIStatus, PairingResult } from "@/redux/dashboard/dashboardSlice";
 import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
+import CustomizedSnackbars from "../snackbar/snackBar";
 
 interface PairingCompleteProps {
   chosen: string;
@@ -68,61 +69,104 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
 
   return (
     <Paper>
+      <Paper
+        elevation={3}
+        sx={{ height: "25px", padding: 2, backgroundColor: "#F4E6F2" }}
+      >
+        <Typography>RESULTS</Typography>
+      </Paper>
       {pairingResultStatus != APIStatus.success ? (
-        <CircularProgress color="secondary" />
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            height: "300px",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress color="secondary" size={100} />
+        </div>
       ) : (
-        <Grid container spacing={2} sx={{ widht: "100%", height: "300px" }}>
-          <Grow in={true}>
-            <Grid
-              item
-              xs={6}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <Avatar
-                  style={{
-                    width: "200px",
-                    height: "200px",
-                  }}
-                />
-                {pairedData[0] != undefined && (
-                  <Typography>{pairedData[0]!.mentee_name}</Typography>
-                )}
-              </div>
-            </Grid>
-          </Grow>
-          <Grow
-            in={true}
-            style={{ transformOrigin: "0 0 0" }}
-            {...(true ? { timeout: 1000 } : {})}
+        <>
+          <Grid
+            container
+            spacing={2}
+            sx={{ widht: "100%", height: "300px", padding: 3 }}
           >
-            <Grid
-              item
-              xs={6}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+            <Grow in={true}>
+              <Grid
+                item
+                xs={6}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Avatar
+                    style={{
+                      width: "200px",
+                      height: "200px",
+                    }}
+                  />
+                  {pairedData[0] != undefined && (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "50px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography>{pairedData[0]!.mentee_name}</Typography>
+                    </div>
+                  )}
+                </div>
+              </Grid>
+            </Grow>
+            <Grow
+              in={true}
+              style={{ transformOrigin: "0 0 0" }}
+              {...(true ? { timeout: 1000 } : {})}
             >
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <Avatar
-                  style={{
-                    width: "200px",
-                    height: "200px",
-                  }}
-                />
-                {pairedData[0] != undefined && (
-                  <Typography>{pairedData[0]!.mentor_name}</Typography>
-                )}
-              </div>
-            </Grid>
-          </Grow>
-        </Grid>
+              <Grid
+                item
+                xs={6}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Avatar
+                    style={{
+                      width: "200px",
+                      height: "200px",
+                    }}
+                  />
+                  {pairedData[0] != undefined && (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "50px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography>{pairedData[0]!.mentor_name}</Typography>
+                    </div>
+                  )}
+                </div>
+              </Grid>
+            </Grow>
+          </Grid>
+          <CustomizedSnackbars success={true} />
+        </>
       )}
     </Paper>
   );

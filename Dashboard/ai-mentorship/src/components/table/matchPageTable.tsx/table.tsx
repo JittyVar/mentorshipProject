@@ -107,6 +107,9 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
       <Table
         sx={{
           minWidth: "100%",
+          "& .MuiTableCell-root.MuiTableCell-head": {
+            backgroundColor: "#8F3880",
+          },
         }}
         aria-label="customized table"
       >

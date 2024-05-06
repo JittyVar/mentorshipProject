@@ -1,7 +1,13 @@
-import { Avatar, Grid, Grow, Paper } from "@mui/material";
+import { Avatar, Grid, Grow, Paper, Typography } from "@mui/material";
 const PairingCompleteSkeleton = () => {
   return (
     <Paper>
+      <Paper
+        elevation={3}
+        sx={{ height: "25px", padding: 2, backgroundColor: "#F4E6F2" }}
+      >
+        <Typography>RESULTS</Typography>
+      </Paper>
       <Grid container spacing={2} sx={{ widht: "100%", height: "300px" }}>
         <Grow in={true}>
           <Grid
