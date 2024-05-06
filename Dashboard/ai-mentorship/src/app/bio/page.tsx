@@ -8,7 +8,7 @@ const Bio = () => {
       const response = await fetch("/api/get/mentees/pair?slug=testing", {
         next: { revalidate: 60 },
       });
-      let menteeData, mentorData;
+      let menteeData, mentorData, responseR;
       if (response.ok) {
         menteeData = await response.json();
         console.log("mentee ", menteeData);
@@ -31,22 +31,27 @@ const Bio = () => {
       const rResponse = await fetch("/api/pair", {
         next: { revalidate: 60 },
       });
-      if (mentorResponse.ok) {
-        mentorData = await rResponse.json();
-        console.log("mentor ", rResponse);
+      if (rResponse.ok) {
+        responseR = await rResponse.json();
+        console.log("rResponse ", rResponse);
       } else {
-        console.log("Failed to fetch mentor data");
+        console.log("Failed to fetch R data");
       }
 
-      return { menteeData, mentorData, rResponse };
+      return { menteeData, mentorData, responseR };
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   useEffect(() => {
-    uploadphoto();
+    const fetchData = async () => {
+      const data = await uploadphoto();
+      console.log("All data fetched:", data);
+    };
+    fetchData();
   }, []);
+
   return <div>Bio</div>;
 };
 
