@@ -53,13 +53,13 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
           innerDocData.push(doc.data());
         });
 
-        // const preferencesDetails = await getDocs(
-        //   collection(database, "Mentees", uniqueId, "Preferences")
-        // );
+        const preferencesDetails = await getDocs(
+          collection(database, "Mentors", uniqueId, "Preferences")
+        );
 
-        // preferencesDetails.forEach((doc) => {
-        //   innerDocData.push(doc.data());
-        // });
+        preferencesDetails.forEach((doc) => {
+          innerDocData.push(doc.data());
+        });
 
         const goals = await getDocs(
           collection(database, "Mentors", uniqueId, "Goals")
@@ -81,94 +81,98 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
       })
     );
 
-    //Assuming you have data in the format of an array of arrays
-    const data = [
-      [
-        "Timestamp",
-        "Name",
-        "Organisation",
-        "Job title",
-        "Gender",
-        "Email",
-        "Phone number",
-        "Short description of your role",
-        "Why I chose to offer myself as a mentor",
-        "What would you hope to get from this program?",
-        "What type/s of mentee would you prefer?",
-        "What type of students are best aligned with your expertise?",
-        "Which subjects are best aligned with your expertise?",
-        "Personality Type",
-        "Please attach a photo of yourself",
-        "Short Bio",
-      ],
-      // [
-      //   "19/04/2023 11:49",
-      //   "AB CD",
-      //   "A Company",
-      //   "Director",
-      //   "Female",
-      //   "ab.cd@company.come",
-      //   "123435",
-      //   "Client Director, Strategic Digital Advisory",
-      //   "I am passionate about supporting young talent in the industry",
-      //   "Meet talented young females who want to join the tech industry",
-      //   "3rd year undergraduate, 4th year undergraduate",
-      //   "Engineering",
-      //   "Analytics, Digital Services, Mathematical Modelling and Computation, Software Development, Software Engineering",
-      //   "ESFJ",
-      //   "",
-      //   "Here is a bio",
-      // ],
-      [
-        "19/04/2023 12:55",
-        docData[0][0].fullName,
-        docData[0][1].organisation,
-        docData[0][1].jobTitle,
-        docData[0][0].gender,
-        docData[0][0].emailAddress,
-        docData[0][0].phoneNumber,
-        docData[0][0].specialisation,
-        "I am passionate about supporting young talent in the industry",
-        "Meet talented young females who want to join the tech industry",
-        "3rd year undergraduate, 4th year undergraduate",
-        "Engineering",
-        "Analytics, Digital Services, Mathematical Modelling and Computation, Software Development, Software Engineering",
-        docData[0][3].personalityType,
-        "",
-        "Here is a bio",
-      ],
-    ];
+    console.log("doc data mentor", docData);
 
-    // Convert the array of arrays to JSON
-    const jsonData = data.slice(1).map((row) => ({
-      Timestamp: row[0],
-      Name: row[1],
-      Organisation: row[2],
-      "Job title": row[3],
-      Gender: row[4],
-      Email: row[5],
-      "Phone number": row[6],
-      "Short description of your role": row[7],
-      "Why I chose to offer myself as a mentor": row[8],
-      "What would you hope to get from this program?": row[9],
-      "What type/s of mentee would you prefer?": row[10],
-      "What type of students are best aligned with your expertise?": row[11],
-      "Which subjects are best aligned with your expertise?": row[12],
-      "Personality Type": row[13],
-      "Please attach a photo of yourself": row[14],
-      "Short Bio": row[15],
-    }));
+    if (docData.length != 0) {
+      // Assuming you have data in the format of an array of arrays
+      const data = [
+        [
+          "Timestamp",
+          "Name",
+          "Organisation",
+          "Job title",
+          "Gender",
+          "Email",
+          "Phone number",
+          "Short description of your role",
+          "Why I chose to offer myself as a mentor",
+          "What would you hope to get from this program?",
+          "What type/s of mentee would you prefer?",
+          "What type of students are best aligned with your expertise?",
+          "Which subjects are best aligned with your expertise?",
+          "Personality Type",
+          "Please attach a photo of yourself",
+          "Short Bio",
+        ],
+        // [
+        //   "19/04/2023 11:49",
+        //   "AB CD",
+        //   "A Company",
+        //   "Director",
+        //   "Female",
+        //   "ab.cd@company.come",
+        //   "123435",
+        //   "Client Director, Strategic Digital Advisory",
+        //   "I am passionate about supporting young talent in the industry",
+        //   "Meet talented young females who want to join the tech industry",
+        //   "3rd year undergraduate, 4th year undergraduate",
+        //   "Engineering",
+        //   "Analytics, Digital Services, Mathematical Modelling and Computation, Software Development, Software Engineering",
+        //   "ESFJ",
+        //   "",
+        //   "Here is a bio",
+        // ],
+        [
+          "19/04/2023 12:55",
+          docData[0][0].fullName,
+          docData[0][1].organisation,
+          docData[0][1].jobTitle,
+          docData[0][0].gender,
+          docData[0][0].emailAddress,
+          docData[0][0].phoneNumber,
+          docData[0][1].specialisation,
+          docData[0][3].motivation,
+          docData[0][3].outcome,
+          docData[0][2].menteeType,
+          "Engineering",
+          docData[0][2].studentType.join(", "),
+          docData[0][4].personalityType,
+          "",
+          "Here is a bio",
+        ],
+      ];
 
-    const csv = await converter.json2csv(jsonData);
+      // Convert the array of arrays to JSON
+      const jsonData = data.slice(1).map((row) => ({
+        Timestamp: row[0],
+        Name: row[1],
+        Organisation: row[2],
+        "Job title": row[3],
+        Gender: row[4],
+        Email: row[5],
+        "Phone number": row[6],
+        "Short description of your role": row[7],
+        "Why I chose to offer myself as a mentor": row[8],
+        "What would you hope to get from this program?": row[9],
+        "What type/s of mentee would you prefer?": row[10],
+        "What type of students are best aligned with your expertise?": row[11],
+        "Which subjects are best aligned with your expertise?": row[12],
+        "Personality Type": row[13],
+        "Please attach a photo of yourself": row[14],
+        "Short Bio": row[15],
+      }));
 
-    // Specify the file path where you want to save the CSV
-    const filePath = "src/app/api/pair/data/mentor_eoi_data.csv";
+      const csv = await converter.json2csv(jsonData);
 
-    fs.writeFileSync(filePath, csv, "utf8");
+      // Specify the file path where you want to save the CSV
+      const filePath = "src/app/api/pair/data/mentor_eoi_data.csv";
+
+      fs.writeFileSync(filePath, csv, "utf8");
+    }
 
     console.log("CSV file has been saved.");
 
-    return Response.json(docData);
+    return Response.json({ message: "mentor done" });
   } catch (error) {
     console.error("Error fetching data:", error);
     return Response.json({ error: "Internal server error" });

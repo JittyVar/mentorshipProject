@@ -59,27 +59,13 @@ const ResultsComponent: React.FC<ResultsProps> = ({
 
   const searchParams = useSearchParams();
   const chosenValue = searchParams.get("q");
-  useEffect(() => {
-    setChosen(dataOf);
-  }, [dataOf]);
-
-  useEffect(() => {
-    if (data) {
-      const foundItems = data.filter(
-        (item: MatchRow) => item.name == chosenDataOf
-      );
-      setDataArr(foundItems); // Set dataArr to an array of found items
-    } else {
-      setDataArr([]); // Reset dataArr if data is undefined or null
-    }
-  }, [chosenDataOf, data]); // Add dataOf as a dependency
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
       <Paper elevation={3}>
         {chosenValue != undefined ? (
           <PairingComplete
-            chosen={chosenDataOf!}
+            chosen={dataOf!}
             participatingAs={participatingAs!}
           />
         ) : (

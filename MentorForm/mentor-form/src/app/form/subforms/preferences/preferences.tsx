@@ -97,7 +97,7 @@ const MenteePreferencesComponent = () => {
         </div>
         <div style={{ marginTop: "4%", marginBottom: "4%" }}>
           <Typography sx={{ margin: "1%" }}>
-            What type of students are best aligned with your expertise?
+            Which subjects are best aligned with your expertise??
           </Typography>
           <MultipleSelector
             data={[

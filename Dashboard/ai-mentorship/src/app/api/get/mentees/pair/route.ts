@@ -143,7 +143,7 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
 
     console.log("CSV file has been saved.");
 
-    return Response.json(matchingResults);
+    return Response.json({ message: "mentee done" });
   } catch (error) {
     console.error("Error fetching data:", error);
     return Response.json({ error: "Internal server error" });

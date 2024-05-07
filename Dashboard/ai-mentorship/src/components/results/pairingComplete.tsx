@@ -33,18 +33,50 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (pairingResult && chosen && participatingAs) {
-      if (participatingAs === "Mentee") {
-        setPairedData(
-          pairingResult!.filter((e: PairingResult) => chosen === e.mentee_name)
-        );
-      } else {
-        setPairedData(
-          pairingResult!.filter((e: PairingResult) => chosen === e.mentor_name)
-        );
+    const fetchData = async () => {
+      if (chosen && participatingAs) {
+        console.log("getting mentee");
+        try {
+          const response = await fetch(`/api/get/mentees/pair?slug=${chosen}`, {
+            next: { revalidate: 60 },
+          });
+          if (response.ok) {
+            const menteeData = await response.json();
+            console.log("mentee ", menteeData);
+          } else {
+            console.log("Failed to fetch mentee data");
+          }
+
+          console.log("getting mentor");
+          const mentorResponse = await fetch("/api/get/mentors/pair", {
+            next: { revalidate: 60 },
+          });
+          if (mentorResponse.ok) {
+            const mentorData = await mentorResponse.json();
+            console.log("mentor ", mentorData);
+          } else {
+            console.log("Failed to fetch mentor data");
+          }
+
+          console.log("getting R");
+          const rResponse = await fetch("/api/pair", {
+            next: { revalidate: 60 },
+          });
+          if (rResponse.ok) {
+            const responseR = await rResponse.json();
+            setPairedData(responseR);
+            console.log("rResponse ", responseR);
+          } else {
+            console.log("Failed to fetch R data");
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
       }
-    }
-  }, [pairingResult, chosen, participatingAs]);
+    };
+
+    fetchData();
+  }, [chosen, participatingAs]);
 
   useEffect(() => {
     const updateCompleteStatus = async () => {

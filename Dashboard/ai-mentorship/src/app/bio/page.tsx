@@ -5,7 +5,7 @@ const Bio = () => {
   const uploadphoto = async () => {
     try {
       console.log("getting mentee");
-      const response = await fetch("/api/get/mentees/pair?slug=Mentee Name 1", {
+      const response = await fetch("/api/get/mentees/pair?slug=Mentee Name 2", {
         next: { revalidate: 60 },
       });
       let menteeData, mentorData, responseR;
@@ -17,7 +17,7 @@ const Bio = () => {
       }
 
       console.log("getting mentor");
-      const mentorResponse = await fetch("/api/get/mentors/pair?slug=testing", {
+      const mentorResponse = await fetch("/api/get/mentors/pair", {
         next: { revalidate: 60 },
       });
       if (mentorResponse.ok) {
