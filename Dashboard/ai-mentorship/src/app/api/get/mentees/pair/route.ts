@@ -53,6 +53,14 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
           innerDocData.push(doc.data());
         });
 
+        const goalsDetails = await getDocs(
+          collection(database, "Mentees", uniqueId, "Goals")
+        );
+
+        goalsDetails.forEach((doc) => {
+          innerDocData.push(doc.data());
+        });
+
         const preferencesDetails = await getDocs(
           collection(database, "Mentees", uniqueId, "Preferences")
         );
@@ -72,6 +80,8 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
         docData.push(innerDocData);
       })
     );
+
+    console.log(docData[0][3]);
 
     // Assuming you have data in the format of an array of arrays
     const data = [
@@ -96,14 +106,14 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
         "18021379",
         docData[0][0].emailAddress,
         docData[0][0].phoneNumber,
-        `${docData[0][1].programs.join(", ")}`,
+        `${docData[0][1].programs}`,
         `${docData[0][1].majors.join(", ")}`,
         "2nd year undergraduate",
-        `${docData[0][2].preferences.stemSector.join(", ")}`,
-        `${docData[0][2].preferences.expectation}`,
+        `${docData[0][3].stemSector.join(", ")}`,
+        `${docData[0][2].outcome}`,
         "Industry",
-        `${docData[0][2].preferences.preferences.join(", ")}`,
-        `${docData[0][3].personalityType}`,
+        `${docData[0][3].preferences}`,
+        `${docData[0][4].personalityType}`,
       ],
     ];
 
