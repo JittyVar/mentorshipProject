@@ -7,6 +7,10 @@ import {
   Radio,
   RadioGroup,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { MentorState } from "@/redux/states/mentor";
@@ -17,6 +21,7 @@ import { menteePersonalDetails } from "@/redux/registrationSlice";
 import validator from "validator";
 
 const PersonalDetails = () => {
+  const gender = ["Male", "Female", "No preference"];
   const mentorState = useSelector(
     (state: RootState) => state.registration.mentor
   );
@@ -75,24 +80,30 @@ const PersonalDetails = () => {
           <TextField
             id="gender"
             sx={{ m: 1 }}
-            onChange={(e) => handleChange("gender", e.target.value)}
-            fullWidth
-            value={mentorState.gender}
-            error={!isValid}
-          />
-        </div>
-        <div style={{ display: "flex", paddingTop: "2%" }}>
-          <Typography sx={{ margin: "1%", width: "16ch" }}>
-            Email Address
-          </Typography>
-          <TextField
-            id="emailAddress"
-            sx={{ m: 1 }}
             onChange={(e) => handleChange("emailAddress", e.target.value)}
             fullWidth
             value={mentorState.emailAddress}
             error={!isValid}
           />
+        </div>
+        <div style={{ display: "flex", paddingTop: "2%" }}>
+          <Typography sx={{ margin: "1%", width: "16ch" }}>Gender</Typography>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={mentorState.gender}
+              label="Age"
+              onChange={(e) => handleChange("gender", e.target.value)}
+            >
+              {gender.map((value) => (
+                <MenuItem key={value} value={value}>
+                  {value}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
         <div style={{ display: "flex", paddingTop: "2%" }}>
           <Typography sx={{ margin: "1%", width: "16ch" }}>

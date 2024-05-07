@@ -9,6 +9,7 @@ export async function POST(req: Request, context: any) {
     // Query Firestore to find the document matching the name and participatingAs
     try {
       const mainDocRef = await addDoc(collection(database, "Mentors"), {
+        assignedMentor: "",
         createdAt: serverTimestamp(),
         documentOf: data.mentor.fullName,
         status: Status.Incomplete,
@@ -36,29 +37,42 @@ export async function POST(req: Request, context: any) {
         specialisation: data.professionalDetails.specialisation,
       });
 
-      const skillsCollectionRef = collection(mainDocRef, "Skills");
-      await addDoc(skillsCollectionRef, {
-        basicSkills: {
-          firstBasicSoftSkill: data.skills.basicSkills.firstBasicSoftSkill,
-          firstBasicIndustrySkill:
-            data.skills.basicSkills.firstBasicIndustrySkill,
-          secondBasicIndustrySkill:
-            data.skills.basicSkills.secondBasicIndustrySkill,
-        },
-        expertSkills: {
-          firstExpertSoftSkill: data.skills.expertSkills.firstExpertSoftSkill,
-          firstExpertIndustrySkill:
-            data.skills.expertSkills.firstExpertIndustrySkill,
-          secondExpertIndustrySkill:
-            data.skills.expertSkills.secondExpertIndustrySkill,
-        },
+      // const skillsCollectionRef = collection(mainDocRef, "Skills");
+      // await addDoc(skillsCollectionRef, {
+      //   basicSkills: {
+      //     firstBasicSoftSkill: data.skills.basicSkills.firstBasicSoftSkill,
+      //     firstBasicIndustrySkill:
+      //       data.skills.basicSkills.firstBasicIndustrySkill,
+      //     secondBasicIndustrySkill:
+      //       data.skills.basicSkills.secondBasicIndustrySkill,
+      //   },
+      //   expertSkills: {
+      //     firstExpertSoftSkill: data.skills.expertSkills.firstExpertSoftSkill,
+      //     firstExpertIndustrySkill:
+      //       data.skills.expertSkills.firstExpertIndustrySkill,
+      //     secondExpertIndustrySkill:
+      //       data.skills.expertSkills.secondExpertIndustrySkill,
+      //   },
+      // });
+
+      const preferencesRef = collection(mainDocRef, "Preferences");
+      await addDoc(preferencesRef, {
+        preferences: data.preferences.preferences,
+        menteeType: data.preferences.menteeType,
+        studentType: data.preferences.studentType,
       });
 
       const goalsCollectionRef = collection(mainDocRef, "Goals");
       await addDoc(goalsCollectionRef, {
-        longTermGoal: data.goals.longTermGoal,
-        firstShortTermGoal: data.goals.firstShortTermGoal,
-        secondShortTermGoal: data.goals.secondShortTermGoal,
+        longTermGoal: data.goals.longTermGoal ? data.goals.longTermGoal : "",
+        firstShortTermGoal: data.goals.firstShortTermGoal
+          ? data.goals.firstShortTermGoal
+          : "",
+        secondShortTermGoal: data.goals.secondShortTermGoal
+          ? data.goals.secondShortTermGoal
+          : "",
+        outcome: data.goals.outcome,
+        motivation: data.goals.motivation,
       });
 
       const personalityTypeCollectionRef = collection(

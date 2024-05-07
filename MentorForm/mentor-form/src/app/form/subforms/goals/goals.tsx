@@ -13,6 +13,8 @@ const GoalsComponent = () => {
     longTermGoal: goalsState.longTermGoal,
     firstShortTermGoal: goalsState.firstShortTermGoal,
     secondShortTermGoal: goalsState.secondShortTermGoal,
+    outcome: goalsState.outcome,
+    motivation: goalsState.motivation,
   });
 
   const handleInputChange = (fieldName: keyof Goals, value: string) => {
@@ -29,7 +31,7 @@ const GoalsComponent = () => {
   return (
     <Box>
       <Container sx={{ "& > div:not(:last-child)": { marginBottom: "20px" } }}>
-        <Typography sx={{ margin: "1%" }}>
+        {/* <Typography sx={{ margin: "1%" }}>
           What is one long-term goal you have?
         </Typography>
         <TextField
@@ -56,7 +58,47 @@ const GoalsComponent = () => {
           onChange={(e) =>
             handleInputChange("secondShortTermGoal", e.target.value)
           }
-        />
+        /> */}
+        <div style={{ paddingBottom: "2%" }}>
+          <Typography sx={{ margin: "1%", width: "46ch" }}>
+            What would you hope to get from this program?
+          </Typography>
+          <TextField
+            id="expectation"
+            multiline
+            sx={{
+              m: 1,
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
+            fullWidth
+            onChange={(e) => handleInputChange("outcome", e.target.value)}
+          />
+        </div>
+        <div style={{ paddingBottom: "2%" }}>
+          <Typography sx={{ margin: "1%", width: "46ch" }}>
+            Why I chose to offer myself as a mentor?
+          </Typography>
+          <TextField
+            id="expectation"
+            multiline
+            sx={{
+              m: 1,
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
+            fullWidth
+            onChange={(e) => handleInputChange("motivation", e.target.value)}
+          />
+        </div>
       </Container>
     </Box>
   );
