@@ -5,14 +5,17 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Box, Container, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { goalsDetails } from "@/redux/registrationSlice";
+import Preferences from "@/redux/states/preferences";
 
 const GoalsComponent = () => {
   const dispatch = useAppDispatch();
   const goalsState = useAppSelector((state) => state.registration.goals);
+
   const [preferredgoals, setPreferredGoals] = useState<Goals>({
     longTermGoal: goalsState.longTermGoal,
     firstShortTermGoal: goalsState.firstShortTermGoal,
     secondShortTermGoal: goalsState.secondShortTermGoal,
+    outcome: goalsState.outcome,
   });
 
   const handleInputChange = (fieldName: keyof Goals, value: string) => {
@@ -29,7 +32,7 @@ const GoalsComponent = () => {
   return (
     <Box>
       <Container sx={{ "& > div:not(:last-child)": { marginBottom: "20px" } }}>
-        <Typography sx={{ margin: "1%" }}>
+        {/* <Typography sx={{ margin: "1%" }}>
           What is one long-term goal you have?
         </Typography>
         <TextField
@@ -80,7 +83,27 @@ const GoalsComponent = () => {
               borderColor: "black",
             },
           }}
-        />
+        /> */}
+        <div style={{ paddingBottom: "2%" }}>
+          <Typography sx={{ margin: "1%", width: "46ch" }}>
+            What would you hope to get from this program?
+          </Typography>
+          <TextField
+            id="expectation"
+            multiline
+            sx={{
+              m: 1,
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
+            fullWidth
+            onChange={(e) => handleInputChange("outcome", e.target.value)}
+          />
+        </div>
       </Container>
     </Box>
   );

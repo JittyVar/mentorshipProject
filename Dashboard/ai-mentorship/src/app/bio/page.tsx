@@ -33,7 +33,7 @@ const Bio = () => {
       });
       if (rResponse.ok) {
         responseR = await rResponse.json();
-        console.log("rResponse ", rResponse);
+        console.log("rResponse ", responseR);
       } else {
         console.log("Failed to fetch R data");
       }

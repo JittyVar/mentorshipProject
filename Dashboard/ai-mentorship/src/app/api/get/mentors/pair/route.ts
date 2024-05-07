@@ -101,24 +101,24 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
         "Please attach a photo of yourself",
         "Short Bio",
       ],
-      [
-        "19/04/2023 11:49",
-        "AB CD",
-        "A Company",
-        "Director",
-        "Female",
-        "ab.cd@company.come",
-        "123435",
-        "Client Director, Strategic Digital Advisory",
-        "I am passionate about supporting young talent in the industry",
-        "Meet talented young females who want to join the tech industry",
-        "3rd year undergraduate, 4th year undergraduate",
-        "Engineering",
-        "Analytics, Digital Services, Mathematical Modelling and Computation, Software Development, Software Engineering",
-        "ESFJ",
-        "",
-        "Here is a bio",
-      ],
+      // [
+      //   "19/04/2023 11:49",
+      //   "AB CD",
+      //   "A Company",
+      //   "Director",
+      //   "Female",
+      //   "ab.cd@company.come",
+      //   "123435",
+      //   "Client Director, Strategic Digital Advisory",
+      //   "I am passionate about supporting young talent in the industry",
+      //   "Meet talented young females who want to join the tech industry",
+      //   "3rd year undergraduate, 4th year undergraduate",
+      //   "Engineering",
+      //   "Analytics, Digital Services, Mathematical Modelling and Computation, Software Development, Software Engineering",
+      //   "ESFJ",
+      //   "",
+      //   "Here is a bio",
+      // ],
       [
         "19/04/2023 12:55",
         docData[0][0].fullName,
@@ -162,7 +162,7 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
     const csv = await converter.json2csv(jsonData);
 
     // Specify the file path where you want to save the CSV
-    const filePath = "aut_wit_industrial_proj/data/mentor_eoi_data.csv";
+    const filePath = "src/app/api/pair/data/mentor_eoi_data.csv";
 
     fs.writeFileSync(filePath, csv, "utf8");
 

@@ -9,6 +9,7 @@ export async function POST(req: Request, context: any) {
     // Query Firestore to find the document matching the name and participatingAs
     try {
       const mainDocRef = await addDoc(collection(database, "Mentees"), {
+        assignedMentor: "",
         createdAt: serverTimestamp(),
         documentOf: data.mentee.fullName,
         status: Status.Incomplete,
@@ -37,6 +38,7 @@ export async function POST(req: Request, context: any) {
       await addDoc(backgroundDetailsCollectionRef, {
         programs: data.educationalBackground.programs,
         majors: data.educationalBackground.majors,
+        yearOfDegree: data.educationalBackground.yearOfDegree,
       });
 
       const menteePreferencesCollectionRef = collection(
@@ -44,7 +46,8 @@ export async function POST(req: Request, context: any) {
         "Preferences"
       );
       await addDoc(menteePreferencesCollectionRef, {
-        preferences: data.preferences,
+        preferences: data.preferences.preferences,
+        stemSector: data.preferences.stemSector,
       });
 
       const skillsCollectionRef = collection(mainDocRef, "Skills");
@@ -67,9 +70,14 @@ export async function POST(req: Request, context: any) {
 
       const goalsCollectionRef = collection(mainDocRef, "Goals");
       await addDoc(goalsCollectionRef, {
-        longTermGoal: data.goals.longTermGoal,
-        firstShortTermGoal: data.goals.firstShortTermGoal,
-        secondShortTermGoal: data.goals.secondShortTermGoal,
+        longTermGoal: data.goals.longTermGoal ? data.goals.longTermGoal : "",
+        firstShortTermGoal: data.goals.firstShortTermGoal
+          ? data.goals.firstShortTermGoal
+          : "",
+        secondShortTermGoal: data.goals.secondShortTermGoal
+          ? data.goals.secondShortTermGoal
+          : "",
+        outcome: data.goals.outcome,
       });
 
       const personalityTypeCollectionRef = collection(

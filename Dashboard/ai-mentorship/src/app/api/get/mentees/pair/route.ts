@@ -10,7 +10,6 @@ import { NextApiResponse } from "next";
 import { NextRequest } from "next/server";
 import fs from "fs";
 import { matchingResults } from "../../../../../../aut_wit_industrial_proj/output";
-import { Status } from "@/data/Status";
 
 export const dynamic = "force-dynamic";
 
@@ -93,21 +92,6 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
       ],
       [
         "19/04/2023 12:55",
-        "XY Student",
-        "12345",
-        "xy@student.ac.nz",
-        "12345",
-        "Bachelor of Computer and Information Sciences (BCIS)",
-        "Networks and Cybersecurity, Software Development",
-        "3rd year undergraduate",
-        "here is some text",
-        "here is some text",
-        "Industry",
-        "No preference",
-        "INTJ",
-      ],
-      [
-        "19/04/2023 12:55",
         docData[0][0].fullName,
         "18021379",
         docData[0][0].emailAddress,
@@ -143,7 +127,7 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
     const csv = await converter.json2csv(jsonData);
 
     // Specify the file path where you want to save the CSV
-    const filePath = "aut_wit_industrial_proj/data/mentee_eoi_data.csv";
+    const filePath = "src/app/api/pair/data/mentee_eoi_data.csv";
 
     fs.writeFileSync(filePath, csv, "utf8");
 
