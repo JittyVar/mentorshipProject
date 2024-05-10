@@ -54,9 +54,15 @@ const LabTabs: React.FC<LabTabsProps> = ({
           </TabList>
         </Box>
         <TabPanel value="1">
-          <Greetings menteesData={mentorsData} />
+          <Greetings
+            menteesData={mentorsData}
+            displayTotalAs={"Mentors"}
+            displayWithAs={"Mentees"}
+          />
           {mentorRowsStatus == APIStatus.success && (
-            <DataTable collections={mentorRows} />
+            <div style={{ marginTop: "2%" }}>
+              <DataTable collections={mentorRows} />
+            </div>
           )}
           <Backdrop
             sx={{ color: "pink", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -66,9 +72,15 @@ const LabTabs: React.FC<LabTabsProps> = ({
           </Backdrop>
         </TabPanel>
         <TabPanel value="2">
-          <Greetings menteesData={menteesData} />
+          <Greetings
+            menteesData={menteesData}
+            displayTotalAs={"Mentees"}
+            displayWithAs={"Mentors"}
+          />
           {menteeRowsStatus == APIStatus.success && (
-            <DataTable collections={menteeRows} />
+            <div style={{ marginTop: "2%" }}>
+              <DataTable collections={menteeRows} />
+            </div>
           )}
           <Backdrop
             sx={{ color: "pink", zIndex: (theme) => theme.zIndex.drawer + 1 }}

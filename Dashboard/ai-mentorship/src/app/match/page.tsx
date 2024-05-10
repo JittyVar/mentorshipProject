@@ -1,7 +1,13 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { Box, Grid } from "@mui/material";
 import ResultsComponent from "@/components/results/resultsComponent";
@@ -10,20 +16,19 @@ import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import { arr } from "@/data/dummyArr";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
 import { useSearchParams } from "next/navigation";
-import { GetPairResult } from "@/redux/dashboard/actions/getPairResults";
-import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
+import { GetPairMenteeResult } from "@/redux/dashboard/actions/getPairMenteeResults";
 
 const MatchContent = () => {
   const dispatch = useAppDispatch();
   const rows = useAppSelector((state) => state.dashboard.rows);
   const chosenData = useSearchParams()?.get("q");
-  const [participatingAs, setParticipatingAs] = useState<string | undefined>();
-  const [isLoading, setIsLoading] = useState(true); // Add a state variable to track loading state
+  const participatingAs = useSearchParams()?.get("r");
   const firstRender = useRef(true);
+  const dataRender = useRef(true);
 
   useEffect(() => {
     const fetchDataFirstRender = async () => {
-      if (firstRender) {
+      if (firstRender.current) {
         await dispatch(FetchCollections());
       }
     };
@@ -32,13 +37,9 @@ const MatchContent = () => {
     fetchDataFirstRender();
   }, [dispatch, firstRender]);
 
+  // Update isLoading state when participatingAs is set
   useEffect(() => {
-    const foundData = rows.find((e) => e.fullName === chosenData);
-    setParticipatingAs(foundData?.participatingAs);
-  }, [chosenData, rows]);
-
-  useEffect(() => {
-    const fetchData = async () => {
+    if (dataRender.current) {
       try {
         const paramArr = [
           {
@@ -49,42 +50,17 @@ const MatchContent = () => {
             param: chosenData,
           },
         ];
-        const completeStatusArr = [
-          {
-            url:
-              participatingAs === "Mentee"
-                ? "/api/put/mentees/completeStatus"
-                : "/api/put/mentors/completeStatus",
-            param: chosenData,
-          },
-        ];
 
-        await dispatch(UpdateStatusToInProgress(paramArr));
-
-        // Delay for 5 seconds
-        setTimeout(async () => {
-          await dispatch(GetPairResult(chosenData!));
-          dispatch(UpdateStatus(completeStatusArr)).then(() => {
-            dispatch(FetchCollections());
-          });
-        }, 5000); // 5000 milliseconds = 5 seconds
+        dispatch(UpdateStatusToInProgress(paramArr)).then(() => {
+          dispatch(FetchCollections());
+        });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    };
-
-    if (!isLoading) {
-      // Check if the first useEffect has completed
-      fetchData();
     }
-  }, [dispatch, isLoading, chosenData, participatingAs]);
 
-  // Update isLoading state when participatingAs is set
-  useEffect(() => {
-    if (participatingAs !== undefined) {
-      setIsLoading(false);
-    }
-  }, [participatingAs]);
+    dataRender.current = false;
+  }, [chosenData, dispatch, participatingAs]);
 
   return (
     <Box paddingTop={5}>
@@ -93,7 +69,7 @@ const MatchContent = () => {
           <MatchTableComponent
             collectionData={rows}
             chosenData={chosenData}
-            participatingAs={participatingAs}
+            participatingAs={participatingAs!}
           />
         </Grid>
         <Grid item xs={6}>

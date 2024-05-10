@@ -1,15 +1,19 @@
 import Paper from "@mui/material/Paper";
 import DisplayCalendar from "./calendar/calendar";
-import { LineChart } from "@mui/x-charts/LineChart";
-import { Grid, Stack } from "@mui/material";
 import ProgressComponent from "./progress/progress";
 import Image from "next/image";
 import adminPic from "./adminpic.png";
 
 interface GreetingsProps {
   menteesData: number[];
+  displayTotalAs: string;
+  displayWithAs: string;
 }
-const Greetings: React.FC<GreetingsProps> = ({ menteesData }) => {
+const Greetings: React.FC<GreetingsProps> = ({
+  menteesData,
+  displayTotalAs,
+  displayWithAs,
+}) => {
   return (
     <>
       <Paper
@@ -42,6 +46,8 @@ const Greetings: React.FC<GreetingsProps> = ({ menteesData }) => {
             totalValue={menteesData[0]}
             withValue={menteesData[1]}
             withNoValue={menteesData[2]}
+            displayTotalAs={displayTotalAs}
+            displayWithAs={displayWithAs}
           />
         </div>
       </Paper>

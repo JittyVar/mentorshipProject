@@ -11,13 +11,22 @@ import { UpdateStatus } from "./actions/updateStatus";
 import { UpdateStatusToInProgress } from "./actions/updateMenteeStatusToInProgress";
 import { FetchMentorCollections } from "./actions/fetchMentorCollections";
 import { FetchCollections } from "./actions/fetchCollection";
-import { GetPairResult } from "./actions/getPairResults";
+import { GetPairMenteeResult } from "./actions/getPairMenteeResults";
+import { GetPairMentorResult } from "./actions/getPairMentorResults";
+import { GetMatchingAlgorithm } from "./actions/getMatchingAlgorithm";
 
 export enum APIStatus {
   idle = "idle",
   loading = "loading",
   success = "success",
   error = "error",
+}
+
+export interface PairingResult {
+  mentee_name: string;
+  mentee_email: string;
+  mentor_name: string;
+  mentor_email: string;
 }
 
 export interface HomeDataRows {
@@ -35,11 +44,13 @@ export interface HomeDataRows {
   withMentors: number;
   withNoMentees: number;
   withNoMentors: number;
-  pairingResults: [];
+  pairingResults: PairingResult[];
   pairingResultsStatus: APIStatus;
+  getMenteeDataStatus: APIStatus;
+  getMentorDataStatus: APIStatus;
 }
 
-const initialState: HomeDataRows = {
+export const initialState: HomeDataRows = {
   mentorRows: [],
   menteeRows: [],
   rows: [],
@@ -56,6 +67,8 @@ const initialState: HomeDataRows = {
   withNoMentors: 0,
   pairingResults: [],
   pairingResultsStatus: APIStatus.idle,
+  getMenteeDataStatus: APIStatus.idle,
+  getMentorDataStatus: APIStatus.idle,
 };
 
 export const dashboardSlice = createSlice({
@@ -68,6 +81,9 @@ export const dashboardSlice = createSlice({
     },
     restartStatus: (state, action: PayloadAction<APIStatus>) => {
       state.completeStatus = action.payload;
+    },
+    restartpairingResultsStatus: (state) => {
+      state.pairingResultsStatus = APIStatus.idle;
     },
   },
   extraReducers: (builder) => {
@@ -160,18 +176,43 @@ export const dashboardSlice = createSlice({
       }
     );
     builder
-      .addCase(GetPairResult.pending, (state) => {
+      .addCase(GetPairMenteeResult.pending, (state) => {
+        state.getMenteeDataStatus = APIStatus.loading;
+      })
+      .addCase(GetPairMenteeResult.fulfilled, (state) => {
+        state.getMenteeDataStatus = APIStatus.success;
+      })
+      .addCase(GetPairMenteeResult.rejected, (state) => {
+        state.getMenteeDataStatus = APIStatus.error;
+      });
+    builder
+      .addCase(GetPairMentorResult.pending, (state) => {
+        state.getMentorDataStatus = APIStatus.loading;
+      })
+      .addCase(GetPairMentorResult.fulfilled, (state) => {
+        state.getMentorDataStatus = APIStatus.success;
+      })
+      .addCase(GetPairMentorResult.rejected, (state) => {
+        state.getMentorDataStatus = APIStatus.error;
+      });
+    builder
+      .addCase(GetMatchingAlgorithm.pending, (state) => {
         state.pairingResultsStatus = APIStatus.loading;
+        console.log("pairingResultsStatus ", state.pairingResultsStatus);
       })
-      .addCase(GetPairResult.fulfilled, (state, action) => {
-        state.pairingResults = action.payload;
-        state.pairingResultsStatus = APIStatus.success;
-      })
-      .addCase(GetPairResult.rejected, (state) => {
+      .addCase(
+        GetMatchingAlgorithm.fulfilled,
+        (state, action: PayloadAction<PairingResult[]>) => {
+          state.pairingResults = action.payload;
+          state.pairingResultsStatus = APIStatus.success;
+        }
+      )
+      .addCase(GetMatchingAlgorithm.rejected, (state) => {
         state.pairingResultsStatus = APIStatus.error;
       });
   },
 });
 
-export const { progressData, restartStatus } = dashboardSlice.actions;
+export const { progressData, restartStatus, restartpairingResultsStatus } =
+  dashboardSlice.actions;
 export default dashboardSlice.reducer;

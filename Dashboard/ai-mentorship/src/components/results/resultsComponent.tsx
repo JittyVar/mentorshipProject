@@ -29,7 +29,7 @@ import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 import adminPic from "../greeting/adminpic.png";
 import { APIStatus } from "@/redux/dashboard/dashboardSlice";
 import PairingComplete from "./pairingComplete";
-import { GetPairResult } from "@/redux/dashboard/actions/getPairResults";
+import { GetPairResult } from "@/redux/dashboard/actions/getPairMenteeResults";
 import { useSearchParams } from "next/navigation";
 import PairingCompleteSkeleton from "./pairingCompleteSkeleton";
 
@@ -59,26 +59,15 @@ const ResultsComponent: React.FC<ResultsProps> = ({
 
   const searchParams = useSearchParams();
   const chosenValue = searchParams.get("q");
-  useEffect(() => {
-    setChosen(dataOf);
-  }, [dataOf]);
-
-  useEffect(() => {
-    if (data) {
-      const foundItems = data.filter(
-        (item: MatchRow) => item.name == chosenDataOf
-      );
-      setDataArr(foundItems); // Set dataArr to an array of found items
-    } else {
-      setDataArr([]); // Reset dataArr if data is undefined or null
-    }
-  }, [chosenDataOf, data]); // Add dataOf as a dependency
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
       <Paper elevation={3}>
         {chosenValue != undefined ? (
-          <PairingComplete />
+          <PairingComplete
+            chosen={dataOf!}
+            participatingAs={participatingAs!}
+          />
         ) : (
           <PairingCompleteSkeleton />
         )}

@@ -4,7 +4,7 @@ import LoginPage from "./login/page";
 const Home = () => {
   return (
     <div>
-      <LoginPage isAuthenticated={false} />
+      <LoginPage isAuthenticated={true} />
     </div>
   );
 };

@@ -1,10 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { PairingResult } from "../dashboardSlice";
 
 export const UpdateStatus = createAsyncThunk(
   "dashboard/UpdateStatus",
-  async (param: { url: string; param: string | null | undefined }[]) => {
+  async (
+    param: {
+      url: string;
+      param: (string | PairingResult | undefined)[];
+    }[]
+  ) => {
     try {
-      console.log("updating collection");
+      console.log("PARAM", param[0].param);
       const response = await fetch(param[0].url, {
         method: "POST",
         headers: {

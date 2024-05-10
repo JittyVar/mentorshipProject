@@ -1,96 +1,46 @@
 "use client";
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import adminPic from "../../components/greeting/adminpic.png";
-import { Box, Modal } from "@mui/material";
+import { GetPairMentorResult } from "@/redux/dashboard/actions/getPairMentorResults";
+import { PairingResult } from "@/redux/dashboard/dashboardSlice";
+import { useAppDispatch } from "@/redux/hook";
+import { useEffect } from "react";
 
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
+const Bio = () => {
+  const dispatch = useAppDispatch();
+  // const uploadphoto = async () => {
+  //   try {
+  //     dispatch(GetPairMentorResult("Mentor Name 4")); //rename
+
+  //     // console.log("getting R");
+  //     // const rResponse = await fetch("/api/pair", {
+  //     //   next: { revalidate: 60 },
+  //     // });
+  //     // let getPairedResult;
+  //     // if (rResponse.ok) {
+  //     //   responseR = await rResponse.json();
+  //     //   getPairedResult = responseR.filter((e: PairingResult) => {
+  //     //     return e.mentee_name == "Alyssa Pausanos";
+  //     //   });
+
+  //     //   console.log("getPairedResult ", getPairedResult);
+  //     // } else {
+  //     //   console.log("Failed to fetch R data");
+  //     // }
+
+  //     // return { menteeData, mentorData, getPairedResult };
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await uploadphoto();
+  //     console.log("All data fetched:", data);
+  //   };
+  //   fetchData();
+  // }, []);
+
+  return <div>Bio</div>;
 };
 
-export default function Bio() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          gap: 20,
-          width: "100%",
-        }}
-      >
-        <Card sx={{ width: 345 }}>
-          <CardMedia
-            sx={{ height: 140 }}
-            image={adminPic.src}
-            title="green iguana"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              Mentee 1
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Mentee Descriptions
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="medium" onClick={handleOpen}>
-              Learn More
-            </Button>
-          </CardActions>
-        </Card>
-        <Card sx={{ width: 345 }}>
-          <CardMedia
-            sx={{ height: 140 }}
-            image={adminPic.src}
-            title="green iguana"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              Mentee 1
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Mentee Descriptions
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="medium" onClick={handleOpen}>
-              Learn More
-            </Button>
-          </CardActions>
-        </Card>
-      </div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal>
-    </>
-  );
-}
+export default Bio;

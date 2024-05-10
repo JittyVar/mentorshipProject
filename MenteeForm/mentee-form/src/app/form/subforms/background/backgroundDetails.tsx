@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import React from "react";
 import EducationalBackground from "@/redux/states/background";
@@ -10,18 +17,23 @@ import MultipleSelector from "@/components/multipleSelector";
 import { useAppDispatch } from "@/redux/hooks";
 import { backgroundDetails } from "@/redux/registrationSlice";
 
-export const data = ["Test", "Test 2"];
-export const major = ["Major", "Major 2"];
+export const data = [
+  "Bachelor of Engineer (Hons)",
+  "Bachelor of Computer and Information Sciences (BCIS)",
+];
+export const major = ["Software Engineering", "Software Development"];
 
 const EducationalBackgroundComponent = () => {
   const educationalBackgroundState = useSelector(
     (state: RootState) => state.registration.educationalBackground
   );
+
   const dispatch = useAppDispatch();
   const [educationalBackground, setEducationalBackground] =
     useState<EducationalBackground>({
       programs: educationalBackgroundState.programs,
       majors: educationalBackgroundState.majors,
+      yearOfDegree: educationalBackgroundState.yearOfDegree,
     });
 
   const [chosenPrograms, setChosenPrograms] = React.useState<string[]>([]);
@@ -31,8 +43,19 @@ const EducationalBackgroundComponent = () => {
     setEducationalBackground({
       programs: chosenPrograms,
       majors: chosenMajors,
+      yearOfDegree: educationalBackground.yearOfDegree,
     });
-  }, [chosenPrograms, chosenMajors]);
+  }, [chosenPrograms, chosenMajors, educationalBackground.yearOfDegree]);
+
+  const handleChange = (
+    fieldName: keyof EducationalBackground,
+    value: string
+  ) => {
+    setEducationalBackground((prevValues) => ({
+      ...prevValues,
+      [fieldName]: value,
+    }));
+  };
 
   useEffect(() => {
     dispatch(backgroundDetails(educationalBackground));
@@ -55,6 +78,43 @@ const EducationalBackgroundComponent = () => {
           data={major}
           chosenData={(data: string[]) => setChosenMajors(data)}
         />
+        <div>
+          <Typography sx={{ margin: "1%", paddingTop: "10px" }}>
+            Which year of the degree are you?
+          </Typography>
+          <RadioGroup
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+            sx={{ margin: "1%" }}
+            value={
+              educationalBackgroundState.yearOfDegree !== undefined
+                ? educationalBackgroundState.yearOfDegree
+                : ""
+            }
+            onChange={(e) => handleChange("yearOfDegree", e.target.value)}
+          >
+            <FormControlLabel
+              value="1st year undergraduate"
+              control={<Radio />}
+              label="1st year undergraduate"
+            />
+            <FormControlLabel
+              value="2nd year undergraduate"
+              control={<Radio />}
+              label="2nd year undergraduate"
+            />
+            <FormControlLabel
+              value="3rd year undergraduate"
+              control={<Radio />}
+              label="3rd year undergraduate"
+            />
+            <FormControlLabel
+              value="4th year undergraduate"
+              control={<Radio />}
+              label="4th year undergraduate"
+            />
+          </RadioGroup>
+        </div>
       </Container>
     </Box>
   );

@@ -1,14 +1,9 @@
 "use client";
 import * as React from "react";
-import {
-  DataGrid,
-  GridCellParams,
-  GridColDef,
-  GridTreeNode,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
 import { Box, Button, Chip, Paper } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { Status } from "@/data/Status";
 import { useRouter } from "next/navigation";
@@ -22,10 +17,14 @@ export interface DataTableProps {
 // Define the DataTable component
 const DataTable: React.FC<DataTableProps> = ({ collections }) => {
   const router = useRouter();
+  const firstLog = React.useRef(true);
 
   useEffect(() => {
-    console.log("collections ", collections);
-  }, [collections]);
+    if (firstLog.current) {
+      console.log("collections ", collections);
+      firstLog.current = false;
+    }
+  }, [collections, firstLog]);
 
   const columns: GridColDef[] = [
     {
@@ -70,7 +69,7 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
       width: 220,
       renderCell: (params) => {
         const actions = params.value;
-        if (actions !== "Mentor name") {
+        if (actions == "Assign a mentee" || actions == "Assign a mentor") {
           if (actions !== "In progress") {
             return (
               <Button
@@ -108,7 +107,9 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
           }}
           onCellClick={(e) =>
             e.field === "assignedMentor" &&
-            router.push(`/match?q=${e.row?.fullName}`)
+            router.push(
+              `/match?q=${e.row?.fullName}&r=${e.row?.participatingAs}`
+            )
           }
           pageSizeOptions={[20, 25]}
           rowSelection

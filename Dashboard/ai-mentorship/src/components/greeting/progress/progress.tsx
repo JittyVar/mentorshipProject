@@ -1,24 +1,20 @@
 "use client";
 import CircularWithValueLabel from "./circularprogress/CircularProgressWithLabel";
-import { TotalMentees } from "@/redux/dashboard/actions/totalMentees";
-import { TotalMentors } from "@/redux/dashboard/actions/totalMentors";
-import { WithMentees } from "@/redux/dashboard/actions/withMentees";
-import { WithMentors } from "@/redux/dashboard/actions/withMentors";
-import { WithNoMentees } from "@/redux/dashboard/actions/withNoMentees";
-import { WithNoMentors } from "@/redux/dashboard/actions/withNoMentors";
-import { useAppSelector, useAppDispatch } from "@/redux/hook";
-import { Box, Paper } from "@mui/material";
-import { useEffect } from "react";
+import { Box } from "@mui/material";
 
 interface ProgressComponentProps {
   totalValue: number;
   withValue: number;
   withNoValue: number;
+  displayTotalAs: string;
+  displayWithAs: string;
 }
 const ProgressComponent: React.FC<ProgressComponentProps> = ({
   totalValue,
   withValue,
   withNoValue,
+  displayTotalAs,
+  displayWithAs,
 }) => {
   return (
     <Box display="flex" justifyContent="center" gap={10}>
@@ -27,8 +23,8 @@ const ProgressComponent: React.FC<ProgressComponentProps> = ({
           total={totalValue}
           withValue={withValue}
           withNoValue={withNoValue}
-          displayTotalAs={"Mentors"}
-          displayWithAs={"Mentees"}
+          displayTotalAs={displayTotalAs}
+          displayWithAs={displayWithAs}
         />
       </Box>
     </Box>
