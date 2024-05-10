@@ -12,6 +12,8 @@ import {
 export async function POST(req: Request, context: any) {
   try {
     const name = await req.json(); // Access the value of the 'param' property
+
+    console.log("name[1].mentee_name ", name[1].mentee_name);
     // Query Firestore to find the document matching the name and participatingAs
     const q = query(
       collection(database, "Mentors"),
@@ -20,7 +22,7 @@ export async function POST(req: Request, context: any) {
 
     const r = query(
       collection(database, "Mentees"),
-      where("documentOf", "==", name[1][0].mentee_name)
+      where("documentOf", "==", name[1].mentee_name)
     );
 
     const querySnapshot = await getDocs(q);
@@ -33,7 +35,7 @@ export async function POST(req: Request, context: any) {
         const docRef = doc(database, "Mentors", docSnapshot.id); // Get the document reference
         await updateDoc(docRef, {
           status: Status.Completed,
-          assignedMentor: name[1][0].mentee_name,
+          assignedMentor: name[1].mentee_name,
           pairedDuring: new Date().toDateString(),
         }); // Update the document
       } catch (error) {
@@ -48,7 +50,7 @@ export async function POST(req: Request, context: any) {
         const docRef = doc(database, "Mentees", docSnapshot.id); // Get the document reference
         await updateDoc(docRef, {
           status: Status.Completed,
-          assignedMentor: name[1][0].mentor_name,
+          assignedMentor: name[1].mentor_name,
           pairedDuring: new Date().toDateString(),
         }); // Update the document
       } catch (error) {

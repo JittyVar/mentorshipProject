@@ -1,4 +1,4 @@
-export const matchingResults = [
+const matchingResults = [
   {
     mentee_name: 'Mentee Name 2',
     mentee_email: 'alyssa_pausanos@yahoo.com',

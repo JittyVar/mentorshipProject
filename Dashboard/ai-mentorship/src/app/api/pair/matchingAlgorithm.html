@@ -11,7 +11,7 @@
 
 <meta name="author" content="Sarah Marshall" />
 
-<meta name="date" content="2024-05-07" />
+<meta name="date" content="2024-05-10" />
 
 <title>AUT WIT Mentoring</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">AUT WIT Mentoring</h1>
 <h4 class="author">Sarah Marshall</h4>
-<h4 class="date">2024-05-07</h4>
+<h4 class="date">2024-05-10</h4>
 
 </div>
 
@@ -732,9 +732,8 @@ best_matches$unmatched_mentors  </code></pre>
 <h3>Expore matches</h3>
 <pre class="r"><code>output_df &lt;- best_matches$matches %&gt;% select(mentee_name, mentee_email, mentor_name, mentor_email)
 
-write_csv(output_df, file = &quot;proposed_matches.csv&quot;)</code></pre>
-<p>##</p>
-<pre class="r"><code># Read CSV file
+write_csv(output_df, file = &quot;proposed_matches.csv&quot;)
+
 data &lt;- read.csv(&quot;proposed_matches.csv&quot;, stringsAsFactors = FALSE)
 
 # Convert data frame to a list of dictionaries
@@ -743,7 +742,7 @@ data_list &lt;- lapply(1:nrow(data), function(i) {
 })
 
 # Convert list of dictionaries to a TypeScript array
-ts_code &lt;- &quot;export const matchingResults = [\n&quot;
+ts_code &lt;- &quot;const matchingResults = [\n&quot;
 for (entry in data_list) {
   ts_code &lt;- paste0(ts_code, &quot;  {\n&quot;)
   for (key in names(entry)) {
@@ -753,17 +752,7 @@ for (entry in data_list) {
 }
 ts_code &lt;- paste0(ts_code, &quot;];\n&quot;)
 
-# Print TypeScript code
-cat(ts_code)</code></pre>
-<pre><code>## export const matchingResults = [
-##   {
-##     mentee_name: &#39;Mentee Name 2&#39;,
-##     mentee_email: &#39;alyssa_pausanos@yahoo.com&#39;,
-##     mentor_name: &#39;Mentor Name 2&#39;,
-##     mentor_email: &#39;alyssa_pausanos@gmail.com&#39;,
-##   },
-## ];</code></pre>
-<pre class="r"><code>writeLines(ts_code, &quot;output.ts&quot;)</code></pre>
+writeLines(ts_code, &quot;output.ts&quot;)</code></pre>
 </div>
 </div>
 <div id="changes-to-make-to-google-forms-to-make-analysis-easier" class="section level1">

@@ -29,7 +29,7 @@ import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 import adminPic from "../greeting/adminpic.png";
 import { APIStatus } from "@/redux/dashboard/dashboardSlice";
 import PairingComplete from "./pairingComplete";
-import { GetPairResult } from "@/redux/dashboard/actions/getPairResults";
+import { GetPairResult } from "@/redux/dashboard/actions/getPairMenteeResults";
 import { useSearchParams } from "next/navigation";
 import PairingCompleteSkeleton from "./pairingCompleteSkeleton";
 

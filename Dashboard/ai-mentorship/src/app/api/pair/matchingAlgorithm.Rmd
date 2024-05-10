@@ -415,11 +415,7 @@ best_matches$unmatched_mentors
 output_df <- best_matches$matches %>% select(mentee_name, mentee_email, mentor_name, mentor_email)
 
 write_csv(output_df, file = "proposed_matches.csv")
-```
 
- ##
-```{r }
-# Read CSV file
 data <- read.csv("proposed_matches.csv", stringsAsFactors = FALSE)
 
 # Convert data frame to a list of dictionaries
@@ -428,7 +424,7 @@ data_list <- lapply(1:nrow(data), function(i) {
 })
 
 # Convert list of dictionaries to a TypeScript array
-ts_code <- "export const matchingResults = [\n"
+ts_code <- "const matchingResults = [\n"
 for (entry in data_list) {
   ts_code <- paste0(ts_code, "  {\n")
   for (key in names(entry)) {
@@ -438,8 +434,6 @@ for (entry in data_list) {
 }
 ts_code <- paste0(ts_code, "];\n")
 
-# Print TypeScript code
-cat(ts_code)
 writeLines(ts_code, "output.ts")
 ```
 

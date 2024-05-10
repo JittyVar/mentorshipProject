@@ -85,12 +85,12 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
     }
   }, [R, chosenName, collectionData]);
 
-  const handleClick = async (name: string) => {
+  const handleClick = async (name: string, participatingAs: string) => {
     try {
       dispatch(restartStatus(APIStatus.idle));
       setChosenName(name);
       dispatch(FetchCollections());
-      router.push(`/match?q=${encodeURIComponent(name)}`);
+      router.push(`/match?q=${encodeURIComponent(name)}&r=${participatingAs}`);
     } catch (error) {
       throw error;
     }
@@ -98,9 +98,11 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
 
   useEffect(() => {
     if (chosenName != null) {
-      router.push(`/match?q=${encodeURIComponent(chosenName)}`);
+      router.push(
+        `/match?q=${encodeURIComponent(chosenName)}&r=${participatingAs}`
+      );
     }
-  }, [chosenName, router]);
+  }, [chosenName, router, participatingAs]);
 
   return (
     <TableContainer component={Paper}>
@@ -143,7 +145,8 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                   : { backgroundColor: "white" }
               }
               onClick={() => {
-                row.status == Status.InProgress && handleClick(row.fullName);
+                row.status == Status.InProgress &&
+                  handleClick(row.fullName, row.participatingAs);
               }}
             >
               <StyledTableCell component="th" scope="row">

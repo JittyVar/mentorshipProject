@@ -17,20 +17,19 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest, res: NextApiResponse) {
   try {
     let converter = require("json-2-csv");
-    // const id = req.nextUrl.searchParams.get("slug"); // Access the slug parameter
-    //const { Parser } = require("json2csv");
+    const id = req.nextUrl.searchParams.get("slug"); // Access the slug parameter
+    console.log("id ", id);
 
     // Fetch all documents in the "Mentees" collection
     const q = query(
       collection(database, "Mentors"),
-      where("status", "==", Status.Incomplete)
+      where("documentOf", "==", id)
     );
     const docData: DocumentData = [];
 
     const querySnapshot = await getDocs(q);
     const uniqueIds: string[] = [];
     querySnapshot.forEach((doc) => {
-      console.log(doc.data());
       uniqueIds.push(doc.id);
     });
 
@@ -81,8 +80,6 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
       })
     );
 
-    console.log("doc data mentor", docData);
-
     if (docData.length != 0) {
       // Assuming you have data in the format of an array of arrays
       const data = [
@@ -104,24 +101,6 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
           "Please attach a photo of yourself",
           "Short Bio",
         ],
-        // [
-        //   "19/04/2023 11:49",
-        //   "AB CD",
-        //   "A Company",
-        //   "Director",
-        //   "Female",
-        //   "ab.cd@company.come",
-        //   "123435",
-        //   "Client Director, Strategic Digital Advisory",
-        //   "I am passionate about supporting young talent in the industry",
-        //   "Meet talented young females who want to join the tech industry",
-        //   "3rd year undergraduate, 4th year undergraduate",
-        //   "Engineering",
-        //   "Analytics, Digital Services, Mathematical Modelling and Computation, Software Development, Software Engineering",
-        //   "ESFJ",
-        //   "",
-        //   "Here is a bio",
-        // ],
         [
           "19/04/2023 12:55",
           docData[0][0].fullName,
@@ -172,7 +151,132 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
 
     console.log("CSV file has been saved.");
 
-    return Response.json({ message: "mentor done" });
+    const r = query(
+      collection(database, "Mentees"),
+      where("status", "==", Status.Incomplete)
+    );
+    const docData2: DocumentData = [];
+
+    const querySnapshot2 = await getDocs(r);
+    const uniqueIds2: string[] = [];
+    querySnapshot2.forEach((doc) => {
+      uniqueIds2.push(doc.id);
+    });
+
+    await Promise.all(
+      uniqueIds2.map(async (uniqueId) => {
+        const innerDocData: DocumentData = [];
+        const personalDetails = await getDocs(
+          collection(database, "Mentees", uniqueId, "Personal Details")
+        );
+
+        personalDetails.forEach((doc) => {
+          innerDocData.push(doc.data());
+        });
+
+        const backgroundDetails = await getDocs(
+          collection(database, "Mentees", uniqueId, "Background Details")
+        );
+
+        backgroundDetails.forEach((doc) => {
+          innerDocData.push(doc.data());
+        });
+
+        const goalsDetails = await getDocs(
+          collection(database, "Mentees", uniqueId, "Goals")
+        );
+
+        goalsDetails.forEach((doc) => {
+          innerDocData.push(doc.data());
+        });
+
+        const preferencesDetails = await getDocs(
+          collection(database, "Mentees", uniqueId, "Preferences")
+        );
+
+        preferencesDetails.forEach((doc) => {
+          innerDocData.push(doc.data());
+        });
+
+        const personalityType = await getDocs(
+          collection(database, "Mentees", uniqueId, "Personality Type")
+        );
+
+        personalityType.forEach((doc) => {
+          innerDocData.push(doc.data());
+        });
+
+        docData2.push(innerDocData);
+      })
+    );
+
+    //Assuming you have data in the format of an array of arrays
+    const data2 = [
+      [
+        "Timestamp",
+        "Name",
+        "Student ID",
+        "Email",
+        "Phone number",
+        "What programme are you currently enrolled in?",
+        "Which major/s are you currently enrolled in?",
+        "Which year of the degree are you?",
+        "Which STEM sector are you interested in and why?",
+        "What would you hope to get from this program?",
+        "What type of mentor would you prefer?",
+        "I prefer",
+        "Personality Type",
+      ],
+    ];
+
+    if (uniqueIds2.length != 0) {
+      for (let i = 0; i < uniqueIds2.length; i++) {
+        let index = i;
+        data2.push([
+          "19/04/2023 12:55",
+          docData2[index][0].fullName,
+          "18021379",
+          docData2[index][0].emailAddress,
+          docData2[index][0].phoneNumber,
+          `${docData2[index][1].programs}`,
+          `${docData2[index][1].majors.join(", ")}`,
+          "2nd year undergraduate",
+          `${docData2[index][3].stemSector.join(", ")}`,
+          `${docData2[index][2].outcome}`,
+          "Industry",
+          `${docData2[index][3].preferences}`,
+          `${docData2[index][4].personalityType}`,
+        ]);
+      }
+    }
+
+    // Convert the array of arrays to JSON
+    const jsonData = data2.slice(1).map((row) => ({
+      Timestamp: row[0],
+      Name: row[1],
+      "Student ID": row[2],
+      Email: row[3],
+      "Phone number": row[4],
+      "What programme are you currently enrolled in?": row[5],
+      "Which major/s are you currently enrolled in?": row[6],
+      "Which year of the degree are you?": row[7],
+      "Which STEM sector are you interested in and why?": row[8],
+      "What would you hope to get from this program?": row[9],
+      "What type of mentor would you prefer?": row[10],
+      "I prefer": row[11],
+      "Personality Type": row[12],
+    }));
+
+    const csv = await converter.json2csv(jsonData);
+
+    // Specify the file path where you want to save the CSV
+    const filePath = "src/app/api/pair/data/mentee_eoi_data.csv";
+
+    fs.writeFileSync(filePath, csv, "utf8");
+
+    console.log("MenteeCSV file has been saved.");
+
+    return Response.json({ message: "success " });
   } catch (error) {
     console.error("Error fetching data:", error);
     return Response.json({ error: "Internal server error" });

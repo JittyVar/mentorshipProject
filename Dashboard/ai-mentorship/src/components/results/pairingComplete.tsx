@@ -9,11 +9,20 @@ import {
   Typography,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import React, { useEffect, useState } from "react";
-import { APIStatus, PairingResult } from "@/redux/dashboard/dashboardSlice";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  APIStatus,
+  PairingResult,
+  restartpairingResultsStatus,
+} from "@/redux/dashboard/dashboardSlice";
 import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import CustomizedSnackbars from "../snackbar/snackBar";
+import { GetPairMenteeResult } from "@/redux/dashboard/actions/getPairMenteeResults";
+import { GetPairMentorResult } from "@/redux/dashboard/actions/getPairMentorResults";
+import { GetMatchingAlgorithm } from "@/redux/dashboard/actions/getMatchingAlgorithm";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface PairingCompleteProps {
   chosen: string;
@@ -23,51 +32,55 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   chosen,
   participatingAs,
 }) => {
-  const pairingResult = useAppSelector(
-    (state) => state.dashboard.pairingResults
+  const [menteeName, setMenteeName] = useState<string | null>(null);
+  const [mentorName, setMentorName] = useState<string | null>(null);
+
+  const pairingResult = useSelector((state: RootState) => {
+    state.dashboard.pairingResults;
+  });
+  const pairingResultStatus = useSelector((state: RootState) => {
+    state.dashboard.pairingResultsStatus;
+  });
+
+  const pairingMentorStatus = useAppSelector(
+    (state) => state.dashboard.getMentorDataStatus
   );
-  const pairingResultStatus = useAppSelector(
-    (state) => state.dashboard.pairingResultsStatus
-  );
-  const [pairedData, setPairedData] = useState<PairingResult[]>([]);
   const dispatch = useAppDispatch();
+  const firstRender = useRef(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (chosen && participatingAs) {
-        console.log("getting mentee");
+      if (chosen) {
+        dispatch(restartpairingResultsStatus());
         try {
-          const response = await fetch(`/api/get/mentees/pair?slug=${chosen}`, {
-            next: { revalidate: 60 },
-          });
-          if (response.ok) {
-            const menteeData = await response.json();
-            console.log("mentee ", menteeData);
-          } else {
-            console.log("Failed to fetch mentee data");
+          if (participatingAs == "Mentee") {
+            console.log("getting mentee", chosen);
+            // dispatch(GetPairMenteeResult(chosen)); //rename
           }
+          if (participatingAs == "Mentor") {
+            console.log("getting mentor", chosen);
+            await dispatch(GetPairMentorResult(chosen));
+            const matchingResponse = await fetch("/api/pair", {
+              next: { revalidate: 60 },
+            });
 
-          console.log("getting mentor");
-          const mentorResponse = await fetch("/api/get/mentors/pair", {
-            next: { revalidate: 60 },
-          });
-          if (mentorResponse.ok) {
-            const mentorData = await mentorResponse.json();
-            console.log("mentor ", mentorData);
-          } else {
-            console.log("Failed to fetch mentor data");
-          }
+            if (!matchingResponse.ok) {
+              throw new Error("failed to fetch data");
+            }
 
-          console.log("getting R");
-          const rResponse = await fetch("/api/pair", {
-            next: { revalidate: 60 },
-          });
-          if (rResponse.ok) {
-            const responseR = await rResponse.json();
-            setPairedData(responseR);
-            console.log("rResponse ", responseR);
-          } else {
-            console.log("Failed to fetch R data");
+            const matchingResults = await matchingResponse.json();
+            setMenteeName(matchingResults[0].mentee_name);
+            setMentorName(matchingResults[0].mentor_name);
+
+            const completeStatusArr = [
+              {
+                url: "/api/put/mentors/completeStatus",
+                param: [chosen, matchingResults[0]], // Ensure this structure matches the expected type
+              },
+            ];
+
+            await dispatch(UpdateStatus(completeStatusArr));
+            dispatch(FetchCollections());
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -76,28 +89,8 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
     };
 
     fetchData();
-  }, [chosen, participatingAs]);
-
-  useEffect(() => {
-    const updateCompleteStatus = async () => {
-      if (pairedData[0] != undefined) {
-        const completeStatusArr = [
-          {
-            url:
-              participatingAs === "Mentee"
-                ? "/api/put/mentees/completeStatus"
-                : "/api/put/mentors/completeStatus",
-            param: [chosen, pairedData], // Ensure this structure matches the expected type
-          },
-        ];
-
-        await dispatch(UpdateStatus(completeStatusArr)).then(() => {
-          dispatch(FetchCollections());
-        });
-      }
-    };
-    updateCompleteStatus();
-  }, [chosen, dispatch, pairedData, participatingAs]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chosen!]);
 
   return (
     <Paper>
@@ -107,7 +100,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
       >
         <Typography>RESULTS</Typography>
       </Paper>
-      {pairingResultStatus != APIStatus.success ? (
+      {menteeName == null ? (
         <div
           style={{
             width: "100%",
@@ -143,7 +136,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                       height: "200px",
                     }}
                   />
-                  {pairedData[0] != undefined && (
+                  {menteeName != null && (
                     <div
                       style={{
                         width: "100%",
@@ -153,7 +146,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                         alignItems: "center",
                       }}
                     >
-                      <Typography>{pairedData[0]!.mentee_name}</Typography>
+                      <Typography>{menteeName}</Typography>
                     </div>
                   )}
                 </div>
@@ -180,7 +173,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                       height: "200px",
                     }}
                   />
-                  {pairedData[0] != undefined && (
+                  {mentorName != null && (
                     <div
                       style={{
                         width: "100%",
@@ -190,7 +183,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                         alignItems: "center",
                       }}
                     >
-                      <Typography>{pairedData[0]!.mentor_name}</Typography>
+                      <Typography>{mentorName}</Typography>
                     </div>
                   )}
                 </div>

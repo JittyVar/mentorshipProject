@@ -6,7 +6,7 @@ export const UpdateStatus = createAsyncThunk(
   async (
     param: {
       url: string;
-      param: string | null | undefined | (string | PairingResult[])[];
+      param: (string | PairingResult | undefined)[];
     }[]
   ) => {
     try {
