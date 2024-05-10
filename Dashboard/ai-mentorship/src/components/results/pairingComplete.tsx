@@ -10,17 +10,12 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  APIStatus,
-  PairingResult,
-  restartpairingResultsStatus,
-} from "@/redux/dashboard/dashboardSlice";
+import { restartpairingResultsStatus } from "@/redux/dashboard/dashboardSlice";
 import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import CustomizedSnackbars from "../snackbar/snackBar";
 import { GetPairMenteeResult } from "@/redux/dashboard/actions/getPairMenteeResults";
 import { GetPairMentorResult } from "@/redux/dashboard/actions/getPairMentorResults";
-import { GetMatchingAlgorithm } from "@/redux/dashboard/actions/getMatchingAlgorithm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
@@ -35,16 +30,6 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   const [menteeName, setMenteeName] = useState<string | null>(null);
   const [mentorName, setMentorName] = useState<string | null>(null);
 
-  const pairingResult = useSelector((state: RootState) => {
-    state.dashboard.pairingResults;
-  });
-  const pairingResultStatus = useSelector((state: RootState) => {
-    state.dashboard.pairingResultsStatus;
-  });
-
-  const pairingMentorStatus = useAppSelector(
-    (state) => state.dashboard.getMentorDataStatus
-  );
   const dispatch = useAppDispatch();
   const firstRender = useRef(true);
 
@@ -55,7 +40,28 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
         try {
           if (participatingAs == "Mentee") {
             console.log("getting mentee", chosen);
-            // dispatch(GetPairMenteeResult(chosen)); //rename
+            dispatch(GetPairMenteeResult(chosen)); //rename
+            const matchingResponse = await fetch("/api/pair", {
+              next: { revalidate: 60 },
+            });
+
+            if (!matchingResponse.ok) {
+              throw new Error("failed to fetch data");
+            }
+
+            const matchingResults = await matchingResponse.json();
+            setMenteeName(matchingResults[0].mentee_name);
+            setMentorName(matchingResults[0].mentor_name);
+
+            const completeStatusArr = [
+              {
+                url: "/api/put/mentees/completeStatus",
+                param: [chosen, matchingResults[0]], // Ensure this structure matches the expected type
+              },
+            ];
+
+            await dispatch(UpdateStatus(completeStatusArr));
+            dispatch(FetchCollections());
           }
           if (participatingAs == "Mentor") {
             console.log("getting mentor", chosen);

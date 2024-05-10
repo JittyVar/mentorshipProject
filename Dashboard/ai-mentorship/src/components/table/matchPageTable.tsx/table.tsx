@@ -64,6 +64,7 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
   const R = require("ramda");
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [matchMeClicked, setMatchedMeClicked] = useState(false);
 
   useEffect(() => {
     // Map over the collectionData and create rows using createData function
@@ -85,24 +86,26 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
     }
   }, [R, chosenName, collectionData]);
 
-  const handleClick = async (name: string, participatingAs: string) => {
+  const handleClick = async (name: string, participating: string) => {
     try {
       dispatch(restartStatus(APIStatus.idle));
       setChosenName(name);
+      setMatchedMeClicked(true);
       dispatch(FetchCollections());
-      router.push(`/match?q=${encodeURIComponent(name)}&r=${participatingAs}`);
+      router.push(`/match?q=${encodeURIComponent(name)}&r=${participating}`);
     } catch (error) {
       throw error;
     }
   };
 
   useEffect(() => {
-    if (chosenName != null) {
+    if (chosenName != null && !matchMeClicked) {
       router.push(
         `/match?q=${encodeURIComponent(chosenName)}&r=${participatingAs}`
       );
+      setMatchedMeClicked(false);
     }
-  }, [chosenName, router, participatingAs]);
+  }, [chosenName, router, participatingAs, matchMeClicked]);
 
   return (
     <TableContainer component={Paper}>
@@ -174,7 +177,9 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                     variant="contained"
                     value={row.assignedMentor}
                     color="secondary"
-                    onClick={() => handleClick(row.fullName)}
+                    onClick={() =>
+                      handleClick(row.fullName, row.participatingAs)
+                    }
                   >
                     MATCH ME
                   </Button>

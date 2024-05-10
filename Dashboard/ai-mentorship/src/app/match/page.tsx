@@ -23,7 +23,6 @@ const MatchContent = () => {
   const rows = useAppSelector((state) => state.dashboard.rows);
   const chosenData = useSearchParams()?.get("q");
   const participatingAs = useSearchParams()?.get("r");
-  const [isLoading, setIsLoading] = useState(true); // Add a state variable to track loading state
   const firstRender = useRef(true);
   const dataRender = useRef(true);
 
