@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import { exec } from "child_process";
 import csvParser from "csv-parser";
 
+export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest, res: NextApiResponse) {
   const fs = require("fs");
   const rmdPath = "./src/app/api/pair/matchingAlgorithm.Rmd";
