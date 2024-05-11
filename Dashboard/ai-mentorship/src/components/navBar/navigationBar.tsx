@@ -29,7 +29,18 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "#1E1F42",
+        "& .MuiButton-root": {
+          backgroundColor: "white",
+          marginRight: "10px",
+          width: "100px",
+          color: "#1E1F42",
+        },
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>

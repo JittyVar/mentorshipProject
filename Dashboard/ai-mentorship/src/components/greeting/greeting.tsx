@@ -2,7 +2,7 @@ import Paper from "@mui/material/Paper";
 import DisplayCalendar from "./calendar/calendar";
 import ProgressComponent from "./progress/progress";
 import Image from "next/image";
-import adminPic from "./adminpic.png";
+import adminPic from "./2.png";
 
 interface GreetingsProps {
   menteesData: number[];
@@ -15,23 +15,17 @@ const Greetings: React.FC<GreetingsProps> = ({
   displayWithAs,
 }) => {
   return (
-    <>
+    <div style={{ display: "flex", gap: "3%" }}>
+      <Image src={adminPic.src} alt="adminPic" width={300} height={400} />
       <Paper
         elevation={3}
         sx={{
           display: "flex",
           padding: 3,
-          gap: 2,
           backgroundColor: "#F4F4FA",
+          width: "100%",
         }}
       >
-        <Image
-          src={adminPic.src}
-          alt="image"
-          width={250}
-          height={350}
-          style={{ marginRight: "5%" }}
-        />
         <div style={{ marginRight: "5%" }}>
           <DisplayCalendar />
         </div>
@@ -40,6 +34,7 @@ const Greetings: React.FC<GreetingsProps> = ({
             width: "100%",
             borderRadius: 5,
             display: "flex",
+            alignItems: "center",
           }}
         >
           <ProgressComponent
@@ -51,7 +46,7 @@ const Greetings: React.FC<GreetingsProps> = ({
           />
         </div>
       </Paper>
-    </>
+    </div>
   );
 };
 

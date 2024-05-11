@@ -42,7 +42,12 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
       headerName: "Participating as",
       width: 180,
       renderCell: (params) => (
-        <Chip label={params.value} variant="outlined" color="secondary" />
+        <Chip
+          label={params.value}
+          variant="outlined"
+          color="secondary"
+          sx={{ width: "100px" }}
+        />
       ),
     },
     {
@@ -59,6 +64,7 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
               : "error"
           }
           label={params.value}
+          sx={{ borderRadius: "5px", width: "150px" }}
         />
       ),
     },
@@ -75,7 +81,9 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
               <Button
                 variant="contained"
                 value={params.value}
-                color="secondary"
+                sx={{
+                  backgroundColor: "#8F3880",
+                }}
               >
                 {actions}
               </Button>

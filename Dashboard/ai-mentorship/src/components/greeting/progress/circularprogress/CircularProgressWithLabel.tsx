@@ -10,8 +10,16 @@ function CircularProgressWithLabel(
   props: CircularProgressProps & { value: number }
 ) {
   return (
-    <Box sx={{ position: "relative", display: "inline-flex" }}>
-      <CircularProgress variant="determinate" {...props} color="secondary" />
+    <Box
+      sx={{
+        position: "relative",
+        display: "inline-flex",
+        "& .MuiCircularProgress-root": {
+          color: "#1E1F42",
+        },
+      }}
+    >
+      <CircularProgress variant="determinate" {...props} />
       <Box
         sx={{
           top: 0,
@@ -50,14 +58,16 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
   const progress = (withValue / total) * 100;
 
   return (
-    <div style={{ display: "flex", gap: 50 }}>
+    <div style={{ display: "flex", width: "100%", height: "100%", gap: 50 }}>
       <CircularProgressWithLabel value={progress} size={280} />
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: 20,
+          rowGap: 20,
           justifyContent: "center",
+          width: "300px",
+          height: "100%",
         }}
       >
         <Chip
@@ -68,9 +78,10 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
             backgroundColor: "#1E1F42",
             fontSize: "1.3rem",
             fontWeight: "bold",
-            height: "80px",
-            width: "300px",
+            height: "60px",
+            width: "100%",
             color: "#B1F5EA",
+            borderRadius: "5px",
           }}
         />
         <Chip
@@ -81,9 +92,10 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
             backgroundColor: "#1E1F42",
             fontSize: "1.3rem",
             fontWeight: "bold",
-            height: "80px",
-            width: "300px",
+            height: "60px",
+            width: "100%",
             color: "#B1F5EA",
+            borderRadius: "5px",
           }}
         />
         <Chip
@@ -94,9 +106,10 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
             backgroundColor: "#1E1F42",
             fontSize: "1.3rem",
             fontWeight: "bold",
-            height: "80px",
-            width: "300px",
+            height: "60px",
+            width: "100%",
             color: "#B1F5EA",
+            borderRadius: "5px",
           }}
         />
       </div>
