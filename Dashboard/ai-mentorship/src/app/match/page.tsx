@@ -100,7 +100,7 @@ const MatchContent = () => {
               <Box paddingTop={5}>
                 <MatchTableComponent
                   collectionData={rows.filter(
-                    (e: HomeTableColumns) => e.participatingAs == chosenTab
+                    (e: HomeTableColumns) => e.participatingAs == "Mentor"
                   )}
                   chosenData={chosenData}
                   participatingAs={participatingAs!}
