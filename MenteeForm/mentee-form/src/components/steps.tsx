@@ -1,4 +1,5 @@
 import EducationalBackgroundComponent from "@/app/form/subforms/background/backgroundDetails";
+import DisplayImageComponent from "@/app/form/subforms/getPhotos/photos";
 import GoalsComponent from "@/app/form/subforms/goals/goals";
 import ProfilePhotoComponent from "@/app/form/subforms/page";
 import PersonalityTypeComponent from "@/app/form/subforms/personalityType/personalityType";
@@ -9,6 +10,10 @@ export const menteeSteps = [
   {
     label: "Personal Details",
     content: <ProfilePhotoComponent />,
+  },
+  {
+    label: "Get Photo test",
+    content: <DisplayImageComponent />,
   },
   {
     label: "Background",

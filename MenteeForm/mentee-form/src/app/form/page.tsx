@@ -16,12 +16,12 @@ const FormPage: React.FC<FormPageProps> = async ({ isAuthenticated }) => {
     <Box>
       <Container>
         <div>
-          <Image
+          {/* <Image
             src={mentorshipApplication.src}
             alt="mentorship application pic"
-            width={1100}
+            width={100}
             height={300}
-          />
+          /> */}
         </div>
         <VerticalLinearStepper />
       </Container>
