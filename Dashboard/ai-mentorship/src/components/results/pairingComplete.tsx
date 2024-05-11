@@ -38,6 +38,8 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
       setMentorName(null);
       if (chosen) {
         dispatch(restartpairingResultsStatus());
+        setMenteeName(null);
+        setMentorName(null);
         try {
           if (participatingAs == "Mentee") {
             console.log("getting mentee", chosen);
@@ -98,6 +100,10 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chosen!]);
+
+  useEffect(() => {
+    console.log("mentee mentor ", menteeName, mentorName);
+  }, [menteeName, mentorName]);
 
   return (
     <Paper>

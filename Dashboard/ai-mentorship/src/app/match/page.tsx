@@ -97,7 +97,7 @@ const MatchContent = () => {
               </TabList>
             </Box>
             <TabPanel value="1">
-              <Box paddingTop={5}>
+              <Box>
                 <MatchTableComponent
                   collectionData={rows.filter(
                     (e: HomeTableColumns) => e.participatingAs == "Mentor"
@@ -121,7 +121,7 @@ const MatchContent = () => {
           </TabContext>
         </Box>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} sx={{ marginTop: "6%" }}>
         <ResultsComponent
           data={arr}
           dataOf={chosenData}
