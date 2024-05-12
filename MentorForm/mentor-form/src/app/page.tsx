@@ -1,5 +1,5 @@
 import React from "react";
-import FormPage from "./form/FormPage";
+import FormPage from "./form/page";
 
 const Home = () => {
   return (

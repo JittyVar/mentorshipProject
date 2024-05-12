@@ -1,9 +1,9 @@
-import ProfessionalBackgroundComponent from "@/app/form/subforms/background/backgroundDetails";
-import GoalsComponent from "@/app/form/subforms/goals/goals";
-import ProfilePhotoComponent from "@/app/form/subforms/page";
-import PersonalityTypeComponent from "@/app/form/subforms/personalityType/personalityType";
-import MenteePreferencesComponent from "@/app/form/subforms/preferences/preferences";
-import SkillsComponent from "@/app/form/subforms/skills/skills";
+import ProfessionalBackgroundComponent from "@/components/subforms/background/backgroundDetails";
+import GoalsComponent from "@/components/subforms/goals/goals";
+import ProfilePhotoComponent from "@/components/subforms/page";
+import PersonalityTypeComponent from "@/components/subforms/personalityType/personalityType";
+import MenteePreferencesComponent from "@/components/subforms/preferences/preferences";
+import SkillsComponent from "@/components/subforms/skills/skills";
 
 export const menteeSteps = [
   {
