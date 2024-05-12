@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { menteeSteps } from "./steps";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createMenteeDocument } from "@/redux/actions/createMenteeDocument";
-
+import { createMenteeContinuation } from "@/redux/actions/createMenteeContinuation";
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useAppDispatch();
@@ -36,6 +36,8 @@ export default function VerticalLinearStepper() {
     const createMenteeDocumentAction = async () => {
       if (activeStep == 5) {
         await dispatch(createMenteeDocument());
+        await dispatch(createMenteeContinuation());
+        // Call the function
       }
     };
 

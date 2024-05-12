@@ -37,51 +37,13 @@ export async function POST(req: Request, context: any) {
         specialisation: data.professionalDetails.specialisation,
       });
 
-      // const skillsCollectionRef = collection(mainDocRef, "Skills");
-      // await addDoc(skillsCollectionRef, {
-      //   basicSkills: {
-      //     firstBasicSoftSkill: data.skills.basicSkills.firstBasicSoftSkill,
-      //     firstBasicIndustrySkill:
-      //       data.skills.basicSkills.firstBasicIndustrySkill,
-      //     secondBasicIndustrySkill:
-      //       data.skills.basicSkills.secondBasicIndustrySkill,
-      //   },
-      //   expertSkills: {
-      //     firstExpertSoftSkill: data.skills.expertSkills.firstExpertSoftSkill,
-      //     firstExpertIndustrySkill:
-      //       data.skills.expertSkills.firstExpertIndustrySkill,
-      //     secondExpertIndustrySkill:
-      //       data.skills.expertSkills.secondExpertIndustrySkill,
-      //   },
-      // });
-
-      // const preferencesRef = collection(mainDocRef, "Preferences");
-      // await addDoc(preferencesRef, {
-      //   preferences: data.preferences.preferences,
-      //   menteeType: data.preferences.menteeType,
-      //   studentType: data.preferences.studentType,
-      // });
-
-      // const goalsCollectionRef = collection(mainDocRef, "Goals");
-      // await addDoc(goalsCollectionRef, {
-      //   longTermGoal: data.goals.longTermGoal ? data.goals.longTermGoal : "",
-      //   firstShortTermGoal: data.goals.firstShortTermGoal
-      //     ? data.goals.firstShortTermGoal
-      //     : "",
-      //   secondShortTermGoal: data.goals.secondShortTermGoal
-      //     ? data.goals.secondShortTermGoal
-      //     : "",
-      //   outcome: data.goals.outcome,
-      //   motivation: data.goals.motivation,
-      // });
-
-      // const personalityTypeCollectionRef = collection(
-      //   mainDocRef,
-      //   "Personality Type"
-      // );
-      // await addDoc(personalityTypeCollectionRef, {
-      //   personalityType: data.personalityType.personalityType,
-      // });
+      const personalityTypeCollectionRef = collection(
+        mainDocRef,
+        "Personality Type"
+      );
+      await addDoc(personalityTypeCollectionRef, {
+        personalityType: data.personalityType.personalityType,
+      });
     } catch (error) {
       console.error("Error adding document:", error);
       throw error; // Propagate the error to stop Promise.all if any update fails

@@ -11,6 +11,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { MentorState } from "@/redux/states/mentor";
@@ -21,6 +22,7 @@ import { menteePersonalDetails } from "@/redux/registrationSlice";
 
 const PersonalDetails = () => {
   const gender = ["Male", "Female", "No preference"];
+  const [genderValue, setGenderValue] = useState("");
   const validator = require("validator");
   const mentorState = useSelector(
     (state: RootState) => state.registration.mentor
@@ -45,6 +47,11 @@ const PersonalDetails = () => {
       ...prevValues,
       [fieldName]: value,
     }));
+  };
+
+  const handleGenderChange = (event: SelectChangeEvent) => {
+    setGenderValue(event.target.value as string);
+    handleChange("gender", event.target.value);
   };
 
   useEffect(() => {
@@ -109,9 +116,9 @@ const PersonalDetails = () => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={mentorState.gender}
+              value={genderValue}
               label="Age"
-              onChange={(e) => handleChange("gender", e.target.value)}
+              onChange={handleGenderChange}
               sx={{
                 backgroundColor: "white",
                 border: 1,

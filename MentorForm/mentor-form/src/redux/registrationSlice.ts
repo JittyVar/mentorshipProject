@@ -8,6 +8,7 @@ import { ExpertSkills } from "./states/skills/expertSkills";
 import { Goals } from "./states/goals";
 import { PersonalityType } from "./states/personalityType";
 import { store } from "./store";
+import { createMenteeContinuation } from "./actions/createMenteeContinuation";
 
 export enum APIStatus {
   idle = "idle",
@@ -92,6 +93,18 @@ export const registrationSlice = createSlice({
         console.log("mentee created");
       })
       .addCase(createMenteeDocument.rejected, (state) => {
+        state.status = APIStatus.error;
+      });
+    builder
+      .addCase(createMenteeContinuation.pending, (state) => {
+        state.status = APIStatus.loading;
+        console.log("pending");
+      })
+      .addCase(createMenteeContinuation.fulfilled, (state) => {
+        state.status = APIStatus.success;
+        console.log("mentor created");
+      })
+      .addCase(createMenteeContinuation.rejected, (state) => {
         state.status = APIStatus.error;
       });
   },
