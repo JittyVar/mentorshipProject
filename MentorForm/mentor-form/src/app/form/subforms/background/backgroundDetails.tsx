@@ -45,6 +45,12 @@ const ProfessionalBackgroundComponent = () => {
           fullWidth
           onChange={(e) => handleChange("jobTitle", e.target.value)}
           value={professionalDetailsState.jobTitle}
+          sx={{
+            backgroundColor: "white",
+            border: 1,
+            borderRadius: 2,
+            borderColor: "black",
+          }}
         />
       </div>
       <div style={{ display: "flex", paddingTop: "2%" }}>
@@ -53,10 +59,16 @@ const ProfessionalBackgroundComponent = () => {
         </Typography>
         <TextField
           id="gender"
-          sx={{ m: 1 }}
           onChange={(e) => handleChange("organisation", e.target.value)}
           fullWidth
           value={professionalDetailsState.organisation}
+          sx={{
+            m: 1,
+            backgroundColor: "white",
+            border: 1,
+            borderRadius: 2,
+            borderColor: "black",
+          }}
         />
       </div>
       <div style={{ display: "flex", paddingTop: "2%" }}>
@@ -65,7 +77,13 @@ const ProfessionalBackgroundComponent = () => {
         </Typography>
         <TextField
           id="gender"
-          sx={{ m: 1 }}
+          sx={{
+            m: 1,
+            backgroundColor: "white",
+            border: 1,
+            borderRadius: 2,
+            borderColor: "black",
+          }}
           onChange={(e) => handleChange("specialisation", e.target.value)}
           fullWidth
           value={professionalDetailsState.specialisation}

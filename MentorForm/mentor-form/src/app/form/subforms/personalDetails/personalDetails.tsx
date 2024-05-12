@@ -71,6 +71,14 @@ const PersonalDetails = () => {
             fullWidth
             onChange={(e) => handleChange("fullName", e.target.value)}
             value={mentorState.fullName}
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
         </div>
         <div style={{ display: "flex", paddingTop: "2%" }}>
@@ -79,7 +87,15 @@ const PersonalDetails = () => {
           </Typography>
           <TextField
             id="gender"
-            sx={{ m: 1 }}
+            sx={{
+              m: 1,
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
             onChange={(e) => handleChange("emailAddress", e.target.value)}
             fullWidth
             value={mentorState.emailAddress}
@@ -96,6 +112,12 @@ const PersonalDetails = () => {
               value={mentorState.gender}
               label="Age"
               onChange={(e) => handleChange("gender", e.target.value)}
+              sx={{
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              }}
             >
               {gender.map((value) => (
                 <MenuItem key={value} value={value}>
@@ -111,7 +133,15 @@ const PersonalDetails = () => {
           </Typography>
           <TextField
             id="phoneNumber"
-            sx={{ m: 1 }}
+            sx={{
+              m: 1,
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
             fullWidth
             onChange={(e) => handleChange("phoneNumber", e.target.value)}
             value={

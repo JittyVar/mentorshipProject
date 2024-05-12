@@ -57,6 +57,12 @@ const PersonalityTypeComponent = () => {
           value={personalityType}
           label="Age"
           onChange={handleChange}
+          sx={{
+            backgroundColor: "white",
+            border: 1,
+            borderRadius: 2,
+            borderColor: "black",
+          }}
         >
           {PersonalityTypeData.map((value) => (
             <MenuItem key={value} value={value}>

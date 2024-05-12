@@ -44,8 +44,38 @@ export default function VerticalLinearStepper() {
   }, [activeStep]);
 
   return (
-    <Box>
-      <Stepper activeStep={activeStep} orientation="vertical">
+    <Box
+      sx={{
+        backgroundColor: "#F4E6F2",
+        padding: "5%",
+        borderRadius: "1%",
+        marginTop: "%",
+      }}
+    >
+      <Stepper
+        activeStep={activeStep}
+        orientation="vertical"
+        sx={{
+          "& .MuiStepLabel-label": { color: "#1E1F42" },
+          "& .MuiStepLabel-label.Mui-active": {
+            color: "#1E1F42",
+            fontWeight: "bold",
+            fontSize: "20px",
+          },
+          "& .MuiStepLabel-label.Mui-completed": {
+            color: "#1E1F42",
+            fontSize: "20px",
+            fontWeight: "bold",
+          },
+          "& .MuiStepIcon-root.Mui-active": {
+            color: "#8F3880",
+            fontSize: "xx-large",
+          },
+          "& .MuiStepIcon-root.Mui-completed": {
+            color: "#8F3880",
+          },
+        }}
+      >
         {menteeSteps.map((step, index) => (
           <Step key={step.label}>
             <StepLabel
