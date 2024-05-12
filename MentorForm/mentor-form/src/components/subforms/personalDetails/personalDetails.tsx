@@ -18,10 +18,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useAppDispatch } from "@/redux/hooks";
 import { menteePersonalDetails } from "@/redux/registrationSlice";
-import validator from "validator";
 
 const PersonalDetails = () => {
   const gender = ["Male", "Female", "No preference"];
+  const validator = require("validator");
   const mentorState = useSelector(
     (state: RootState) => state.registration.mentor
   );
