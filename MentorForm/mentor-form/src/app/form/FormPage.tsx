@@ -6,7 +6,6 @@ const FormPage = () => {
   return (
     <Box>
       <Container>
-        <a href="/api/auth/logout">Logout</a>
         <VerticalLinearStepper />
       </Container>
     </Box>
