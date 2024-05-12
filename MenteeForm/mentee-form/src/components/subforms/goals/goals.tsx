@@ -32,7 +32,7 @@ const GoalsComponent = () => {
   return (
     <Box>
       <Container sx={{ "& > div:not(:last-child)": { marginBottom: "20px" } }}>
-        {/* <Typography sx={{ margin: "1%" }}>
+        <Typography sx={{ margin: "1%" }}>
           What is one long-term goal you have?
         </Typography>
         <TextField
@@ -83,7 +83,7 @@ const GoalsComponent = () => {
               borderColor: "black",
             },
           }}
-        /> */}
+        />
         <div style={{ paddingBottom: "2%" }}>
           <Typography sx={{ margin: "1%", width: "46ch" }}>
             What would you hope to get from this program?

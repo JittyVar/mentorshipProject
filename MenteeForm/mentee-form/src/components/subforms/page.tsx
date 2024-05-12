@@ -1,28 +1,34 @@
 "use client";
-import { Box, Button, Container, Typography } from "@mui/material";
+import React, { useState, ChangeEvent } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  LinearProgress,
+  LinearProgressProps,
+  Typography,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PersonalDetails from "./personalDetails/personalDetails";
-import { useState } from "react";
-import { storage } from "@/firestore/firestore";
-import { ref, uploadBytesResumable } from "firebase/storage";
 import Image from "next/image";
+import { ref, uploadBytesResumable } from "firebase/storage"; // Import Firebase Storage functions
+import { storage } from "@/firestore/firestore";
 
 const ProfilePhotoComponent = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const handleFileChange = (event: {
-    target: { files: React.SetStateAction<null>[] };
-  }) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
     setSelectedImage(event.target.files[0]);
   };
 
   const handleUpload = async () => {
     if (!selectedImage) return;
 
-    // Create a storage reference with a unique name for the file
-    const storageRef = ref(storage, `images/${selectedImage.name}`);
+    const selectedImageName = selectedImage.name;
+    const storageRef = ref(storage, `images/${selectedImageName}`);
     setUploading(true);
 
     // Upload the selected image file to Firebase Storage
@@ -48,6 +54,23 @@ const ProfilePhotoComponent = () => {
       }
     );
   };
+
+  function LinearProgressWithLabel(
+    props: LinearProgressProps & { value: number }
+  ) {
+    return (
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ width: "100%", mr: 1 }}>
+          <LinearProgress variant="determinate" {...props} />
+        </Box>
+        <Box sx={{ minWidth: 35 }}>
+          <Typography variant="body2" color="text.secondary">{`${Math.round(
+            props.value
+          )}%`}</Typography>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box>

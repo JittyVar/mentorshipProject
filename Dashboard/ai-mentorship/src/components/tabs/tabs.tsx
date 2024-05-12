@@ -48,7 +48,15 @@ const LabTabs: React.FC<LabTabsProps> = ({
     >
       <TabContext value={value}>
         <Box>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList
+            onChange={handleChange}
+            aria-label="lab API tabs example"
+            sx={{
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#1E1F42",
+              },
+            }}
+          >
             <Tab label="MENTORS" value="1" />
             <Tab label="MENTEES" value="2" />
           </TabList>

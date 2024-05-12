@@ -14,9 +14,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useAppDispatch } from "@/redux/hooks";
 import { menteePersonalDetails } from "@/redux/registrationSlice";
-import validator from "validator";
 
 const PersonalDetails = () => {
+  const validator = require("validator");
   const menteeState = useSelector(
     (state: RootState) => state.registration.mentee
   );
@@ -55,7 +55,7 @@ const PersonalDetails = () => {
     };
 
     validateEmail(values.emailAddress);
-  }, [values.emailAddress]);
+  }, [validator, values.emailAddress]);
 
   return (
     <Box>

@@ -42,8 +42,7 @@ export default function VerticalLinearStepper() {
     };
 
     createMenteeDocumentAction(); // Call the function
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeStep]);
+  }, [activeStep, dispatch]);
 
   return (
     <Box

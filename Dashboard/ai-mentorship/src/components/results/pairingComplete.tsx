@@ -8,16 +8,15 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import React, { useEffect, useRef, useState } from "react";
+import { useAppDispatch } from "@/redux/hook";
+import React, { useEffect, useState } from "react";
 import { restartpairingResultsStatus } from "@/redux/dashboard/dashboardSlice";
 import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
 import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import CustomizedSnackbars from "../snackbar/snackBar";
 import { GetPairMenteeResult } from "@/redux/dashboard/actions/getPairMenteeResults";
 import { GetPairMentorResult } from "@/redux/dashboard/actions/getPairMentorResults";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 interface PairingCompleteProps {
   chosen: string;
@@ -31,12 +30,16 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   const [mentorName, setMentorName] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
-  const firstRender = useRef(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
+      setMenteeName(null);
+      setMentorName(null);
       if (chosen) {
         dispatch(restartpairingResultsStatus());
+        setMenteeName(null);
+        setMentorName(null);
         try {
           if (participatingAs == "Mentee") {
             console.log("getting mentee", chosen);
@@ -61,7 +64,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
             ];
 
             await dispatch(UpdateStatus(completeStatusArr));
-            dispatch(FetchCollections());
+            await dispatch(FetchCollections());
           }
           if (participatingAs == "Mentor") {
             console.log("getting mentor", chosen);
@@ -86,7 +89,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
             ];
 
             await dispatch(UpdateStatus(completeStatusArr));
-            dispatch(FetchCollections());
+            await dispatch(FetchCollections());
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -97,6 +100,10 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chosen!]);
+
+  useEffect(() => {
+    console.log("mentee mentor ", menteeName, mentorName);
+  }, [menteeName, mentorName]);
 
   return (
     <Paper>
@@ -123,7 +130,13 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
           <Grid
             container
             spacing={2}
-            sx={{ widht: "100%", height: "300px", padding: 3 }}
+            sx={{
+              widht: "100%",
+              height: "350px",
+              padding: 3,
+              paddingTop: "20px",
+              paddingBottom: "20px",
+            }}
           >
             <Grow in={true}>
               <Grid
@@ -150,9 +163,24 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
+                        marginTop: "10%",
                       }}
                     >
-                      <Typography>{menteeName}</Typography>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography fontWeight={"bold"} fontSize={20}>
+                          Mentee
+                        </Typography>
+                        <Typography fontWeight={"light"}>
+                          {menteeName}
+                        </Typography>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -187,9 +215,24 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
+                        marginTop: "10%",
                       }}
                     >
-                      <Typography>{mentorName}</Typography>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography fontWeight={"bold"} fontSize={20}>
+                          Mentor
+                        </Typography>
+                        <Typography fontWeight={"light"}>
+                          {mentorName}
+                        </Typography>
+                      </div>
                     </div>
                   )}
                 </div>

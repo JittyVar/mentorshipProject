@@ -57,7 +57,16 @@ const MultipleSelector: React.FC<MultipleSelectorProps> = ({
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: "100%" }}>
+      <FormControl
+        sx={{
+          m: 1,
+          width: "100%",
+          backgroundColor: "white",
+          border: 1,
+          borderRadius: 2,
+          borderColor: "black",
+        }}
+      >
         <InputLabel id="demo-multiple-name-label">
           Can be more than 1
         </InputLabel>

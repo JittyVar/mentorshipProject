@@ -3,11 +3,11 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
 import { Box, Button, Chip, Paper } from "@mui/material";
-import { useEffect } from "react";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { Status } from "@/data/Status";
 import { useRouter } from "next/navigation";
 import adminpic from "../greeting/adminpic.png";
+import { deepPurple } from "@mui/material/colors";
 
 // Define the DataTableProps interface
 export interface DataTableProps {
@@ -17,22 +17,18 @@ export interface DataTableProps {
 // Define the DataTable component
 const DataTable: React.FC<DataTableProps> = ({ collections }) => {
   const router = useRouter();
-  const firstLog = React.useRef(true);
-
-  useEffect(() => {
-    if (firstLog.current) {
-      console.log("collections ", collections);
-      firstLog.current = false;
-    }
-  }, [collections, firstLog]);
-
   const columns: GridColDef[] = [
     {
       field: "avatar",
       headerName: "Avatar",
       width: 150,
-      renderCell: () => (
-        <Avatar alt="Remy Sharp" src={adminpic.src} sx={{ marginTop: 0.5 }} />
+      renderCell: (params) => (
+        <Avatar
+          alt="Remy Sharp"
+          sx={{ marginTop: 0.5, bgcolor: deepPurple[500] }}
+        >
+          {params.value}
+        </Avatar>
       ),
     },
     { field: "fullName", headerName: "Full Name", width: 220 },
@@ -42,7 +38,12 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
       headerName: "Participating as",
       width: 180,
       renderCell: (params) => (
-        <Chip label={params.value} variant="outlined" color="secondary" />
+        <Chip
+          label={params.value}
+          variant="outlined"
+          color="secondary"
+          sx={{ width: "100px" }}
+        />
       ),
     },
     {
@@ -59,13 +60,14 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
               : "error"
           }
           label={params.value}
+          sx={{ borderRadius: "5px", width: "150px" }}
         />
       ),
     },
     { field: "pairedDuring", headerName: "Paired During", width: 200 },
     {
       field: "assignedMentor",
-      headerName: "Assigned Mentor/Mentee",
+      headerName: "Paired With",
       width: 220,
       renderCell: (params) => {
         const actions = params.value;
@@ -75,7 +77,9 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
               <Button
                 variant="contained"
                 value={params.value}
-                color="secondary"
+                sx={{
+                  backgroundColor: "#8F3880",
+                }}
               >
                 {actions}
               </Button>

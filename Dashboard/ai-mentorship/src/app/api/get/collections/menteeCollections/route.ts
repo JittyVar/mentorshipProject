@@ -14,7 +14,9 @@ export async function GET() {
       // Construct new data object
       const newData: HomeTableColumns = {
         id: doc.data()["documentOf"],
-        avatar: "G",
+        avatar: `${doc.data()["documentOf"].split(" ")[0][0]}${
+          doc.data()["documentOf"].split(" ")[1][0]
+        }`,
         fullName: doc.data()["documentOf"],
         registeredOn: new Date(doc.data()["createdAt"].toDate()).toDateString(),
         status: doc.data()["status"],
