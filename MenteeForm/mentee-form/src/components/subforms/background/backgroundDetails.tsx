@@ -16,12 +16,8 @@ import { RootState } from "@/redux/store";
 import MultipleSelector from "@/components/multipleSelector";
 import { useAppDispatch } from "@/redux/hooks";
 import { backgroundDetails } from "@/redux/registrationSlice";
-
-export const data = [
-  "Bachelor of Engineer (Hons)",
-  "Bachelor of Computer and Information Sciences (BCIS)",
-];
-export const major = ["Software Engineering", "Software Development"];
+import Programs from "@/components/data/programs";
+import Majors from "@/components/data/majors";
 
 const EducationalBackgroundComponent = () => {
   const educationalBackgroundState = useSelector(
@@ -68,14 +64,14 @@ const EducationalBackgroundComponent = () => {
           What program are you currently enrolled in?
         </Typography>
         <MultipleSelector
-          data={data}
+          data={Programs}
           chosenData={(data: string[]) => setChosenPrograms(data)}
         />
         <Typography sx={{ margin: "1%" }}>
           What major/s are you currently enrolled in?
         </Typography>
         <MultipleSelector
-          data={major}
+          data={Majors}
           chosenData={(data: string[]) => setChosenMajors(data)}
         />
         <div>
