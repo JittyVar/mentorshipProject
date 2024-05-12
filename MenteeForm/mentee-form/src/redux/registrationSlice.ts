@@ -8,6 +8,9 @@ import { ExpertSkills } from "./states/skills/expertSkills";
 import { Goals } from "./states/goals";
 import { PersonalityType } from "./states/personalityType";
 import { store } from "./store";
+import { createMenteeDocumentSkills } from "./actions/createMenteeDocumentSkills";
+import { createMenteeDocumentGoals } from "./actions/createMenteeDocumentGoals";
+import { createMenteeDocumentPreferences } from "./actions/createMenteeDocumentPreferences";
 
 export enum APIStatus {
   idle = "idle",
@@ -95,6 +98,42 @@ export const registrationSlice = createSlice({
         console.log("mentee created");
       })
       .addCase(createMenteeDocument.rejected, (state) => {
+        state.status = APIStatus.error;
+      });
+    builder
+      .addCase(createMenteeDocumentSkills.pending, (state) => {
+        state.status = APIStatus.loading;
+        console.log("pending");
+      })
+      .addCase(createMenteeDocumentSkills.fulfilled, (state) => {
+        state.status = APIStatus.success;
+        console.log("mentee created");
+      })
+      .addCase(createMenteeDocumentSkills.rejected, (state) => {
+        state.status = APIStatus.error;
+      });
+    builder
+      .addCase(createMenteeDocumentGoals.pending, (state) => {
+        state.status = APIStatus.loading;
+        console.log("pending");
+      })
+      .addCase(createMenteeDocumentGoals.fulfilled, (state) => {
+        state.status = APIStatus.success;
+        console.log("mentee created");
+      })
+      .addCase(createMenteeDocumentGoals.rejected, (state) => {
+        state.status = APIStatus.error;
+      });
+    builder
+      .addCase(createMenteeDocumentPreferences.pending, (state) => {
+        state.status = APIStatus.loading;
+        console.log("pending");
+      })
+      .addCase(createMenteeDocumentPreferences.fulfilled, (state) => {
+        state.status = APIStatus.success;
+        console.log("mentee created");
+      })
+      .addCase(createMenteeDocumentPreferences.rejected, (state) => {
         state.status = APIStatus.error;
       });
   },

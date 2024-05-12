@@ -31,62 +31,13 @@ export async function POST(req: Request, context: any) {
             : data.mentee.currentStage,
       });
 
-      // const backgroundDetailsCollectionRef = collection(
-      //   mainDocRef,
-      //   "Background Details"
-      // );
-      // await addDoc(backgroundDetailsCollectionRef, {
-      //   programs: data.educationalBackground.programs,
-      //   majors: data.educationalBackground.majors,
-      //   yearOfDegree: data.educationalBackground.yearOfDegree,
-      // });
-
-      // const menteePreferencesCollectionRef = collection(
-      //   mainDocRef,
-      //   "Preferences"
-      // );
-      // await addDoc(menteePreferencesCollectionRef, {
-      //   preferences: data.preferences.preferences,
-      //   stemSector: data.preferences.stemSector,
-      // });
-
-      // const skillsCollectionRef = collection(mainDocRef, "Skills");
-      // await addDoc(skillsCollectionRef, {
-      //   basicSkills: {
-      //     firstBasicSoftSkill: data.skills.basicSkills.firstBasicSoftSkill,
-      //     firstBasicIndustrySkill:
-      //       data.skills.basicSkills.firstBasicIndustrySkill,
-      //     secondBasicIndustrySkill:
-      //       data.skills.basicSkills.secondBasicIndustrySkill,
-      //   },
-      //   expertSkills: {
-      //     firstExpertSoftSkill: data.skills.expertSkills.firstExpertSoftSkill,
-      //     firstExpertIndustrySkill:
-      //       data.skills.expertSkills.firstExpertIndustrySkill,
-      //     secondExpertIndustrySkill:
-      //       data.skills.expertSkills.secondExpertIndustrySkill,
-      //   },
-      // });
-
-      // const goalsCollectionRef = collection(mainDocRef, "Goals");
-      // await addDoc(goalsCollectionRef, {
-      //   longTermGoal: data.goals.longTermGoal ? data.goals.longTermGoal : "",
-      //   firstShortTermGoal: data.goals.firstShortTermGoal
-      //     ? data.goals.firstShortTermGoal
-      //     : "",
-      //   secondShortTermGoal: data.goals.secondShortTermGoal
-      //     ? data.goals.secondShortTermGoal
-      //     : "",
-      //   outcome: data.goals.outcome,
-      // });
-
-      // const personalityTypeCollectionRef = collection(
-      //   mainDocRef,
-      //   "Personality Type"
-      // );
-      // await addDoc(personalityTypeCollectionRef, {
-      //   personalityType: data.personalityType.personalityType,
-      // });
+      const personalityTypeCollectionRef = collection(
+        mainDocRef,
+        "Personality Type"
+      );
+      await addDoc(personalityTypeCollectionRef, {
+        personalityType: data.personalityType.personalityType,
+      });
     } catch (error) {
       console.error("Error adding document:", error);
       throw error; // Propagate the error to stop Promise.all if any update fails

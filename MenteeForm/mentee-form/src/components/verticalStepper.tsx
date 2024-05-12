@@ -14,6 +14,9 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createMenteeDocument } from "@/redux/actions/createMenteeDocument";
 import { APIStatus } from "@/redux/registrationSlice";
 import AlertDialog from "./alertDiaglog";
+import { createMenteeDocumentSkills } from "@/redux/actions/createMenteeDocumentSkills";
+import { createMenteeDocumentGoals } from "@/redux/actions/createMenteeDocumentGoals";
+import { createMenteeDocumentPreferences } from "@/redux/actions/createMenteeDocumentPreferences";
 
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -38,6 +41,9 @@ export default function VerticalLinearStepper() {
     const createMenteeDocumentAction = async () => {
       if (activeStep == 6) {
         await dispatch(createMenteeDocument());
+        await dispatch(createMenteeDocumentSkills());
+        await dispatch(createMenteeDocumentPreferences());
+        await dispatch(createMenteeDocumentGoals());
       }
     };
 
@@ -115,6 +121,7 @@ export default function VerticalLinearStepper() {
       {activeStep === menteeSteps.length &&
         createMenteeDocumentStatus == "success" && (
           <Paper square elevation={0} sx={{ p: 3 }}>
+            <Typography>Submission completed - you&apos;re finished</Typography>
             <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
               Reset
             </Button>
