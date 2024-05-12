@@ -59,7 +59,7 @@ const PersonalDetails = () => {
     };
 
     validateEmail(values.emailAddress);
-  }, [values.emailAddress]);
+  }, [validator, values.emailAddress]);
 
   return (
     <Box>
