@@ -2,19 +2,18 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PersonalDetails from "./personalDetails/personalDetails";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { storage } from "@/firestore/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import Image from "next/image";
 
 const ProfilePhotoComponent = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const handleFileChange = (event: {
-    target: { files: React.SetStateAction<null>[] };
-  }) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
     setSelectedImage(event.target.files[0]);
   };
 

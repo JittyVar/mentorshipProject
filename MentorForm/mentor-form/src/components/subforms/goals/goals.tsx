@@ -60,7 +60,7 @@ const GoalsComponent = () => {
           }
         /> */}
         <div style={{ paddingBottom: "2%" }}>
-          <Typography sx={{ margin: "1%", width: "46ch" }}>
+          <Typography sx={{ margin: "1%" }}>
             What would you hope to get from this program?
           </Typography>
           <TextField
@@ -80,7 +80,7 @@ const GoalsComponent = () => {
           />
         </div>
         <div style={{ paddingBottom: "2%" }}>
-          <Typography sx={{ margin: "1%", width: "46ch" }}>
+          <Typography sx={{ margin: "1%" }}>
             Why I chose to offer myself as a mentor?
           </Typography>
           <TextField

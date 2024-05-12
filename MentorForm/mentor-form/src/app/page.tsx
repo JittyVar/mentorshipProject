@@ -1,10 +1,10 @@
 import React from "react";
-import LoginPage from "./login/page";
+import FormPage from "./form/page";
 
 const Home = () => {
   return (
     <div>
-      <LoginPage isAuthenticated={true} />
+      <FormPage />
     </div>
   );
 };
