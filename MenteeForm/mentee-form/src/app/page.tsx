@@ -4,7 +4,7 @@ import FormPage from "./form/page";
 const Home = () => {
   return (
     <div>
-      <FormPage isAuthenticated={true} />
+      <FormPage />
     </div>
   );
 };

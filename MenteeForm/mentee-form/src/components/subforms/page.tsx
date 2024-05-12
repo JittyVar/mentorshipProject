@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, ChangeEvent } from "react";
 import {
   Box,
   Button,
@@ -14,21 +15,20 @@ import { ref, uploadBytesResumable } from "firebase/storage"; // Import Firebase
 import { storage } from "@/firestore/firestore";
 
 const ProfilePhotoComponent = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const handleFileChange = (event: {
-    target: { files: React.SetStateAction<null>[] };
-  }) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
     setSelectedImage(event.target.files[0]);
   };
 
   const handleUpload = async () => {
     if (!selectedImage) return;
 
-    // Create a storage reference with a unique name for the file
-    const storageRef = ref(storage, `images/${selectedImage.name}`);
+    const selectedImageName = selectedImage.name;
+    const storageRef = ref(storage, `images/${selectedImageName}`);
     setUploading(true);
 
     // Upload the selected image file to Firebase Storage
