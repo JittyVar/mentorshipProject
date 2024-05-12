@@ -5,9 +5,9 @@ import MultipleSelector from "@/components/multipleSelector";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { preferencesDetails } from "@/redux/registrationSlice";
+import STEMSector from "@/components/data/stemSector";
 
 const MentorTypesData = ["Male", "Female", "No Preference"];
-const StemSectorData = ["Engineering", "Math", "No Preferences"];
 const MenteePreferencesComponent = () => {
   const dispatch = useAppDispatch();
   const menteePreferencesState = useAppSelector(
@@ -48,7 +48,7 @@ const MenteePreferencesComponent = () => {
         <div style={{ alignItems: "center", gap: "3%" }}>
           <Typography sx={{ margin: "1%" }}>STEM Sector interest</Typography>
           <MultipleSelector
-            data={StemSectorData}
+            data={STEMSector}
             chosenData={(data: string[]) => setStemSector(data)}
           ></MultipleSelector>
         </div>

@@ -12,8 +12,7 @@ import {
 import { personalityTypeDetails } from "@/redux/registrationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { PersonalityType } from "@/redux/states/personalityType";
-
-const PersonalityTypeData = ["INFJ", "INTP"];
+import { PersonalityTypeData } from "@/components/data/personalityTypes";
 
 const PersonalityTypeComponent = () => {
   const dispatch = useAppDispatch();
