@@ -1,4 +1,4 @@
-import database from "@/firestore/firestore";
+import { database } from "@/firestore/firestore";
 import { Status } from "@/redux/actions/createMenteeDocument";
 import { registrationForm } from "@/redux/registrationSlice";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
