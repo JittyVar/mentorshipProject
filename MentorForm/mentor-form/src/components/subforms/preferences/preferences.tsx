@@ -6,16 +6,14 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
-  TextField,
   Typography,
 } from "@mui/material";
 import MultipleSelector from "@/components/multipleSelector";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { RootState } from "@/redux/store";
 import { preferencesDetails } from "@/redux/registrationSlice";
+import MentorIndustryPreferences from "@/components/data/stemSector";
 
-const MentorTypesData = ["Male mentor", "Female mentor", "No Preferences"];
 const MenteePreferencesComponent = () => {
   const dispatch = useAppDispatch();
   const menteePreferencesState = useAppSelector(
@@ -100,13 +98,7 @@ const MenteePreferencesComponent = () => {
             Which subjects are best aligned with your expertise??
           </Typography>
           <MultipleSelector
-            data={[
-              "Analytics",
-              "Digital Services",
-              "Mathematical Modelling and Computation",
-              "Software Development",
-              "Software Engineering",
-            ]}
+            data={MentorIndustryPreferences}
             chosenData={(data: string[]) => setStudentType(data)}
           ></MultipleSelector>
         </div>
