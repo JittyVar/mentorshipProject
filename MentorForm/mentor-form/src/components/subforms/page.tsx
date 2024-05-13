@@ -1,16 +1,18 @@
 "use client";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PersonalDetails from "./personalDetails/personalDetails";
 import { useState, ChangeEvent } from "react";
 import { storage } from "@/firestore/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import Image from "next/image";
+import CheckIcon from "@mui/icons-material/Check";
 
 const ProfilePhotoComponent = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploaded, setUploaded] = useState(false);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -43,6 +45,7 @@ const ProfilePhotoComponent = () => {
         setUploading(false);
         setSelectedImage(null);
         setUploadProgress(0);
+        setUploaded(true);
         console.log("File uploaded successfully");
       }
     );
@@ -96,6 +99,15 @@ const ProfilePhotoComponent = () => {
         >
           Upload
         </Button>
+        {uploaded && (
+          <Alert
+            icon={<CheckIcon fontSize="inherit" />}
+            severity="success"
+            variant="filled"
+          >
+            Image uploaded successfully
+          </Alert>
+        )}
         <PersonalDetails />
       </Container>
     </Box>
