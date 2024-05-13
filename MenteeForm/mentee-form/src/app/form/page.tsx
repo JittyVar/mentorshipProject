@@ -14,7 +14,7 @@ const FormPage = () => {
   return (
     <Box>
       <Container>
-        <Image src={applicationpic.src} alt="pic" width={850} height={200} />
+        <Image src={applicationpic.src} alt="pic" width={835} height={200} />
         <VerticalLinearStepper />
       </Container>
     </Box>
