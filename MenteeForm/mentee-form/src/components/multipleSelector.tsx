@@ -31,11 +31,13 @@ function getStyles(name: string, personName: string[], theme: Theme) {
 interface MultipleSelectorProps {
   data: string[];
   chosenData: (data: string[]) => void;
+  hideTypography?: boolean;
 }
 
 const MultipleSelector: React.FC<MultipleSelectorProps> = ({
   data,
   chosenData,
+  hideTypography,
 }) => {
   const theme = useTheme();
   const [selectorData, setSelectorData] = React.useState<string[]>([]);
@@ -64,9 +66,11 @@ const MultipleSelector: React.FC<MultipleSelectorProps> = ({
           backgroundColor: "white",
         }}
       >
-        <InputLabel id="demo-multiple-name-label">
-          Can be more than 1
-        </InputLabel>
+        {hideTypography == undefined && (
+          <InputLabel id="demo-multiple-name-label">
+            Can be more than 1
+          </InputLabel>
+        )}
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"

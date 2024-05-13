@@ -154,7 +154,11 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                       width: "200px",
                       height: "200px",
                     }}
-                  />
+                  >
+                    {`${menteeName.split(" ")[0][0]}${
+                      menteeName.split(" ")[1][0]
+                    }`}
+                  </Avatar>
                   {menteeName != null && (
                     <div
                       style={{
@@ -206,7 +210,9 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                       width: "200px",
                       height: "200px",
                     }}
-                  />
+                  >{`${mentorName!.split(" ")[0][0]}${
+                    mentorName!.split(" ")[1][0]
+                  }`}</Avatar>
                   {mentorName != null && (
                     <div
                       style={{

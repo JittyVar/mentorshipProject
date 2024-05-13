@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import { Status } from "@/data/Status";
-import { Button, Chip } from "@mui/material";
+import { Avatar, Button, Chip } from "@mui/material";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
@@ -166,7 +166,11 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                   />
                 }
               </StyledTableCell>
-              <StyledTableCell>{row.avatar}</StyledTableCell>
+              <StyledTableCell>
+                <Avatar>{`${row.fullName.split(" ")[0][0]}${
+                  row.fullName.split(" ")[0][0]
+                }`}</Avatar>
+              </StyledTableCell>
               <StyledTableCell>{row.fullName}</StyledTableCell>
               <StyledTableCell>{row.participatingAs}</StyledTableCell>
               <StyledTableCell>
