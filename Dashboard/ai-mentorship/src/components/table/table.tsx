@@ -12,10 +12,14 @@ import { deepPurple } from "@mui/material/colors";
 // Define the DataTableProps interface
 export interface DataTableProps {
   collections: HomeTableColumns[];
+  participatingAs: string;
 }
 
 // Define the DataTable component
-const DataTable: React.FC<DataTableProps> = ({ collections }) => {
+const DataTable: React.FC<DataTableProps> = ({
+  collections,
+  participatingAs,
+}) => {
   const router = useRouter();
   const columns: GridColDef[] = [
     {
@@ -81,7 +85,7 @@ const DataTable: React.FC<DataTableProps> = ({ collections }) => {
                   backgroundColor: "#8F3880",
                 }}
               >
-                {actions}
+                {participatingAs}
               </Button>
             );
           } else {

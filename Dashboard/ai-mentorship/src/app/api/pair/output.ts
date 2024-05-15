@@ -1,14 +1,8 @@
 const matchingResults = [
   {
-    mentee_name: 'Alyssa Pausanos',
+    mentee_name: 'Mentee Name 6',
     mentee_email: 'alyssa_pausanos@yahoo.com',
-    mentor_name: 'Mentor Name 5',
-    mentor_email: 'alyssa_pausanos@gmail.com',
-  },
-  {
-    mentee_name: 'Mentee Name 5',
-    mentee_email: 'alyssa_pausanos@yahoo.com',
-    mentor_name: 'Mentor Name 5',
+    mentor_name: 'Mentor Name 2',
     mentor_email: 'alyssa_pausanos@gmail.com',
   },
 ];

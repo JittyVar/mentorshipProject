@@ -69,7 +69,10 @@ const LabTabs: React.FC<LabTabsProps> = ({
           />
           {mentorRowsStatus == APIStatus.success && (
             <div style={{ marginTop: "2%" }}>
-              <DataTable collections={mentorRows} />
+              <DataTable
+                collections={mentorRows}
+                participatingAs={"Assign a Mentee"}
+              />
             </div>
           )}
           <Backdrop
@@ -87,7 +90,10 @@ const LabTabs: React.FC<LabTabsProps> = ({
           />
           {menteeRowsStatus == APIStatus.success && (
             <div style={{ marginTop: "2%" }}>
-              <DataTable collections={menteeRows} />
+              <DataTable
+                collections={menteeRows}
+                participatingAs="Assign a Mentor"
+              />
             </div>
           )}
           <Backdrop
