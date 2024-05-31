@@ -10,19 +10,19 @@ import { skillsDetails } from "@/redux/registrationSlice";
 
 const SkillsComponent = () => {
   const dispatch = useAppDispatch();
-  const skillState = useAppSelector((state) => state.registration.skills);
+  const skillState = useAppSelector((state) => state.registration?.skills);
 
   const [basicSkills, setBasicSkills] = useState<BasicSkills>({
-    firstBasicSoftSkill: skillState.basicSkills.firstBasicSoftSkill,
-    firstBasicIndustrySkill: skillState.basicSkills.firstBasicIndustrySkill,
-    secondBasicIndustrySkill: skillState.basicSkills.secondBasicIndustrySkill,
+    firstBasicSoftSkill: skillState?.basicSkills.firstBasicSoftSkill,
+    firstBasicIndustrySkill: skillState?.basicSkills.firstBasicIndustrySkill,
+    secondBasicIndustrySkill: skillState?.basicSkills.secondBasicIndustrySkill,
   });
 
   const [expertSkills, setExpertSkills] = useState<ExpertSkills>({
-    firstExpertSoftSkill: skillState.expertSkills.firstExpertSoftSkill,
-    firstExpertIndustrySkill: skillState.expertSkills.firstExpertIndustrySkill,
+    firstExpertSoftSkill: skillState?.expertSkills.firstExpertSoftSkill,
+    firstExpertIndustrySkill: skillState?.expertSkills.firstExpertIndustrySkill,
     secondExpertIndustrySkill:
-      skillState.expertSkills.secondExpertIndustrySkill,
+      skillState?.expertSkills.secondExpertIndustrySkill,
   });
 
   const [menteeSkills, setMenteeSkills] = useState<Skills>({

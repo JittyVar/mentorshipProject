@@ -11,11 +11,11 @@ const MentorTypesData = ["Male", "Female", "No Preference"];
 const MenteePreferencesComponent = () => {
   const dispatch = useAppDispatch();
   const menteePreferencesState = useAppSelector(
-    (state) => state.registration.preferences
+    (state) => state.registration?.preferences
   );
   const [menteePreferences, setMenteePreferences] = useState<Preferences>({
-    preferences: menteePreferencesState.preferences,
-    stemSector: menteePreferencesState.stemSector,
+    preferences: menteePreferencesState?.preferences,
+    stemSector: menteePreferencesState?.stemSector,
   });
 
   const [chosenPreferences, setChosenPreferences] = React.useState<string[]>(

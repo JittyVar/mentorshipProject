@@ -21,15 +21,15 @@ import Majors from "@/components/data/majors";
 
 const EducationalBackgroundComponent = () => {
   const educationalBackgroundState = useSelector(
-    (state: RootState) => state.registration.educationalBackground
+    (state: RootState) => state.registration?.educationalBackground
   );
 
   const dispatch = useAppDispatch();
   const [educationalBackground, setEducationalBackground] =
     useState<EducationalBackground>({
-      programs: educationalBackgroundState.programs,
-      majors: educationalBackgroundState.majors,
-      yearOfDegree: educationalBackgroundState.yearOfDegree,
+      programs: educationalBackgroundState?.programs,
+      majors: educationalBackgroundState?.majors,
+      yearOfDegree: educationalBackgroundState?.yearOfDegree,
     });
 
   const [chosenPrograms, setChosenPrograms] = React.useState<string[]>([]);
@@ -84,8 +84,8 @@ const EducationalBackgroundComponent = () => {
             name="row-radio-buttons-group"
             sx={{ margin: "1%" }}
             value={
-              educationalBackgroundState.yearOfDegree !== undefined
-                ? educationalBackgroundState.yearOfDegree
+              educationalBackgroundState?.yearOfDegree !== undefined
+                ? educationalBackgroundState?.yearOfDegree
                 : ""
             }
             onChange={(e) => handleChange("yearOfDegree", e.target.value)}

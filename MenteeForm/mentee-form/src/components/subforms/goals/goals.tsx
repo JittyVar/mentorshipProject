@@ -9,13 +9,13 @@ import Preferences from "@/redux/states/preferences";
 
 const GoalsComponent = () => {
   const dispatch = useAppDispatch();
-  const goalsState = useAppSelector((state) => state.registration.goals);
+  const goalsState = useAppSelector((state) => state.registration?.goals);
 
   const [preferredgoals, setPreferredGoals] = useState<Goals>({
-    longTermGoal: goalsState.longTermGoal,
-    firstShortTermGoal: goalsState.firstShortTermGoal,
-    secondShortTermGoal: goalsState.secondShortTermGoal,
-    outcome: goalsState.outcome,
+    longTermGoal: goalsState?.longTermGoal,
+    firstShortTermGoal: goalsState?.firstShortTermGoal,
+    secondShortTermGoal: goalsState?.secondShortTermGoal,
+    outcome: goalsState?.outcome,
   });
 
   const handleInputChange = (fieldName: keyof Goals, value: string) => {

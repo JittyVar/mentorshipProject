@@ -18,10 +18,10 @@ const PersonalityTypeComponent = () => {
   const dispatch = useAppDispatch();
   const [personalityType, setPersonalityType] = React.useState("");
   const personalityTypeState = useAppSelector(
-    (state) => state.registration.personalityType
+    (state) => state.registration?.personalityType
   );
   const [value, setValue] = useState<PersonalityType>({
-    personalityType: personalityTypeState.personalityType,
+    personalityType: personalityTypeState?.personalityType,
   });
 
   const handleInputChange = (
