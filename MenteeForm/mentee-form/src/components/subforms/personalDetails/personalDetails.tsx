@@ -18,17 +18,17 @@ import { menteePersonalDetails } from "@/redux/registrationSlice";
 const PersonalDetails = () => {
   const validator = require("validator");
   const menteeState = useSelector(
-    (state: RootState) => state.registration.mentee
+    (state: RootState) => state.registration?.mentee
   );
   const dispatch = useAppDispatch();
   const [isValid, setIsValid] = useState(true);
 
   const [values, setValues] = useState<MenteeState>({
-    fullName: menteeState.fullName,
-    age: menteeState.age,
-    phoneNumber: menteeState.phoneNumber,
-    emailAddress: menteeState.emailAddress,
-    currentStage: menteeState.currentStage,
+    fullName: menteeState?.fullName,
+    age: menteeState?.age,
+    phoneNumber: menteeState?.phoneNumber,
+    emailAddress: menteeState?.emailAddress,
+    currentStage: menteeState?.currentStage,
   });
 
   useEffect(() => {
@@ -54,8 +54,8 @@ const PersonalDetails = () => {
       }
     };
 
-    validateEmail(values.emailAddress);
-  }, [validator, values.emailAddress]);
+    validateEmail(values?.emailAddress);
+  }, [validator, values?.emailAddress]);
 
   return (
     <Box>
