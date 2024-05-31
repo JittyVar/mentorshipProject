@@ -66,7 +66,7 @@ const PersonalDetails = () => {
             id="fullName"
             fullWidth
             onChange={(e) => handleChange("fullName", e.target.value)}
-            value={menteeState.fullName}
+            value={menteeState?.fullName}
             sx={{
               "& .MuiOutlinedInput-input": {
                 backgroundColor: "white",
@@ -82,7 +82,7 @@ const PersonalDetails = () => {
           <TextField
             id="age"
             onChange={(e) => handleChange("age", e.target.value)}
-            value={menteeState.age}
+            value={menteeState?.age}
             sx={{
               "& .MuiOutlinedInput-input": {
                 backgroundColor: "white",
@@ -110,7 +110,7 @@ const PersonalDetails = () => {
             }}
             onChange={(e) => handleChange("emailAddress", e.target.value)}
             fullWidth
-            value={menteeState.emailAddress}
+            value={menteeState?.emailAddress}
             error={!isValid}
           />
         </div>
@@ -132,8 +132,8 @@ const PersonalDetails = () => {
             fullWidth
             onChange={(e) => handleChange("phoneNumber", e.target.value)}
             value={
-              menteeState.phoneNumber !== undefined
-                ? menteeState.phoneNumber
+              menteeState?.phoneNumber !== undefined
+                ? menteeState?.phoneNumber
                 : ""
             }
           />
@@ -147,8 +147,8 @@ const PersonalDetails = () => {
             name="row-radio-buttons-group"
             sx={{ margin: "1%" }}
             value={
-              menteeState.currentStage !== undefined
-                ? menteeState.currentStage
+              menteeState?.currentStage !== undefined
+                ? menteeState?.currentStage
                 : ""
             }
             onChange={(e) => handleChange("currentStage", e.target.value)}
