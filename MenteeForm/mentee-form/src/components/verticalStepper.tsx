@@ -37,18 +37,18 @@ export default function VerticalLinearStepper() {
     setActiveStep(0);
   };
 
-  // React.useEffect(() => {
-  //   const createMenteeDocumentAction = async () => {
-  //     if (activeStep == 6) {
-  //       await dispatch(createMenteeDocument());
-  //       await dispatch(createMenteeDocumentSkills());
-  //       await dispatch(createMenteeDocumentPreferences());
-  //       await dispatch(createMenteeDocumentGoals());
-  //     }
-  //   };
+  React.useEffect(() => {
+    const createMenteeDocumentAction = async () => {
+      if (activeStep == 6) {
+        await dispatch(createMenteeDocument());
+        await dispatch(createMenteeDocumentSkills());
+        await dispatch(createMenteeDocumentPreferences());
+        await dispatch(createMenteeDocumentGoals());
+      }
+    };
 
-  //   createMenteeDocumentAction(); // Call the function
-  // }, [activeStep, dispatch]);
+    createMenteeDocumentAction(); // Call the function
+  }, [activeStep, dispatch]);
 
   return (
     <Box
@@ -118,14 +118,15 @@ export default function VerticalLinearStepper() {
           </Step>
         ))}
       </Stepper>
-      {activeStep === menteeSteps.length && (
-        <Paper square elevation={0} sx={{ p: 3 }}>
-          <Typography>Submission completed - you&apos;re finished</Typography>
-          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-            Reset
-          </Button>
-        </Paper>
-      )}
+      {activeStep === menteeSteps.length &&
+        createMenteeDocumentStatus == APIStatus.success && (
+          <Paper square elevation={0} sx={{ p: 3 }}>
+            <Typography>Submission completed - you&apos;re finished</Typography>
+            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+              Reset
+            </Button>
+          </Paper>
+        )}
     </Box>
   );
 }
