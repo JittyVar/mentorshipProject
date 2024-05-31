@@ -11,7 +11,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { menteeSteps } from "./steps";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { createMenteeDocument } from "@/redux/actions/createMenteeDocument";
+import { createMenteeDocument } from "@/redux/registrationSlice";
 import { APIStatus } from "@/redux/registrationSlice";
 import AlertDialog from "./alertDiaglog";
 import { createMenteeDocumentSkills } from "@/redux/actions/createMenteeDocumentSkills";
@@ -37,18 +37,18 @@ export default function VerticalLinearStepper() {
     setActiveStep(0);
   };
 
-  React.useEffect(() => {
-    const createMenteeDocumentAction = async () => {
-      if (activeStep == 6) {
-        await dispatch(createMenteeDocument());
-        await dispatch(createMenteeDocumentSkills());
-        await dispatch(createMenteeDocumentPreferences());
-        await dispatch(createMenteeDocumentGoals());
-      }
-    };
+  // React.useEffect(() => {
+  //   const createMenteeDocumentAction = async () => {
+  //     if (activeStep == 6) {
+  //       await dispatch(createMenteeDocument());
+  //       await dispatch(createMenteeDocumentSkills());
+  //       await dispatch(createMenteeDocumentPreferences());
+  //       await dispatch(createMenteeDocumentGoals());
+  //     }
+  //   };
 
-    createMenteeDocumentAction(); // Call the function
-  }, [activeStep, dispatch]);
+  //   createMenteeDocumentAction(); // Call the function
+  // }, [activeStep, dispatch]);
 
   return (
     <Box

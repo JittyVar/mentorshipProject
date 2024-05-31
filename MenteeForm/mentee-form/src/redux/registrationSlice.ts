@@ -87,56 +87,56 @@ export const registrationSlice = createSlice({
       state.personalityType = action.payload;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(createMenteeDocument.pending, (state) => {
-        state.status = APIStatus.loading;
-        console.log("pending");
-      })
-      .addCase(createMenteeDocument.fulfilled, (state) => {
-        state.status = APIStatus.success;
-        console.log("mentee created");
-      })
-      .addCase(createMenteeDocument.rejected, (state) => {
-        state.status = APIStatus.error;
-      });
-    builder
-      .addCase(createMenteeDocumentSkills.pending, (state) => {
-        state.status = APIStatus.loading;
-        console.log("pending");
-      })
-      .addCase(createMenteeDocumentSkills.fulfilled, (state) => {
-        state.status = APIStatus.success;
-        console.log("mentee created");
-      })
-      .addCase(createMenteeDocumentSkills.rejected, (state) => {
-        state.status = APIStatus.error;
-      });
-    builder
-      .addCase(createMenteeDocumentGoals.pending, (state) => {
-        state.status = APIStatus.loading;
-        console.log("pending");
-      })
-      .addCase(createMenteeDocumentGoals.fulfilled, (state) => {
-        state.status = APIStatus.success;
-        console.log("mentee created");
-      })
-      .addCase(createMenteeDocumentGoals.rejected, (state) => {
-        state.status = APIStatus.error;
-      });
-    builder
-      .addCase(createMenteeDocumentPreferences.pending, (state) => {
-        state.status = APIStatus.loading;
-        console.log("pending");
-      })
-      .addCase(createMenteeDocumentPreferences.fulfilled, (state) => {
-        state.status = APIStatus.success;
-        console.log("mentee created");
-      })
-      .addCase(createMenteeDocumentPreferences.rejected, (state) => {
-        state.status = APIStatus.error;
-      });
-  },
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(createMenteeDocument.pending, (state) => {
+  //       state.status = APIStatus.loading;
+  //       console.log("pending");
+  //     })
+  //     .addCase(createMenteeDocument.fulfilled, (state) => {
+  //       state.status = APIStatus.success;
+  //       console.log("mentee created");
+  //     })
+  //     .addCase(createMenteeDocument.rejected, (state) => {
+  //       state.status = APIStatus.error;
+  //     });
+  //   builder
+  //     .addCase(createMenteeDocumentSkills.pending, (state) => {
+  //       state.status = APIStatus.loading;
+  //       console.log("pending");
+  //     })
+  //     .addCase(createMenteeDocumentSkills.fulfilled, (state) => {
+  //       state.status = APIStatus.success;
+  //       console.log("mentee created");
+  //     })
+  //     .addCase(createMenteeDocumentSkills.rejected, (state) => {
+  //       state.status = APIStatus.error;
+  //     });
+  //   builder
+  //     .addCase(createMenteeDocumentGoals.pending, (state) => {
+  //       state.status = APIStatus.loading;
+  //       console.log("pending");
+  //     })
+  //     .addCase(createMenteeDocumentGoals.fulfilled, (state) => {
+  //       state.status = APIStatus.success;
+  //       console.log("mentee created");
+  //     })
+  //     .addCase(createMenteeDocumentGoals.rejected, (state) => {
+  //       state.status = APIStatus.error;
+  //     });
+  //   builder
+  //     .addCase(createMenteeDocumentPreferences.pending, (state) => {
+  //       state.status = APIStatus.loading;
+  //       console.log("pending");
+  //     })
+  //     .addCase(createMenteeDocumentPreferences.fulfilled, (state) => {
+  //       state.status = APIStatus.success;
+  //       console.log("mentee created");
+  //     })
+  //     .addCase(createMenteeDocumentPreferences.rejected, (state) => {
+  //       state.status = APIStatus.error;
+  //     });
+  // },
 });
 
 export const {
