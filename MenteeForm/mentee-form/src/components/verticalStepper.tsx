@@ -118,15 +118,14 @@ export default function VerticalLinearStepper() {
           </Step>
         ))}
       </Stepper>
-      {activeStep === menteeSteps.length &&
-        createMenteeDocumentStatus == "success" && (
-          <Paper square elevation={0} sx={{ p: 3 }}>
-            <Typography>Submission completed - you&apos;re finished</Typography>
-            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-              Reset
-            </Button>
-          </Paper>
-        )}
+      {activeStep === menteeSteps.length && (
+        <Paper square elevation={0} sx={{ p: 3 }}>
+          <Typography>Submission completed - you&apos;re finished</Typography>
+          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+            Reset
+          </Button>
+        </Paper>
+      )}
     </Box>
   );
 }
