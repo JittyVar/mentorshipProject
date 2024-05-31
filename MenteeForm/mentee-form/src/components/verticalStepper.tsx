@@ -21,9 +21,6 @@ import { createMenteeDocumentPreferences } from "@/redux/actions/createMenteeDoc
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useAppDispatch();
-  const createMenteeDocumentStatus = useAppSelector(
-    (state) => state.registration.status
-  );
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
