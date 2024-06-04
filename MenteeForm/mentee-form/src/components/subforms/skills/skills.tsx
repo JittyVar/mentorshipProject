@@ -11,13 +11,6 @@ import { menteeSkillsValid, skillsDetails } from "@/redux/registrationSlice";
 const SkillsComponent = () => {
   const dispatch = useAppDispatch();
   const skillState = useAppSelector((state) => state.registration?.skills);
-  const cursorPositionRef = useRef<number | null>(null);
-  const firstBasicSoftRef = useRef<HTMLInputElement>(null);
-  const firstBasicIndustryRef = useRef<HTMLInputElement>(null);
-  const secondBasicIndustryRef = useRef<HTMLInputElement>(null);
-  const firstExpertSoftRef = useRef<HTMLInputElement>(null);
-  const firstExpertIndustryRef = useRef<HTMLInputElement>(null);
-  const secondExpertIndustryRef = useRef<HTMLInputElement>(null);
 
   const [basicSkills, setBasicSkills] = useState<BasicSkills>({
     firstBasicSoftSkill: skillState?.basicSkills.firstBasicSoftSkill,
@@ -41,19 +34,6 @@ const SkillsComponent = () => {
     fieldName: keyof BasicSkills,
     value: string
   ) => {
-    if (fieldName === "firstBasicSoftSkill") {
-      cursorPositionRef.current =
-        firstBasicSoftRef?.current?.selectionStart ?? null;
-    }
-    if (fieldName === "firstBasicIndustrySkill") {
-      cursorPositionRef.current =
-        firstBasicIndustryRef?.current?.selectionStart ?? null;
-    }
-    if (fieldName === "secondBasicIndustrySkill") {
-      cursorPositionRef.current =
-        secondBasicIndustryRef?.current?.selectionStart ?? null;
-    }
-
     setBasicSkills((prevValues) => ({
       ...prevValues,
       [fieldName]: value,
@@ -64,18 +44,6 @@ const SkillsComponent = () => {
     fieldName: keyof ExpertSkills,
     value: string
   ) => {
-    if (fieldName === "firstExpertSoftSkill") {
-      cursorPositionRef.current =
-        firstExpertSoftRef?.current?.selectionStart ?? null;
-    }
-    if (fieldName === "firstExpertIndustrySkill") {
-      cursorPositionRef.current =
-        firstExpertIndustryRef?.current?.selectionStart ?? null;
-    }
-    if (fieldName === "secondExpertIndustrySkill") {
-      cursorPositionRef.current =
-        secondExpertIndustryRef?.current?.selectionStart ?? null;
-    }
     setExpertSkills((prevValues) => ({
       ...prevValues,
       [fieldName]: value,
@@ -84,55 +52,6 @@ const SkillsComponent = () => {
 
   useEffect(() => {
     setMenteeSkills({ basicSkills, expertSkills });
-  }, [basicSkills, expertSkills]);
-
-  useEffect(() => {
-    if (firstBasicSoftRef.current && cursorPositionRef.current !== null) {
-      firstBasicSoftRef.current.setSelectionRange(
-        cursorPositionRef.current,
-        cursorPositionRef.current
-      );
-    } else if (
-      firstBasicIndustryRef.current &&
-      cursorPositionRef.current !== null
-    ) {
-      firstBasicIndustryRef.current.setSelectionRange(
-        cursorPositionRef.current,
-        cursorPositionRef.current
-      );
-    } else if (
-      secondBasicIndustryRef.current &&
-      cursorPositionRef.current !== null
-    ) {
-      secondBasicIndustryRef.current.setSelectionRange(
-        cursorPositionRef.current,
-        cursorPositionRef.current
-      );
-    } else if (
-      firstExpertSoftRef.current &&
-      cursorPositionRef.current !== null
-    ) {
-      firstExpertSoftRef.current.setSelectionRange(
-        cursorPositionRef.current,
-        cursorPositionRef.current
-      );
-    } else if (
-      firstExpertIndustryRef.current &&
-      cursorPositionRef.current !== null
-    ) {
-      firstExpertIndustryRef.current.setSelectionRange(
-        cursorPositionRef.current,
-        cursorPositionRef.current
-      );
-    } else if (
-      secondExpertIndustryRef.current &&
-      cursorPositionRef.current !== null
-    ) {
-      secondExpertIndustryRef.current.setSelectionRange(
-        cursorPositionRef.current,
-        cursorPositionRef.current
-      );
-    }
   }, [basicSkills, expertSkills]);
 
   useEffect(() => {
@@ -181,9 +100,8 @@ const SkillsComponent = () => {
           </Typography>
           <TextField
             fullWidth
-            inputRef={firstBasicIndustryRef}
             required
-            value={skillState?.basicSkills?.firstBasicIndustrySkill || ""}
+            placeholder={skillState?.basicSkills?.firstBasicIndustrySkill || ""}
             helperText="e.g. Communication Skill"
             onChange={(e) =>
               handleSoftBasicInputChange(
@@ -204,9 +122,8 @@ const SkillsComponent = () => {
           <TextField
             fullWidth
             helperText="e.g. Active Listening"
-            inputRef={firstBasicSoftRef}
             required
-            value={skillState?.basicSkills?.firstBasicSoftSkill || ""}
+            placeholder={skillState?.basicSkills?.firstBasicSoftSkill || ""}
             onChange={(e) =>
               handleSoftBasicInputChange("firstBasicSoftSkill", e.target.value)
             }
@@ -232,9 +149,10 @@ const SkillsComponent = () => {
               },
             }}
             fullWidth
-            inputRef={secondBasicIndustryRef}
             required
-            value={skillState?.basicSkills?.secondBasicIndustrySkill || ""}
+            placeholder={
+              skillState?.basicSkills?.secondBasicIndustrySkill || ""
+            }
             helperText="e.g. Event Planning"
             onChange={(e) =>
               handleSoftBasicInputChange(
@@ -256,6 +174,9 @@ const SkillsComponent = () => {
           <TextField
             fullWidth
             helperText="eg. Conflict Resolution"
+            placeholder={
+              skillState?.expertSkills?.firstExpertIndustrySkill || ""
+            }
             onChange={(e) =>
               handleExpertInputChange(
                 "firstExpertIndustrySkill",
@@ -276,6 +197,7 @@ const SkillsComponent = () => {
           <TextField
             fullWidth
             helperText="eg. Cloud Computing"
+            placeholder={skillState?.expertSkills?.firstExpertSoftSkill || ""}
             onChange={(e) =>
               handleExpertInputChange("firstExpertSoftSkill", e.target.value)
             }
@@ -302,6 +224,9 @@ const SkillsComponent = () => {
             }}
             fullWidth
             helperText="eg. Product Management"
+            placeholder={
+              skillState?.expertSkills?.secondExpertIndustrySkill || ""
+            }
             onChange={(e) =>
               handleExpertInputChange(
                 "secondExpertIndustrySkill",
