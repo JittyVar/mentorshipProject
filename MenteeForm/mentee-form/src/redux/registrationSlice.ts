@@ -19,6 +19,10 @@ export enum APIStatus {
   error = "error",
 }
 
+export interface FileMetadata {
+  photo: File;
+}
+
 export interface registrationForm {
   status: "idle" | "loading" | "success" | "error";
   mentee: MenteeState;
@@ -27,6 +31,7 @@ export interface registrationForm {
   skills: Skills;
   goals: Goals;
   personalityType: PersonalityType;
+  photoUrl: FileMetadata;
 }
 
 const initialState: registrationForm = {
@@ -40,6 +45,7 @@ const initialState: registrationForm = {
   },
   goals: {} as Goals,
   personalityType: {} as PersonalityType,
+  photoUrl: {} as FileMetadata,
 };
 
 export const createMenteeDocument = createAsyncThunk(
@@ -85,6 +91,9 @@ export const registrationSlice = createSlice({
     },
     personalityTypeDetails: (state, action: PayloadAction<PersonalityType>) => {
       state.personalityType = action.payload;
+    },
+    photoUrl: (state, action: PayloadAction<FileMetadata>) => {
+      state.photoUrl = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -146,5 +155,6 @@ export const {
   skillsDetails,
   goalsDetails,
   personalityTypeDetails,
+  photoUrl,
 } = registrationSlice.actions;
 export default registrationSlice.reducer;

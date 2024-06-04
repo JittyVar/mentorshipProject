@@ -15,47 +15,25 @@ import Image from "next/image";
 import { ref, uploadBytesResumable } from "firebase/storage"; // Import Firebase Storage functions
 import { storage } from "@/firestore/firestore";
 import CheckIcon from "@mui/icons-material/Check";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { photoUrl } from "@/redux/registrationSlice";
+import { PhotoUrl } from "@/redux/states/photoUrl";
 
 const ProfilePhotoComponent = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploaded, setUploaded] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
     setSelectedImage(event.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    if (!selectedImage) return;
-
-    const selectedImageName = selectedImage.name;
-    const storageRef = ref(storage, `images/${selectedImageName}`);
-    setUploading(true);
-
-    // Upload the selected image file to Firebase Storage
-    const uploadTask = uploadBytesResumable(storageRef, selectedImage);
-
-    // Monitor the upload progress
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setUploadProgress(progress);
-      },
-      (error) => {
-        console.error("Error uploading file: ", error);
-      },
-      () => {
-        // Upload completed successfully
-        setUploading(false);
-        setSelectedImage(null);
-        setUploadProgress(0);
-        setUploaded(true);
-        console.log("File uploaded successfully");
-      }
+    console.log("works");
+    dispatch(
+      photoUrl({
+        photo: event.target.files[0],
+      })
     );
   };
 
@@ -117,7 +95,7 @@ const ProfilePhotoComponent = () => {
           </Button>
         </label>
 
-        <Button
+        {/* <Button
           variant="contained"
           onClick={handleUpload}
           disabled={!selectedImage || uploading}
@@ -132,7 +110,7 @@ const ProfilePhotoComponent = () => {
           >
             Image uploaded successfully
           </Alert>
-        )}
+        )} */}
         <PersonalDetails />
       </Container>
     </Box>

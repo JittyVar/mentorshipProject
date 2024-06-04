@@ -13,17 +13,72 @@ import { menteeSteps } from "./steps";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createMenteeDocument } from "@/redux/registrationSlice";
 import { APIStatus } from "@/redux/registrationSlice";
-import AlertDialog from "./alertDiaglog";
 import { createMenteeDocumentSkills } from "@/redux/actions/createMenteeDocumentSkills";
 import { createMenteeDocumentGoals } from "@/redux/actions/createMenteeDocumentGoals";
 import { createMenteeDocumentPreferences } from "@/redux/actions/createMenteeDocumentPreferences";
+import { storage } from "@/firestore/firestore";
+import { ref, uploadBytesResumable } from "firebase/storage";
 
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [allowNext, setAllowNext] = React.useState(false);
+  const [backgroundDetailsComplete, setBackgroundDetailsComplete] =
+    React.useState(false);
   const dispatch = useAppDispatch();
   const createMenteeDocumentStatus = useAppSelector(
     (state) => state.registration?.status
   );
+  const photoUrl = useAppSelector((state) => state.registration?.photoUrl);
+  const menteeName = useAppSelector(
+    (state) => state.registration?.mentee.fullName
+  );
+
+  const menteePersonalDetails = useAppSelector(
+    (state) => state.registration?.mentee
+  );
+
+  const menteeBackgroundDetails = useAppSelector(
+    (state) => state.registration?.educationalBackground
+  );
+
+  React.useEffect(() => {
+    if (
+      menteePersonalDetails.fullName !== undefined &&
+      menteePersonalDetails.fullName.trim() !== "" &&
+      menteePersonalDetails.age !== undefined &&
+      menteePersonalDetails.age.toString() !== "" &&
+      menteePersonalDetails.currentStage !== undefined &&
+      menteePersonalDetails.currentStage.trim() !== "" &&
+      menteePersonalDetails.emailAddress !== undefined &&
+      menteePersonalDetails.emailAddress.trim() !== "" &&
+      menteePersonalDetails.phoneNumber !== undefined &&
+      menteePersonalDetails.phoneNumber.trim() !== ""
+    ) {
+      setAllowNext(true);
+    } else {
+      setAllowNext(false);
+    }
+
+    if (activeStep == 1) {
+      if (
+        menteeBackgroundDetails?.majors != null &&
+        menteeBackgroundDetails?.programs != null &&
+        menteeBackgroundDetails.yearOfDegree != undefined
+      ) {
+        setBackgroundDetailsComplete(true);
+      }
+    }
+  }, [
+    activeStep,
+    allowNext,
+    menteeBackgroundDetails,
+    menteePersonalDetails,
+    menteePersonalDetails.age,
+    menteePersonalDetails.currentStage,
+    menteePersonalDetails.emailAddress,
+    menteePersonalDetails.fullName,
+    menteePersonalDetails.phoneNumber,
+  ]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -44,11 +99,35 @@ export default function VerticalLinearStepper() {
         await dispatch(createMenteeDocumentSkills());
         await dispatch(createMenteeDocumentPreferences());
         await dispatch(createMenteeDocumentGoals());
+        if (!photoUrl) return;
+
+        const selectedImageName = photoUrl?.photo.name;
+        console.log("name", menteeName);
+        const storageRef = ref(
+          storage,
+          `images/mentees2024/${menteeName}/${selectedImageName}`
+        );
+
+        // Upload the selected image file to Firebase Storage
+        uploadBytesResumable(storageRef, photoUrl?.photo);
       }
     };
 
     createMenteeDocumentAction(); // Call the function
-  }, [activeStep, dispatch]);
+  }, [activeStep, dispatch, menteeName, photoUrl]);
+
+  const completeStep = () => {
+    if (activeStep == 0) {
+      return allowNext;
+    }
+    if (activeStep == 1) {
+      return backgroundDetailsComplete;
+    }
+  };
+
+  React.useEffect(() => {
+    console.log("completeStep ", allowNext);
+  }, [allowNext]);
 
   return (
     <Box
@@ -102,6 +181,7 @@ export default function VerticalLinearStepper() {
                     variant="contained"
                     onClick={handleNext}
                     sx={{ mt: 1, mr: 1 }}
+                    disabled={!completeStep()}
                   >
                     {index === menteeSteps.length - 1 ? "Finish" : "Continue"}
                   </Button>
