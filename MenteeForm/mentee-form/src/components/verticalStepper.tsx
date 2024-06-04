@@ -26,13 +26,14 @@ export default function VerticalLinearStepper() {
     React.useState(false);
   const [preferencesDetailsComplete, setPreferencesDetailsComplete] =
     React.useState(false);
+  const [skillsComplete, setSkillsComplete] = React.useState(false);
   const dispatch = useAppDispatch();
   const createMenteeDocumentStatus = useAppSelector(
     (state) => state.registration?.status
   );
   const photoUrl = useAppSelector((state) => state.registration?.photoUrl);
   const menteeName = useAppSelector(
-    (state) => state.registration?.mentee.fullName
+    (state) => state.registration?.mentee?.fullName
   );
 
   const menteePersonalDetails = useAppSelector(
@@ -49,6 +50,10 @@ export default function VerticalLinearStepper() {
 
   const menteePreferenceDetails = useAppSelector(
     (state) => state.registration?.preferences
+  );
+
+  const menteeSkillsDetails = useAppSelector(
+    (state) => state.registration?.menteeSkillsValid
   );
 
   React.useEffect(() => {
@@ -81,19 +86,27 @@ export default function VerticalLinearStepper() {
         setPreferencesDetailsComplete(false);
       }
     }
+    if (activeStep == 3) {
+      if (menteeSkillsDetails) {
+        setSkillsComplete(true);
+      } else {
+        setSkillsComplete(false);
+      }
+    }
   }, [
     activeStep,
     allowNext,
     menteeBackgroundDetails,
     menteePersonalDetails,
-    menteePersonalDetails.age,
-    menteePersonalDetails.currentStage,
-    menteePersonalDetails.emailAddress,
-    menteePersonalDetails.fullName,
-    menteePersonalDetails.phoneNumber,
+    menteePersonalDetails?.age,
+    menteePersonalDetails?.currentStage,
+    menteePersonalDetails?.emailAddress,
+    menteePersonalDetails?.fullName,
+    menteePersonalDetails?.phoneNumber,
     menteePersonalDetailsValid,
     menteePreferenceDetails?.preferences?.length,
     menteePreferenceDetails?.stemSector?.length,
+    menteeSkillsDetails,
   ]);
 
   const handleNext = () => {
@@ -141,6 +154,9 @@ export default function VerticalLinearStepper() {
     }
     if (activeStep == 2) {
       return preferencesDetailsComplete;
+    }
+    if (activeStep == 3) {
+      return skillsComplete;
     }
   };
 

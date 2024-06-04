@@ -33,6 +33,7 @@ export interface registrationForm {
   personalityType: PersonalityType;
   photoUrl: FileMetadata;
   menteeStateValid: boolean;
+  menteeSkillsValid: boolean;
 }
 
 const initialState: registrationForm = {
@@ -48,6 +49,7 @@ const initialState: registrationForm = {
   personalityType: {} as PersonalityType,
   photoUrl: {} as FileMetadata,
   menteeStateValid: false,
+  menteeSkillsValid: false,
 };
 
 export const createMenteeDocument = createAsyncThunk(
@@ -99,6 +101,9 @@ export const registrationSlice = createSlice({
     },
     menteeStateValid: (state, action: PayloadAction<boolean>) => {
       state.menteeStateValid = action.payload;
+    },
+    menteeSkillsValid: (state, action: PayloadAction<boolean>) => {
+      state.menteeSkillsValid = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -162,5 +167,6 @@ export const {
   personalityTypeDetails,
   photoUrl,
   menteeStateValid,
+  menteeSkillsValid,
 } = registrationSlice.actions;
 export default registrationSlice.reducer;
