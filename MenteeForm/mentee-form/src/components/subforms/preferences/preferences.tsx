@@ -43,6 +43,7 @@ const MenteePreferencesComponent = () => {
           <MultipleSelector
             data={MentorTypesData}
             chosenData={(data: string[]) => setChosenPreferences(data)}
+            prevData={menteePreferencesState?.preferences}
           ></MultipleSelector>
         </div>
         <div style={{ alignItems: "center", gap: "3%" }}>
@@ -50,6 +51,7 @@ const MenteePreferencesComponent = () => {
           <MultipleSelector
             data={STEMSector}
             chosenData={(data: string[]) => setStemSector(data)}
+            prevData={menteePreferencesState?.stemSector}
           ></MultipleSelector>
         </div>
       </Container>

@@ -67,6 +67,7 @@ const EducationalBackgroundComponent = () => {
           data={Programs}
           chosenData={(data: string[]) => setChosenPrograms(data)}
           hideTypography={true}
+          prevData={educationalBackgroundState?.programs}
         />
         <Typography sx={{ margin: "1%" }}>
           What major/s are you currently enrolled in?
@@ -74,6 +75,7 @@ const EducationalBackgroundComponent = () => {
         <MultipleSelector
           data={Majors}
           chosenData={(data: string[]) => setChosenMajors(data)}
+          prevData={educationalBackgroundState?.majors}
         />
         <div>
           <Typography sx={{ margin: "1%", paddingTop: "10px" }}>

@@ -24,6 +24,8 @@ export default function VerticalLinearStepper() {
   const [allowNext, setAllowNext] = React.useState(false);
   const [backgroundDetailsComplete, setBackgroundDetailsComplete] =
     React.useState(false);
+  const [preferencesDetailsComplete, setPreferencesDetailsComplete] =
+    React.useState(false);
   const dispatch = useAppDispatch();
   const createMenteeDocumentStatus = useAppSelector(
     (state) => state.registration?.status
@@ -37,23 +39,20 @@ export default function VerticalLinearStepper() {
     (state) => state.registration?.mentee
   );
 
+  const menteePersonalDetailsValid = useAppSelector(
+    (state) => state.registration?.menteeStateValid
+  );
+
   const menteeBackgroundDetails = useAppSelector(
     (state) => state.registration?.educationalBackground
   );
 
+  const menteePreferenceDetails = useAppSelector(
+    (state) => state.registration?.preferences
+  );
+
   React.useEffect(() => {
-    if (
-      menteePersonalDetails.fullName !== undefined &&
-      menteePersonalDetails.fullName.trim() !== "" &&
-      menteePersonalDetails.age !== undefined &&
-      menteePersonalDetails.age.toString() !== "" &&
-      menteePersonalDetails.currentStage !== undefined &&
-      menteePersonalDetails.currentStage.trim() !== "" &&
-      menteePersonalDetails.emailAddress !== undefined &&
-      menteePersonalDetails.emailAddress.trim() !== "" &&
-      menteePersonalDetails.phoneNumber !== undefined &&
-      menteePersonalDetails.phoneNumber.trim() !== ""
-    ) {
+    if (menteePersonalDetailsValid) {
       setAllowNext(true);
     } else {
       setAllowNext(false);
@@ -61,11 +60,25 @@ export default function VerticalLinearStepper() {
 
     if (activeStep == 1) {
       if (
-        menteeBackgroundDetails?.majors != null &&
-        menteeBackgroundDetails?.programs != null &&
-        menteeBackgroundDetails.yearOfDegree != undefined
+        menteeBackgroundDetails?.majors?.length != 0 &&
+        menteeBackgroundDetails?.programs?.length != 0 &&
+        menteeBackgroundDetails?.yearOfDegree != undefined &&
+        menteeBackgroundDetails?.yearOfDegree.trim() !== ""
       ) {
         setBackgroundDetailsComplete(true);
+      } else {
+        setBackgroundDetailsComplete(false);
+      }
+    }
+
+    if (activeStep == 2) {
+      if (
+        menteePreferenceDetails?.preferences?.length != 0 &&
+        menteePreferenceDetails?.stemSector?.length != 0
+      ) {
+        setPreferencesDetailsComplete(true);
+      } else {
+        setPreferencesDetailsComplete(false);
       }
     }
   }, [
@@ -78,6 +91,9 @@ export default function VerticalLinearStepper() {
     menteePersonalDetails.emailAddress,
     menteePersonalDetails.fullName,
     menteePersonalDetails.phoneNumber,
+    menteePersonalDetailsValid,
+    menteePreferenceDetails?.preferences?.length,
+    menteePreferenceDetails?.stemSector?.length,
   ]);
 
   const handleNext = () => {
@@ -122,6 +138,9 @@ export default function VerticalLinearStepper() {
     }
     if (activeStep == 1) {
       return backgroundDetailsComplete;
+    }
+    if (activeStep == 2) {
+      return preferencesDetailsComplete;
     }
   };
 

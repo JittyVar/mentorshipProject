@@ -32,15 +32,17 @@ interface MultipleSelectorProps {
   data: string[];
   chosenData: (data: string[]) => void;
   hideTypography?: boolean;
+  prevData?: string[];
 }
 
 const MultipleSelector: React.FC<MultipleSelectorProps> = ({
   data,
   chosenData,
   hideTypography,
+  prevData = [],
 }) => {
   const theme = useTheme();
-  const [selectorData, setSelectorData] = React.useState<string[]>([]);
+  const [selectorData, setSelectorData] = React.useState<string[]>(prevData);
 
   const handleChange = (event: SelectChangeEvent<typeof selectorData>) => {
     const {
