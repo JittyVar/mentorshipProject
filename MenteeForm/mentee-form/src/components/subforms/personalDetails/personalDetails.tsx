@@ -30,8 +30,6 @@ const PersonalDetails = () => {
   const [emailError, setEmailError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
 
-  const cursorPositionRef = useRef<number | null>(null);
-
   const [values, setValues] = useState<MenteeState>({
     fullName: menteeState?.fullName,
     age: menteeState?.age,
@@ -39,6 +37,17 @@ const PersonalDetails = () => {
     emailAddress: menteeState?.emailAddress,
     currentStage: menteeState?.currentStage,
   });
+
+  useEffect(() => {
+    const savedState = localStorage.getItem("menteeState");
+    if (savedState) {
+      setValues(JSON.parse(savedState));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("menteeState", JSON.stringify(values));
+  }, [values]);
 
   useEffect(() => {
     dispatch(menteePersonalDetails(values));
