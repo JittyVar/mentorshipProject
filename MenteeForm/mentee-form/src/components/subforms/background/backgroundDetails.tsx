@@ -54,6 +54,10 @@ const EducationalBackgroundComponent = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem("educationalBackgroundState");
+  }, []);
+
+  useEffect(() => {
     dispatch(backgroundDetails(educationalBackground));
   });
 

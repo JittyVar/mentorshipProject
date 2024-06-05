@@ -32,6 +32,10 @@ const MenteePreferencesComponent = () => {
   }, [chosenPreferences, chosenStemSector]);
 
   useEffect(() => {
+    localStorage.removeItem("menteePreferencesState");
+  }, []);
+
+  useEffect(() => {
     dispatch(preferencesDetails(menteePreferences));
   });
 

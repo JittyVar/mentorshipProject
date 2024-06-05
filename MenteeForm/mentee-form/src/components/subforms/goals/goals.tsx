@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Box, Container, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { goalsDetails } from "@/redux/registrationSlice";
-import Preferences from "@/redux/states/preferences";
 
 const GoalsComponent = () => {
   const dispatch = useAppDispatch();
