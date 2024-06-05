@@ -39,15 +39,8 @@ const PersonalDetails = () => {
   });
 
   useEffect(() => {
-    const savedState = localStorage.getItem("menteeState");
-    if (savedState) {
-      setValues(JSON.parse(savedState));
-    }
+    localStorage.removeItem("menteeState");
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("menteeState", JSON.stringify(values));
-  }, [values]);
 
   useEffect(() => {
     dispatch(menteePersonalDetails(values));
