@@ -18,10 +18,11 @@ import { createMenteeDocumentGoals } from "@/redux/actions/createMenteeDocumentG
 import { createMenteeDocumentPreferences } from "@/redux/actions/createMenteeDocumentPreferences";
 import { storage } from "@/firestore/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
+import { useState } from "react";
 
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [allowNext, setAllowNext] = React.useState(false);
+  const [allowNext, setAllowNext] = useState(false);
   const [backgroundDetailsComplete, setBackgroundDetailsComplete] =
     React.useState(false);
   const [preferencesDetailsComplete, setPreferencesDetailsComplete] =
@@ -32,6 +33,7 @@ export default function VerticalLinearStepper() {
     (state) => state.registration?.status
   );
   const photoUrl = useAppSelector((state) => state.registration?.photoUrl);
+  const menteeState = useAppSelector((state) => state.registration?.mentee);
   const menteeName = useAppSelector(
     (state) => state.registration?.mentee?.fullName
   );
@@ -151,10 +153,6 @@ export default function VerticalLinearStepper() {
     }
   };
 
-  React.useEffect(() => {
-    console.log("completeStep ", allowNext);
-  }, [allowNext]);
-
   return (
     <Box
       sx={{
@@ -164,6 +162,12 @@ export default function VerticalLinearStepper() {
         marginTop: "%",
       }}
     >
+      <div>
+        {menteeState?.fullName +
+          menteeState?.age +
+          menteeState?.emailAddress +
+          menteeState?.phoneNumber}
+      </div>
       <Stepper
         activeStep={activeStep}
         orientation="vertical"
