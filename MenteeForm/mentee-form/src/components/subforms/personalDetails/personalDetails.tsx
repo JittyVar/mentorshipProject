@@ -44,39 +44,39 @@ const PersonalDetails = () => {
     dispatch(menteePersonalDetails(values));
   }, [values, dispatch]);
 
-  useEffect(() => {
-    if (
-      !fullNameError &&
-      !ageError &&
-      !emailError &&
-      !phoneError &&
-      values?.fullName !== undefined &&
-      values?.fullName.trim() !== "" &&
-      values?.age !== undefined &&
-      values?.age.toString().trim() !== "" &&
-      values?.currentStage !== undefined &&
-      values?.currentStage.trim() !== "" &&
-      values?.emailAddress !== undefined &&
-      values?.emailAddress.trim() !== "" &&
-      values?.phoneNumber !== undefined &&
-      values?.phoneNumber.trim() !== ""
-    ) {
-      dispatch(menteeStateValid(true));
-    } else {
-      dispatch(menteeStateValid(false));
-    }
-  }, [
-    ageError,
-    dispatch,
-    emailError,
-    fullNameError,
-    phoneError,
-    values?.age,
-    values?.currentStage,
-    values?.emailAddress,
-    values?.fullName,
-    values?.phoneNumber,
-  ]);
+  // useEffect(() => {
+  //   if (
+  //     !fullNameError &&
+  //     !ageError &&
+  //     !emailError &&
+  //     !phoneError &&
+  //     values?.fullName !== undefined &&
+  //     values?.fullName.trim() !== "" &&
+  //     values?.age !== undefined &&
+  //     values?.age.toString().trim() !== "" &&
+  //     values?.currentStage !== undefined &&
+  //     values?.currentStage.trim() !== "" &&
+  //     values?.emailAddress !== undefined &&
+  //     values?.emailAddress.trim() !== "" &&
+  //     values?.phoneNumber !== undefined &&
+  //     values?.phoneNumber.trim() !== ""
+  //   ) {
+  //     dispatch(menteeStateValid(true));
+  //   } else {
+  //     dispatch(menteeStateValid(false));
+  //   }
+  // }, [
+  //   ageError,
+  //   dispatch,
+  //   emailError,
+  //   fullNameError,
+  //   phoneError,
+  //   values?.age,
+  //   values?.currentStage,
+  //   values?.emailAddress,
+  //   values?.fullName,
+  //   values?.phoneNumber,
+  // ]);
 
   const handleChange = (fieldName: keyof MenteeState, value: string) => {
     if (fieldName === "fullName") {

@@ -56,58 +56,53 @@ export default function VerticalLinearStepper() {
     (state) => state.registration?.menteeSkillsValid
   );
 
-  React.useEffect(() => {
-    if (menteePersonalDetailsValid) {
-      setAllowNext(true);
-    } else {
-      setAllowNext(false);
-    }
+  // React.useEffect(() => {
+  //   if (menteePersonalDetailsValid) {
+  //     setAllowNext(true);
+  //   } else {
+  //     setAllowNext(false);
+  //   }
 
-    if (activeStep == 1) {
-      if (
-        menteeBackgroundDetails?.majors?.length != 0 &&
-        menteeBackgroundDetails?.programs?.length != 0 &&
-        menteeBackgroundDetails?.yearOfDegree != undefined &&
-        menteeBackgroundDetails?.yearOfDegree.trim() !== ""
-      ) {
-        setBackgroundDetailsComplete(true);
-      } else {
-        setBackgroundDetailsComplete(false);
-      }
-    }
+  //   if (activeStep == 1) {
+  //     if (
+  //       menteeBackgroundDetails?.majors?.length != 0 &&
+  //       menteeBackgroundDetails?.programs?.length != 0 &&
+  //       menteeBackgroundDetails?.yearOfDegree != undefined &&
+  //       menteeBackgroundDetails?.yearOfDegree.trim() !== ""
+  //     ) {
+  //       setBackgroundDetailsComplete(true);
+  //     } else {
+  //       setBackgroundDetailsComplete(false);
+  //     }
+  //   }
 
-    if (activeStep == 2) {
-      if (
-        menteePreferenceDetails?.preferences?.length != 0 &&
-        menteePreferenceDetails?.stemSector?.length != 0
-      ) {
-        setPreferencesDetailsComplete(true);
-      } else {
-        setPreferencesDetailsComplete(false);
-      }
-    }
-    if (activeStep == 3) {
-      if (menteeSkillsDetails) {
-        setSkillsComplete(true);
-      } else {
-        setSkillsComplete(false);
-      }
-    }
-  }, [
-    activeStep,
-    allowNext,
-    menteeBackgroundDetails,
-    menteePersonalDetails,
-    menteePersonalDetails?.age,
-    menteePersonalDetails?.currentStage,
-    menteePersonalDetails?.emailAddress,
-    menteePersonalDetails?.fullName,
-    menteePersonalDetails?.phoneNumber,
-    menteePersonalDetailsValid,
-    menteePreferenceDetails?.preferences?.length,
-    menteePreferenceDetails?.stemSector?.length,
-    menteeSkillsDetails,
-  ]);
+  //   if (activeStep == 2) {
+  //     if (
+  //       menteePreferenceDetails?.preferences?.length != 0 &&
+  //       menteePreferenceDetails?.stemSector?.length != 0
+  //     ) {
+  //       setPreferencesDetailsComplete(true);
+  //     } else {
+  //       setPreferencesDetailsComplete(false);
+  //     }
+  //   }
+  //   if (activeStep == 3) {
+  //     if (menteeSkillsDetails) {
+  //       setSkillsComplete(true);
+  //     } else {
+  //       setSkillsComplete(false);
+  //     }
+  //   }
+  // }, [
+  //   activeStep,
+  //   menteeBackgroundDetails?.majors?.length,
+  //   menteeBackgroundDetails?.programs?.length,
+  //   menteeBackgroundDetails?.yearOfDegree,
+  //   menteePersonalDetailsValid,
+  //   menteePreferenceDetails?.preferences?.length,
+  //   menteePreferenceDetails?.stemSector?.length,
+  //   menteeSkillsDetails,
+  // ]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -145,20 +140,20 @@ export default function VerticalLinearStepper() {
     createMenteeDocumentAction(); // Call the function
   }, [activeStep, dispatch, menteeName, photoUrl]);
 
-  const completeStep = () => {
-    if (activeStep == 0) {
-      return allowNext;
-    }
-    if (activeStep == 1) {
-      return backgroundDetailsComplete;
-    }
-    if (activeStep == 2) {
-      return preferencesDetailsComplete;
-    }
-    if (activeStep == 3) {
-      return skillsComplete;
-    }
-  };
+  // const completeStep = () => {
+  //   if (activeStep == 0) {
+  //     return allowNext;
+  //   }
+  //   if (activeStep == 1) {
+  //     return backgroundDetailsComplete;
+  //   }
+  //   if (activeStep == 2) {
+  //     return preferencesDetailsComplete;
+  //   }
+  //   if (activeStep == 3) {
+  //     return skillsComplete;
+  //   }
+  // };
 
   React.useEffect(() => {
     console.log("completeStep ", allowNext);
@@ -216,7 +211,6 @@ export default function VerticalLinearStepper() {
                     variant="contained"
                     onClick={handleNext}
                     sx={{ mt: 1, mr: 1 }}
-                    disabled={!completeStep()}
                   >
                     {index === menteeSteps.length - 1 ? "Finish" : "Continue"}
                   </Button>
