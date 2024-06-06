@@ -256,11 +256,23 @@ export default function VerticalLinearStepper() {
       </Stepper>
       {activeStep === menteeSteps.length &&
         createMenteeDocumentStatus == APIStatus.success && (
-          <Paper square elevation={0} sx={{ p: 3 }}>
-            <Typography>Submission completed - you&apos;re finished</Typography>
-            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-              Reset
-            </Button>
+          <Paper
+            square
+            elevation={0}
+            sx={{
+              p: 3,
+              backgroundColor: "#1E1F42",
+              borderRadius: "5px",
+              margin: "3%",
+            }}
+          >
+            <Typography
+              fontFamily={"Arial"}
+              color={"white"}
+              fontWeight={"bold"}
+            >
+              Submission completed. You will soon receive a confirmation email.
+            </Typography>
           </Paper>
         )}
     </Box>
