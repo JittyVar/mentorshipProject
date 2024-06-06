@@ -28,12 +28,15 @@ export default function VerticalLinearStepper() {
   const [preferencesDetailsComplete, setPreferencesDetailsComplete] =
     React.useState(false);
   const [skillsComplete, setSkillsComplete] = React.useState(false);
+  const [goalsComplete, setGoalsComplete] = React.useState(false);
+  const [personalityTypeComplete, setPersonalityTypeComplete] =
+    React.useState(false);
   const dispatch = useAppDispatch();
   const createMenteeDocumentStatus = useAppSelector(
     (state) => state.registration?.status
   );
   const photoUrl = useAppSelector((state) => state.registration?.photoUrl);
-  const menteeState = useAppSelector((state) => state.registration?.mentee);
+  const registrationState = useAppSelector((state) => state.registration);
   const menteeName = useAppSelector(
     (state) => state.registration?.mentee?.fullName
   );
@@ -55,10 +58,12 @@ export default function VerticalLinearStepper() {
   );
 
   React.useEffect(() => {
-    if (menteePersonalDetailsValid) {
-      setAllowNext(true);
-    } else {
-      setAllowNext(false);
+    if (activeStep == 0) {
+      if (menteePersonalDetailsValid) {
+        setAllowNext(true);
+      } else {
+        setAllowNext(false);
+      }
     }
 
     if (activeStep == 1) {
@@ -91,6 +96,25 @@ export default function VerticalLinearStepper() {
         setSkillsComplete(false);
       }
     }
+
+    if (activeStep == 4) {
+      if (registrationState?.menteeGoalsValid) {
+        setGoalsComplete(true);
+      } else {
+        setGoalsComplete(false);
+      }
+    }
+
+    if (activeStep == 5) {
+      if (
+        registrationState?.personalityType.personalityType != undefined &&
+        registrationState?.personalityType.personalityType.trim() !== ""
+      ) {
+        setPersonalityTypeComplete(true);
+      } else {
+        setPersonalityTypeComplete(false);
+      }
+    }
   }, [
     activeStep,
     menteeBackgroundDetails?.majors?.length,
@@ -100,6 +124,8 @@ export default function VerticalLinearStepper() {
     menteePreferenceDetails?.preferences?.length,
     menteePreferenceDetails?.stemSector?.length,
     menteeSkillsDetails,
+    registrationState?.menteeGoalsValid,
+    registrationState?.personalityType.personalityType,
   ]);
 
   const handleNext = () => {
@@ -151,6 +177,12 @@ export default function VerticalLinearStepper() {
     if (activeStep == 3) {
       return skillsComplete;
     }
+    if (activeStep == 4) {
+      return goalsComplete;
+    }
+    if (activeStep == 5) {
+      return personalityTypeComplete;
+    }
   };
 
   return (
@@ -162,12 +194,6 @@ export default function VerticalLinearStepper() {
         marginTop: "%",
       }}
     >
-      <div>
-        {menteeState?.fullName +
-          menteeState?.age +
-          menteeState?.emailAddress +
-          menteeState?.phoneNumber}
-      </div>
       <Stepper
         activeStep={activeStep}
         orientation="vertical"

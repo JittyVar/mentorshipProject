@@ -16,9 +16,11 @@ import { PersonalityTypeData } from "@/components/data/personalityTypes";
 
 const PersonalityTypeComponent = () => {
   const dispatch = useAppDispatch();
-  const [personalityType, setPersonalityType] = React.useState("");
   const personalityTypeState = useAppSelector(
     (state) => state.registration?.personalityType
+  );
+  const [personalityType, setPersonalityType] = React.useState(
+    personalityTypeState?.personalityType
   );
   const [value, setValue] = useState<PersonalityType>({
     personalityType: personalityTypeState?.personalityType,
@@ -53,8 +55,8 @@ const PersonalityTypeComponent = () => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={personalityType}
-          label="Age"
+          value={personalityTypeState?.personalityType}
+          label="personality type"
           onChange={handleChange}
         >
           {PersonalityTypeData.map((value) => (

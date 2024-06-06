@@ -4,7 +4,7 @@ import { Goals } from "@/redux/states/goals";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Box, Container, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { goalsDetails } from "@/redux/registrationSlice";
+import { goalsDetails, menteeGoalsValid } from "@/redux/registrationSlice";
 
 const GoalsComponent = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +25,23 @@ const GoalsComponent = () => {
   };
 
   useEffect(() => {
+    if (
+      goalsState?.firstShortTermGoal != undefined &&
+      goalsState?.firstShortTermGoal.trim() != "" &&
+      goalsState?.longTermGoal != undefined &&
+      goalsState?.longTermGoal.trim() != "" &&
+      goalsState?.outcome != undefined &&
+      goalsState?.outcome.trim() != "" &&
+      goalsState?.secondShortTermGoal != undefined &&
+      goalsState?.secondShortTermGoal.trim() != ""
+    ) {
+      dispatch(menteeGoalsValid(true));
+    } else {
+      dispatch(menteeGoalsValid(false));
+    }
+  });
+
+  useEffect(() => {
     dispatch(goalsDetails(preferredgoals));
   }, [dispatch, preferredgoals]);
 
@@ -36,8 +53,8 @@ const GoalsComponent = () => {
         </Typography>
         <TextField
           fullWidth
+          placeholder={goalsState?.longTermGoal || ""}
           helperText="e.g. To establish a successful tech startup"
-          label="Long Term Goal"
           variant="outlined"
           onChange={(e) => handleInputChange("longTermGoal", e.target.value)}
           sx={{
@@ -52,7 +69,7 @@ const GoalsComponent = () => {
         <TextField
           fullWidth
           helperText="e.g.  To complete a front-end web certification course"
-          label="First Short Term Goal"
+          placeholder={goalsState?.firstShortTermGoal || ""}
           variant="outlined"
           onChange={(e) =>
             handleInputChange("firstShortTermGoal", e.target.value)
@@ -69,7 +86,7 @@ const GoalsComponent = () => {
         <TextField
           fullWidth
           helperText="e.g.  To improve interpersonal skills by next year"
-          label="Second Short Term Goal"
+          placeholder={goalsState?.secondShortTermGoal || ""}
           variant="outlined"
           onChange={(e) =>
             handleInputChange("secondShortTermGoal", e.target.value)
@@ -90,6 +107,7 @@ const GoalsComponent = () => {
           <TextField
             id="expectation"
             multiline
+            placeholder={goalsState?.outcome || ""}
             sx={{
               m: 1,
               "& .MuiOutlinedInput-root": {
