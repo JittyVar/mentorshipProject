@@ -107,8 +107,8 @@ export default function VerticalLinearStepper() {
 
     if (activeStep == 5) {
       if (
-        registrationState?.personalityType.personalityType != undefined &&
-        registrationState?.personalityType.personalityType.trim() !== ""
+        registrationState?.personalityType?.personalityType != undefined &&
+        registrationState?.personalityType?.personalityType.trim() !== ""
       ) {
         setPersonalityTypeComplete(true);
       } else {
@@ -125,7 +125,7 @@ export default function VerticalLinearStepper() {
     menteePreferenceDetails?.stemSector?.length,
     menteeSkillsDetails,
     registrationState?.menteeGoalsValid,
-    registrationState?.personalityType.personalityType,
+    registrationState?.personalityType?.personalityType,
   ]);
 
   const handleNext = () => {
