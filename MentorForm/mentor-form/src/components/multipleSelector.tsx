@@ -31,14 +31,16 @@ function getStyles(name: string, personName: string[], theme: Theme) {
 interface MultipleSelectorProps {
   data: string[];
   chosenData: (data: string[]) => void;
+  prevData?: string[];
 }
 
 const MultipleSelector: React.FC<MultipleSelectorProps> = ({
   data,
   chosenData,
+  prevData = [],
 }) => {
   const theme = useTheme();
-  const [selectorData, setSelectorData] = React.useState<string[]>([]);
+  const [selectorData, setSelectorData] = React.useState<string[]>(prevData);
 
   const handleChange = (event: SelectChangeEvent<typeof selectorData>) => {
     const {
@@ -80,7 +82,11 @@ const MultipleSelector: React.FC<MultipleSelectorProps> = ({
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip key={value} label={value} />
+                <Chip
+                  key={value}
+                  label={value}
+                  sx={{ backgroundColor: "#1E1F42", color: "white" }}
+                />
               ))}
             </Box>
           )}

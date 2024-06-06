@@ -8,13 +8,13 @@ import { goalsDetails } from "@/redux/registrationSlice";
 
 const GoalsComponent = () => {
   const dispatch = useAppDispatch();
-  const goalsState = useAppSelector((state) => state.registration.goals);
+  const goalsState = useAppSelector((state) => state?.registration?.goals);
   const [preferredgoals, setPreferredGoals] = useState<Goals>({
-    longTermGoal: goalsState.longTermGoal,
-    firstShortTermGoal: goalsState.firstShortTermGoal,
-    secondShortTermGoal: goalsState.secondShortTermGoal,
-    outcome: goalsState.outcome,
-    motivation: goalsState.motivation,
+    longTermGoal: goalsState?.longTermGoal,
+    firstShortTermGoal: goalsState?.firstShortTermGoal,
+    secondShortTermGoal: goalsState?.secondShortTermGoal,
+    outcome: goalsState?.outcome,
+    motivation: goalsState?.motivation,
   });
 
   const handleInputChange = (fieldName: keyof Goals, value: string) => {
@@ -76,6 +76,7 @@ const GoalsComponent = () => {
               },
             }}
             fullWidth
+            placeholder={goalsState?.outcome || ""}
             onChange={(e) => handleInputChange("outcome", e.target.value)}
           />
         </div>
@@ -96,6 +97,7 @@ const GoalsComponent = () => {
               },
             }}
             fullWidth
+            placeholder={goalsState?.motivation || ""}
             onChange={(e) => handleInputChange("motivation", e.target.value)}
           />
         </div>

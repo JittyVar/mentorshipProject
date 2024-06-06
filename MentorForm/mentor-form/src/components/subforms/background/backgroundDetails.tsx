@@ -24,9 +24,9 @@ const ProfessionalBackgroundComponent = () => {
   const [organisationError, setOrganisationError] = useState(false);
   const [specialisationError, setSpecialisationError] = useState(false);
   const [values, setValues] = useState<ProfessionalDetails>({
-    jobTitle: professionalDetailsState.jobTitle,
-    organisation: professionalDetailsState.organisation,
-    specialisation: professionalDetailsState.specialisation,
+    jobTitle: professionalDetailsState?.jobTitle,
+    organisation: professionalDetailsState?.organisation,
+    specialisation: professionalDetailsState?.specialisation,
   });
 
   useEffect(() => {

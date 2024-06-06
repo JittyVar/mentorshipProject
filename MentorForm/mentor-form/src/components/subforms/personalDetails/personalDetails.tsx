@@ -32,7 +32,7 @@ const PersonalDetails = () => {
 
   const validator = require("validator");
   const mentorState = useSelector(
-    (state: RootState) => state.registration.mentor
+    (state: RootState) => state.registration?.mentor
   );
   const dispatch = useAppDispatch();
   const [isValid, setIsValid] = useState(true);

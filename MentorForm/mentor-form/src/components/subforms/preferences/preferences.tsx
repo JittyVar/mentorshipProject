@@ -17,12 +17,12 @@ import MentorIndustryPreferences from "@/components/data/stemSector";
 const MenteePreferencesComponent = () => {
   const dispatch = useAppDispatch();
   const menteePreferencesState = useAppSelector(
-    (state) => state.registration.preferences
+    (state) => state?.registration?.preferences
   );
   const [mentorPreferences, setMentorPreferences] = useState<Preferences>({
-    preferences: menteePreferencesState.preferences,
-    menteeType: menteePreferencesState.menteeType,
-    studentType: menteePreferencesState.studentType,
+    preferences: menteePreferencesState?.preferences,
+    menteeType: menteePreferencesState?.menteeType,
+    studentType: menteePreferencesState?.studentType,
   });
 
   const [chosenPreferences, setChosenPreferences] = React.useState<string[]>(
@@ -45,7 +45,7 @@ const MenteePreferencesComponent = () => {
       menteeType: mentorPreferences.menteeType,
       studentType: studentType,
     });
-  }, [chosenPreferences, mentorPreferences.menteeType, studentType]);
+  }, [chosenPreferences, mentorPreferences?.menteeType, studentType]);
 
   useEffect(() => {
     dispatch(preferencesDetails(mentorPreferences));
@@ -55,13 +55,6 @@ const MenteePreferencesComponent = () => {
     <Box>
       <Container>
         <div style={{ alignItems: "center", gap: "3%" }}>
-          {/* <Typography sx={{ margin: "1%" }}>
-            What type/s of mentor would you prefer?
-          </Typography>
-          <MultipleSelector
-            data={MentorTypesData}
-            chosenData={(data: string[]) => setChosenPreferences(data)}
-          ></MultipleSelector> */}
           <Typography sx={{ margin: "1%", paddingTop: "10px" }}>
             What type/s of mentee would you prefer?
           </Typography>
@@ -70,8 +63,8 @@ const MenteePreferencesComponent = () => {
             name="row-radio-buttons-group"
             sx={{ margin: "1%" }}
             value={
-              mentorPreferences.menteeType !== undefined
-                ? mentorPreferences.menteeType
+              mentorPreferences?.menteeType !== undefined
+                ? mentorPreferences?.menteeType
                 : ""
             }
             onChange={(e) => handleChange("menteeType", e.target.value)}
@@ -99,7 +92,8 @@ const MenteePreferencesComponent = () => {
           </Typography>
           <MultipleSelector
             data={MentorIndustryPreferences}
-            chosenData={(data: string[]) => setStudentType(data)}
+            chosenData={(data: string[]) => setChosenPreferences(data)}
+            prevData={menteePreferencesState?.preferences}
           ></MultipleSelector>
         </div>
       </Container>

@@ -13,12 +13,15 @@ import { menteeSteps } from "./steps";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createMenteeDocument } from "@/redux/actions/createMenteeDocument";
 import { createMenteeContinuation } from "@/redux/actions/createMenteeContinuation";
-import { mentorStateValid } from "@/redux/registrationSlice";
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [personalDetailsValid, setPersonalDetailsValid] = React.useState(false);
   const [professionalDetailsValid, setProfessionalDetailsValid] =
     React.useState(false);
+  const [preferenceDetailsValid, setPreferenceDetailsValid] =
+    React.useState(false);
+  const [goalsValid, setgoalsValid] = React.useState(false);
+  const [personalityValid, setPersonalityValid] = React.useState(false);
   const dispatch = useAppDispatch();
   const createMenteeDocumentStatus = useAppSelector(
     (state) => state.registration.status
@@ -52,10 +55,49 @@ export default function VerticalLinearStepper() {
         setProfessionalDetailsValid(false);
       }
     }
+    if (activeStep == 2) {
+      if (
+        registrationState?.preferences?.menteeType !== undefined &&
+        registrationState?.preferences?.menteeType.trim() !== "" &&
+        registrationState?.preferences?.preferences !== undefined &&
+        registrationState?.preferences?.preferences.length !== 0
+      ) {
+        setPreferenceDetailsValid(true);
+      } else {
+        setPreferenceDetailsValid(false);
+      }
+    }
+    if (activeStep == 3) {
+      if (
+        registrationState?.goals?.motivation !== undefined &&
+        registrationState?.goals?.motivation.trim() !== "" &&
+        registrationState?.goals?.outcome !== undefined &&
+        registrationState?.goals?.outcome.trim() !== ""
+      ) {
+        setgoalsValid(true);
+      } else {
+        setgoalsValid(false);
+      }
+    }
+    if (activeStep == 4) {
+      if (
+        registrationState?.personalityType?.personalityType !== undefined &&
+        registrationState?.personalityType?.personalityType.trim() !== ""
+      ) {
+        setPersonalityValid(true);
+      } else {
+        setPersonalityValid(false);
+      }
+    }
   }, [
     activeStep,
+    registrationState?.goals?.motivation,
+    registrationState?.goals?.outcome,
     registrationState?.mentorProfessionalStateValid,
     registrationState?.mentorStateValid,
+    registrationState?.personalityType?.personalityType,
+    registrationState?.preferences?.menteeType,
+    registrationState?.preferences?.preferences,
   ]);
 
   React.useEffect(() => {
@@ -77,6 +119,15 @@ export default function VerticalLinearStepper() {
     }
     if (activeStep == 1) {
       return professionalDetailsValid;
+    }
+    if (activeStep == 2) {
+      return preferenceDetailsValid;
+    }
+    if (activeStep == 3) {
+      return goalsValid;
+    }
+    if (activeStep == 4) {
+      return personalityValid;
     }
   };
 
