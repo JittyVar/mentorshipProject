@@ -9,12 +9,17 @@ import { Goals } from "./states/goals";
 import { PersonalityType } from "./states/personalityType";
 import { store } from "./store";
 import { createMenteeContinuation } from "./actions/createMenteeContinuation";
+import { PhotoUrl } from "./states/photoUrl";
 
 export enum APIStatus {
   idle = "idle",
   loading = "loading",
   success = "success",
   error = "error",
+}
+
+export interface FileMetadata {
+  photo: File;
 }
 
 export interface registrationForm {
@@ -25,6 +30,9 @@ export interface registrationForm {
   skills: Skills;
   goals: Goals;
   personalityType: PersonalityType;
+  photoUrl: FileMetadata;
+  mentorStateValid: boolean;
+  mentorProfessionalStateValid: boolean;
 }
 
 const initialState: registrationForm = {
@@ -38,6 +46,9 @@ const initialState: registrationForm = {
   },
   goals: {} as Goals,
   personalityType: {} as PersonalityType,
+  photoUrl: {} as FileMetadata,
+  mentorStateValid: false,
+  mentorProfessionalStateValid: false,
 };
 
 export const createMenteeDocument = createAsyncThunk(
@@ -81,6 +92,15 @@ export const registrationSlice = createSlice({
     personalityTypeDetails: (state, action: PayloadAction<PersonalityType>) => {
       state.personalityType = action.payload;
     },
+    photoUrl: (state, action: PayloadAction<FileMetadata>) => {
+      state.photoUrl = action.payload;
+    },
+    mentorStateValid: (state, action: PayloadAction<boolean>) => {
+      state.mentorStateValid = action.payload;
+    },
+    mentorProfessionalStateValid: (state, action: PayloadAction<boolean>) => {
+      state.mentorProfessionalStateValid = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -117,5 +137,8 @@ export const {
   skillsDetails,
   goalsDetails,
   personalityTypeDetails,
+  photoUrl,
+  mentorStateValid,
+  mentorProfessionalStateValid,
 } = registrationSlice.actions;
 export default registrationSlice.reducer;

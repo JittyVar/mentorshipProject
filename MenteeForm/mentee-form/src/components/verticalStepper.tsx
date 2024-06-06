@@ -136,10 +136,6 @@ export default function VerticalLinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
   React.useEffect(() => {
     const createMenteeDocumentAction = async () => {
       if (activeStep == 6) {

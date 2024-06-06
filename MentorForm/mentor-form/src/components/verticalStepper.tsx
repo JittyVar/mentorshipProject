@@ -13,12 +13,17 @@ import { menteeSteps } from "./steps";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createMenteeDocument } from "@/redux/actions/createMenteeDocument";
 import { createMenteeContinuation } from "@/redux/actions/createMenteeContinuation";
+import { mentorStateValid } from "@/redux/registrationSlice";
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [personalDetailsValid, setPersonalDetailsValid] = React.useState(false);
+  const [professionalDetailsValid, setProfessionalDetailsValid] =
+    React.useState(false);
   const dispatch = useAppDispatch();
   const createMenteeDocumentStatus = useAppSelector(
     (state) => state.registration.status
   );
+  const registrationState = useAppSelector((state) => state?.registration);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -33,6 +38,27 @@ export default function VerticalLinearStepper() {
   };
 
   React.useEffect(() => {
+    if (activeStep == 0) {
+      if (registrationState?.mentorStateValid) {
+        setPersonalDetailsValid(true);
+      } else {
+        setPersonalDetailsValid(false);
+      }
+    }
+    if (activeStep == 1) {
+      if (registrationState?.mentorProfessionalStateValid) {
+        setProfessionalDetailsValid(true);
+      } else {
+        setProfessionalDetailsValid(false);
+      }
+    }
+  }, [
+    activeStep,
+    registrationState?.mentorProfessionalStateValid,
+    registrationState?.mentorStateValid,
+  ]);
+
+  React.useEffect(() => {
     const createMenteeDocumentAction = async () => {
       if (activeStep == 5) {
         await dispatch(createMenteeDocument());
@@ -44,6 +70,15 @@ export default function VerticalLinearStepper() {
     createMenteeDocumentAction(); // Call the function
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStep]);
+
+  const completeStep = () => {
+    if (activeStep == 0) {
+      return personalDetailsValid;
+    }
+    if (activeStep == 1) {
+      return professionalDetailsValid;
+    }
+  };
 
   return (
     <Box
@@ -97,6 +132,7 @@ export default function VerticalLinearStepper() {
                     variant="contained"
                     onClick={handleNext}
                     sx={{ mt: 1, mr: 1 }}
+                    disabled={!completeStep()}
                   >
                     {index === menteeSteps.length - 1 ? "Finish" : "Continue"}
                   </Button>

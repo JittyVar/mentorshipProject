@@ -1,53 +1,23 @@
 "use client";
-import { Alert, Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PersonalDetails from "./personalDetails/personalDetails";
 import { useState, ChangeEvent } from "react";
-import { storage } from "@/firestore/firestore";
-import { ref, uploadBytesResumable } from "firebase/storage";
 import Image from "next/image";
-import CheckIcon from "@mui/icons-material/Check";
+import { useAppDispatch } from "@/redux/hooks";
+import { photoUrl } from "@/redux/registrationSlice";
 
 const ProfilePhotoComponent = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploaded, setUploaded] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
     setSelectedImage(event.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    if (!selectedImage) return;
-
-    // Create a storage reference with a unique name for the file
-    const storageRef = ref(storage, `images/${selectedImage.name}`);
-    setUploading(true);
-
-    // Upload the selected image file to Firebase Storage
-    const uploadTask = uploadBytesResumable(storageRef, selectedImage);
-
-    // Monitor the upload progress
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setUploadProgress(progress);
-      },
-      (error) => {
-        console.error("Error uploading file: ", error);
-      },
-      () => {
-        // Upload completed successfully
-        setUploading(false);
-        setSelectedImage(null);
-        setUploadProgress(0);
-        setUploaded(true);
-        console.log("File uploaded successfully");
-      }
+    dispatch(
+      photoUrl({
+        photo: event.target.files[0],
+      })
     );
   };
 
@@ -91,23 +61,6 @@ const ProfilePhotoComponent = () => {
             Select file
           </Button>
         </label>
-
-        <Button
-          variant="contained"
-          onClick={handleUpload}
-          disabled={!selectedImage || uploading}
-        >
-          Upload
-        </Button>
-        {uploaded && (
-          <Alert
-            icon={<CheckIcon fontSize="inherit" />}
-            severity="success"
-            variant="filled"
-          >
-            Image uploaded successfully
-          </Alert>
-        )}
         <PersonalDetails />
       </Container>
     </Box>
