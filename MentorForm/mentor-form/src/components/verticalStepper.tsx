@@ -24,7 +24,7 @@ export default function VerticalLinearStepper() {
   const [personalityValid, setPersonalityValid] = React.useState(false);
   const dispatch = useAppDispatch();
   const createMenteeDocumentStatus = useAppSelector(
-    (state) => state.registration.status
+    (state) => state?.registration?.status
   );
   const registrationState = useAppSelector((state) => state?.registration);
 
