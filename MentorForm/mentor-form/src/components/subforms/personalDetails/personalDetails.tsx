@@ -45,10 +45,6 @@ const PersonalDetails = () => {
   });
 
   useEffect(() => {
-    localStorage.removeItem("menteeState");
-  }, []);
-
-  useEffect(() => {
     if (
       !fullNameError &&
       !genderError &&
@@ -83,21 +79,32 @@ const PersonalDetails = () => {
     dispatch(menteePersonalDetails(values));
   }, [values, dispatch]);
 
-  //Mentee extends user state
   const handleChange = (fieldName: keyof MentorState, value: string) => {
+    let hasError = false;
     if (fieldName === "fullName") {
-      setFullNameError(value.trim() === "");
+      const error = value.trim() === "";
+      setFullNameError(error);
+      hasError = error;
     } else if (fieldName === "gender") {
-      setGenderError(value.trim() === "");
+      const error = value.trim() === "";
+      setGenderError(error);
+      hasError = error;
     } else if (fieldName === "emailAddress") {
-      setEmailError(value.trim() === "" || !validator.isEmail(value));
+      const error = value.trim() === "" || !validator.isEmail(value);
+      setEmailError(error);
+      hasError = error;
     } else if (fieldName === "phoneNumber") {
-      setPhoneError(value.trim() === "");
+      const error = value.trim() === "";
+      setPhoneError(error);
+      hasError = error;
     }
-    setValues((prevValues) => ({
-      ...prevValues,
-      [fieldName]: value,
-    }));
+
+    if (!hasError) {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [fieldName]: value,
+      }));
+    }
   };
 
   const handleGenderChange = (event: SelectChangeEvent) => {
