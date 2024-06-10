@@ -39,10 +39,6 @@ const PersonalDetails = () => {
   });
 
   useEffect(() => {
-    localStorage.removeItem("menteeState");
-  }, []);
-
-  useEffect(() => {
     dispatch(menteePersonalDetails(values));
   }, [values, dispatch]);
 
@@ -81,20 +77,32 @@ const PersonalDetails = () => {
   ]);
 
   const handleChange = (fieldName: keyof MenteeState, value: string) => {
+    let hasError = false;
+
     if (fieldName === "fullName") {
-      setFullNameError(value.trim() === "");
+      const error = value.trim() === "";
+      setFullNameError(error);
+      hasError = error;
     } else if (fieldName === "age") {
-      setAgeError(value.trim() === "" || !/^\d+$/.test(value));
+      const error = value.trim() === "" || !/^\d+$/.test(value);
+      setAgeError(error);
+      hasError = error;
     } else if (fieldName === "emailAddress") {
-      setEmailError(value.trim() === "" || !validator.isEmail(value));
+      const error = value.trim() === "" || !validator.isEmail(value);
+      setEmailError(error);
+      hasError = error;
     } else if (fieldName === "phoneNumber") {
-      setPhoneError(value.trim() === "" || !/^\d{9,10}$/.test(value));
+      const error = value.trim() === "";
+      setPhoneError(error);
+      hasError = error;
     }
 
-    setValues((prevValues) => ({
-      ...prevValues,
-      [fieldName]: value,
-    }));
+    if (!hasError) {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [fieldName]: value,
+      }));
+    }
   };
 
   useEffect(() => {
