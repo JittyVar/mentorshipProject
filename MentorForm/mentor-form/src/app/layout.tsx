@@ -2,7 +2,8 @@
 
 //import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Provider } from "react-redux";
-import { store } from "@/redux/store";
+import { persistor, store } from "@/redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -11,9 +12,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        {/* <UserProvider> */}
-        <Provider store={store}>{children}</Provider>
-        {/* </UserProvider> */}
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            {children}
+          </PersistGate>
+        </Provider>
       </body>
     </html>
   );
