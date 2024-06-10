@@ -82,8 +82,8 @@ const ProfessionalBackgroundComponent = () => {
 
   return (
     <Box>
-      <div style={{ display: "flex" }}>
-        <Typography sx={{ m: 1, width: "20ch" }}>Job title</Typography>
+      <div style={{ paddingTop: "2%" }}>
+        <Typography sx={{ m: 1 }}>Job title</Typography>
         <TextField
           id="fullName"
           fullWidth
@@ -97,10 +97,8 @@ const ProfessionalBackgroundComponent = () => {
           }}
         />
       </div>
-      <div style={{ display: "flex", paddingTop: "2%" }}>
-        <Typography sx={{ margin: "1%", width: "20ch" }}>
-          Current Organisation
-        </Typography>
+      <div style={{ paddingTop: "2%" }}>
+        <Typography sx={{ margin: "1%" }}>Current Organisation</Typography>
         <TextField
           id="gender"
           onChange={(e) => handleChange("organisation", e.target.value)}
@@ -115,8 +113,8 @@ const ProfessionalBackgroundComponent = () => {
           }}
         />
       </div>
-      <div style={{ display: "flex", paddingTop: "2%" }}>
-        <Typography sx={{ margin: "1%", width: "20ch" }}>
+      <div style={{ paddingTop: "2%" }}>
+        <Typography sx={{ margin: "1%" }}>
           Short description of your role
         </Typography>
         <TextField

@@ -128,8 +128,8 @@ const PersonalDetails = () => {
   return (
     <Box>
       <>
-        <div style={{ display: "flex" }}>
-          <Typography sx={{ m: 1, width: "17ch" }}>Full Name</Typography>
+        <div>
+          <Typography sx={{ m: 1 }}>Full Name</Typography>
           <TextField
             id="fullName"
             fullWidth
@@ -147,7 +147,7 @@ const PersonalDetails = () => {
             }}
           />
         </div>
-        <div style={{ display: "flex", paddingTop: "2%" }}>
+        <div style={{ paddingTop: "2%" }}>
           <Typography sx={{ margin: "1%", width: "16ch" }}>
             Email Address
           </Typography>

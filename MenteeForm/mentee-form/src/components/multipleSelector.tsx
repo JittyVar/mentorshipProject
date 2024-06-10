@@ -25,6 +25,9 @@ function getStyles(name: string, personName: string[], theme: Theme) {
       personName.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
+    whiteSpace: "normal",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   };
 }
 

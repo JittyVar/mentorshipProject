@@ -140,7 +140,7 @@ const PersonalDetails = () => {
             }}
           />
         </div>
-        <div style={{ paddingTop: "2%" }}>
+        <div style={{ paddingTop: "1%" }}>
           <Typography sx={{ m: 1, width: "15ch" }}>Age</Typography>
           <TextField
             id="age"
