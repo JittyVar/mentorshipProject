@@ -232,7 +232,7 @@ export default function VerticalLinearStepper() {
                   <Button
                     variant="contained"
                     onClick={handleNext}
-                    sx={{ mt: 1, mr: 1 }}
+                    sx={{ mt: 1, mr: 1, backgroundColor: "#8F3880" }}
                     disabled={!completeStep()}
                   >
                     {index === menteeSteps.length - 1 ? "Finish" : "Continue"}
