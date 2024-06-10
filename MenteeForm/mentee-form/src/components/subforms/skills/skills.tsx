@@ -93,11 +93,10 @@ const SkillsComponent = () => {
         <Container
           sx={{ "& > div:not(:last-child)": { marginBottom: "30px" } }}
         >
-          <Typography
-            sx={{ margin: "1%", fontWeight: "bold", marginBottom: "5%" }}
-          >
+          <Typography sx={{ fontWeight: "bold", marginBottom: "3%" }}>
             Three (3) basic skills
           </Typography>
+          <Typography sx={{ m: 1 }}>First Basic Industry Skill</Typography>
           <TextField
             fullWidth
             required
@@ -109,7 +108,6 @@ const SkillsComponent = () => {
                 e.target.value
               )
             }
-            label="Basic Industry Skill"
             sx={{
               "& .MuiOutlinedInput-input": {
                 backgroundColor: "white",
@@ -119,6 +117,7 @@ const SkillsComponent = () => {
               },
             }}
           />
+          <Typography sx={{ m: 1 }}>Basic Soft Skill</Typography>
           <TextField
             fullWidth
             helperText="e.g. Active Listening"
@@ -127,7 +126,6 @@ const SkillsComponent = () => {
             onChange={(e) =>
               handleSoftBasicInputChange("firstBasicSoftSkill", e.target.value)
             }
-            label="Basic Soft Skill"
             sx={{
               marginBottom: "5%",
               "& .MuiOutlinedInput-input": {
@@ -138,6 +136,7 @@ const SkillsComponent = () => {
               },
             }}
           />
+          <Typography sx={{ m: 1 }}>Second Basic Industry Skill</Typography>
           <TextField
             sx={{
               marginBottom: "5%",
@@ -160,17 +159,15 @@ const SkillsComponent = () => {
                 e.target.value
               )
             }
-            label="Basic Industy Skill"
           />
         </Container>
         <Container
           sx={{ "& > div:not(:last-child)": { marginBottom: "30px" } }}
         >
-          <Typography
-            sx={{ margin: "1%", fontWeight: "bold", marginBottom: "5%" }}
-          >
+          <Typography sx={{ fontWeight: "bold", marginBottom: "3%" }}>
             Three (3) expert skills
           </Typography>
+          <Typography sx={{ m: 1 }}>First Expert Industry Skill</Typography>
           <TextField
             fullWidth
             helperText="eg. Conflict Resolution"
@@ -183,7 +180,6 @@ const SkillsComponent = () => {
                 e.target.value
               )
             }
-            label="Expert Industry Skill"
             sx={{
               marginBottom: "5%",
               "& .MuiOutlinedInput-input": {
@@ -194,6 +190,7 @@ const SkillsComponent = () => {
               },
             }}
           />
+          <Typography sx={{ m: 1 }}>First Expert Soft Skill</Typography>
           <TextField
             fullWidth
             helperText="eg. Cloud Computing"
@@ -201,7 +198,6 @@ const SkillsComponent = () => {
             onChange={(e) =>
               handleExpertInputChange("firstExpertSoftSkill", e.target.value)
             }
-            label="Expert Soft Skill"
             sx={{
               marginBottom: "5%",
               "& .MuiOutlinedInput-input": {
@@ -212,6 +208,7 @@ const SkillsComponent = () => {
               },
             }}
           />
+          <Typography sx={{ m: 1 }}>Second Expert Industry Skill</Typography>
           <TextField
             sx={{
               marginBottom: "5%",
@@ -233,7 +230,6 @@ const SkillsComponent = () => {
                 e.target.value
               )
             }
-            label="Expert Industry Skill"
           />
         </Container>
       </div>
