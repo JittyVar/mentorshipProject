@@ -13,6 +13,10 @@ import { menteeSteps } from "./steps";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createMenteeDocument } from "@/redux/actions/createMenteeDocument";
 import { createMenteeContinuation } from "@/redux/actions/createMenteeContinuation";
+import { ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "@/firestore/firestore";
+import { CircularProgress } from "@mui/material";
+
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [personalDetailsValid, setPersonalDetailsValid] = React.useState(false);
@@ -27,6 +31,10 @@ export default function VerticalLinearStepper() {
     (state) => state?.registration?.status
   );
   const registrationState = useAppSelector((state) => state?.registration);
+  const photoUrl = useAppSelector((state) => state.registration?.photoUrl);
+  const mentorName = useAppSelector(
+    (state) => state.registration?.mentor?.fullName
+  );
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -101,15 +109,24 @@ export default function VerticalLinearStepper() {
   ]);
 
   React.useEffect(() => {
-    const createMenteeDocumentAction = async () => {
+    const createMentorDocumentAction = async () => {
       if (activeStep == 5) {
         await dispatch(createMenteeDocument());
         await dispatch(createMenteeContinuation());
-        // Call the function
+        if (photoUrl && photoUrl?.photo) {
+          const selectedImageName = photoUrl.photo.name;
+          const storageRef = ref(
+            storage,
+            `images/mentors2024/${mentorName}/${selectedImageName}`
+          );
+
+          // Upload the selected image file to Firebase Storage
+          uploadBytesResumable(storageRef, photoUrl.photo);
+        }
       }
     };
 
-    createMenteeDocumentAction(); // Call the function
+    createMentorDocumentAction(); // Call the function
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStep]);
 
@@ -182,7 +199,7 @@ export default function VerticalLinearStepper() {
                   <Button
                     variant="contained"
                     onClick={handleNext}
-                    sx={{ mt: 1, mr: 1 }}
+                    sx={{ mt: 1, mr: 1, backgroundColor: "#1E1F42" }}
                     disabled={!completeStep()}
                   >
                     {index === menteeSteps.length - 1 ? "Finish" : "Continue"}
@@ -201,14 +218,35 @@ export default function VerticalLinearStepper() {
         ))}
       </Stepper>
       {activeStep === menteeSteps.length &&
-        createMenteeDocumentStatus == "success" && (
-          <Paper square elevation={0} sx={{ p: 3 }}>
-            <Typography>Submission completed - you&apos;re finished</Typography>
-            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-              Reset
-            </Button>
-          </Paper>
-        )}
+      createMenteeDocumentStatus == "success" ? (
+        <Paper
+          square
+          elevation={0}
+          sx={{
+            p: 3,
+            backgroundColor: "#1E1F42",
+            borderRadius: "5px",
+            margin: "3%",
+          }}
+        >
+          <Typography fontFamily={"Arial"} color={"white"} fontWeight={"bold"}>
+            Submission completed. You will soon receive a confirmation email.
+          </Typography>
+        </Paper>
+      ) : (
+        activeStep === menteeSteps.length &&
+        createMenteeDocumentStatus != "success" && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <CircularProgress size={50} />
+          </Box>
+        )
+      )}
     </Box>
   );
 }
