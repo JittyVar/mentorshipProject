@@ -15,12 +15,6 @@ import applicationpic from "../../../public/mentorshipapplication.png";
 
 const FormPage = () => {
   const { user, error, isLoading } = useUser();
-  useEffect(() => {
-    if (!isLoading && !user) {
-      window.location.href = "/api/auth/login";
-    }
-  }, [isLoading, user]);
-
   if (isLoading || !user) {
     return (
       <Backdrop
@@ -43,6 +37,7 @@ const FormPage = () => {
   return (
     <Box>
       <Container>
+        <a href="/api/auth/login">Login</a>
         <a href="/api/auth/logout">Logout</a>
         <ImageList variant="masonry" cols={1}>
           <ImageListItem key={"applicationpic"}>
