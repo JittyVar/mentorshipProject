@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useEffect } from "react";
 import VerticalLinearStepper from "@/components/verticalStepper";
 import {
@@ -11,11 +12,9 @@ import {
   ImageListItem,
 } from "@mui/material";
 import applicationpic from "../../../public/mentorshipapplication.png";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 const FormPage = () => {
   const { user, error, isLoading } = useUser();
-
   useEffect(() => {
     if (!isLoading && !user) {
       window.location.href = "/api/auth/login";
