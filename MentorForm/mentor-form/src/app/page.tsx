@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import applicationpic from "../../../mentor-form/public/mentorshipapplication.png";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import FormPage from "./form/page";
 import VerticalLinearStepper from "@/components/verticalStepper";
 
 const Home = () => {
