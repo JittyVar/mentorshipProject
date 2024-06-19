@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -15,9 +16,10 @@ import { createMenteeDocument } from "@/redux/actions/createMenteeDocument";
 import { createMenteeContinuation } from "@/redux/actions/createMenteeContinuation";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/firestore/firestore";
-import { CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function VerticalLinearStepper() {
+  const { user, error, isLoading } = useUser();
   const [activeStep, setActiveStep] = React.useState(0);
   const [personalDetailsValid, setPersonalDetailsValid] = React.useState(false);
   const [professionalDetailsValid, setProfessionalDetailsValid] =
@@ -44,9 +46,11 @@ export default function VerticalLinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  React.useEffect(() => {
+    if (!isLoading && !user) {
+      window.location.href = "/api/auth/login";
+    }
+  }, [isLoading, user]);
 
   React.useEffect(() => {
     if (activeStep == 0) {
@@ -148,7 +152,18 @@ export default function VerticalLinearStepper() {
     }
   };
 
-  return (
+  return isLoading || !user ? (
+    <Backdrop
+      sx={{
+        color: "black",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        backgroundColor: "#F4E6F2",
+      }}
+      open={isLoading}
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  ) : (
     <Box
       sx={{
         backgroundColor: "#F4E6F2",
@@ -157,6 +172,7 @@ export default function VerticalLinearStepper() {
         marginTop: "%",
       }}
     >
+      <a href="/api/auth/logout">Logout</a>
       <Stepper
         activeStep={activeStep}
         orientation="vertical"
