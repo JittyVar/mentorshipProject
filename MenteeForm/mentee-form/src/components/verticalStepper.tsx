@@ -19,6 +19,7 @@ import { createMenteeDocumentPreferences } from "@/redux/actions/createMenteeDoc
 import { storage } from "@/firestore/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { useState } from "react";
+import { CircularProgress } from "@mui/material";
 
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -143,17 +144,17 @@ export default function VerticalLinearStepper() {
         await dispatch(createMenteeDocumentSkills());
         await dispatch(createMenteeDocumentPreferences());
         await dispatch(createMenteeDocumentGoals());
-        if (!photoUrl) return;
+        if (photoUrl && photoUrl?.photo) {
+          const selectedImageName = photoUrl.photo.name;
+          console.log("name", menteeName);
+          const storageRef = ref(
+            storage,
+            `images/mentees2024/${menteeName}/${selectedImageName}`
+          );
 
-        const selectedImageName = photoUrl?.photo.name;
-        console.log("name", menteeName);
-        const storageRef = ref(
-          storage,
-          `images/mentees2024/${menteeName}/${selectedImageName}`
-        );
-
-        // Upload the selected image file to Firebase Storage
-        uploadBytesResumable(storageRef, photoUrl?.photo);
+          // Upload the selected image file to Firebase Storage
+          uploadBytesResumable(storageRef, photoUrl.photo);
+        }
       }
     };
 
@@ -251,26 +252,37 @@ export default function VerticalLinearStepper() {
         ))}
       </Stepper>
       {activeStep === menteeSteps.length &&
-        createMenteeDocumentStatus == APIStatus.success && (
-          <Paper
-            square
-            elevation={0}
-            sx={{
-              p: 3,
-              backgroundColor: "#1E1F42",
-              borderRadius: "5px",
-              margin: "3%",
-            }}
-          >
-            <Typography
-              fontFamily={"Arial"}
-              color={"white"}
-              fontWeight={"bold"}
+      createMenteeDocumentStatus == APIStatus.success ? (
+        <Paper
+          square
+          elevation={0}
+          sx={{
+            p: 3,
+            backgroundColor: "#1E1F42",
+            borderRadius: "5px",
+            margin: "3%",
+          }}
+        >
+          <Typography fontFamily={"Arial"} color={"white"} fontWeight={"bold"}>
+            Submission completed. You will soon receive a confirmation email.
+          </Typography>
+        </Paper>
+      ) : (
+        activeStep === menteeSteps.length &&
+        createMenteeDocumentStatus != APIStatus.success && (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              Submission completed. You will soon receive a confirmation email.
-            </Typography>
-          </Paper>
-        )}
+              <CircularProgress size={50} />
+            </Box>
+          </>
+        )
+      )}
     </Box>
   );
 }
