@@ -16,7 +16,6 @@ const Greetings: React.FC<GreetingsProps> = ({
 }) => {
   return (
     <div style={{ display: "flex", gap: "3%" }}>
-      <Image src={adminPic.src} alt="adminPic" width={300} height={400} />
       <Paper
         elevation={3}
         sx={{
@@ -26,9 +25,6 @@ const Greetings: React.FC<GreetingsProps> = ({
           width: "100%",
         }}
       >
-        <div style={{ marginRight: "5%" }}>
-          <DisplayCalendar />
-        </div>
         <div
           style={{
             width: "100%",
