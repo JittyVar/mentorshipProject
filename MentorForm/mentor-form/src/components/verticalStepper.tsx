@@ -172,7 +172,7 @@ export default function VerticalLinearStepper() {
         marginTop: "%",
       }}
     >
-      <a href="/api/auth/logout">Logout</a>
+      {/* <a href="/api/auth/logout">Logout</a> */}
       <Stepper
         activeStep={activeStep}
         orientation="vertical"
