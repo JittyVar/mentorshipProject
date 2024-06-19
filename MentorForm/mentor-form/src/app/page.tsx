@@ -53,7 +53,6 @@ const Home = () => {
             />
           </ImageListItem>
         </ImageList>
-        <a href="/api/auth/logout">Logout</a>
         {user && <VerticalLinearStepper />}
       </Container>
     </Box>
