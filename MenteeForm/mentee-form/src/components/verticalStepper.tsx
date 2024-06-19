@@ -270,17 +270,15 @@ export default function VerticalLinearStepper() {
       ) : (
         activeStep === menteeSteps.length &&
         createMenteeDocumentStatus != APIStatus.success && (
-          <>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <CircularProgress size={50} />
-            </Box>
-          </>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <CircularProgress size={50} />
+          </Box>
         )
       )}
     </Box>

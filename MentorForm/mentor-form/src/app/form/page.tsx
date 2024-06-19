@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
 import React from "react";
 import VerticalLinearStepper from "@/components/verticalStepper";
 import { Box, Container, ImageList, ImageListItem } from "@mui/material";
