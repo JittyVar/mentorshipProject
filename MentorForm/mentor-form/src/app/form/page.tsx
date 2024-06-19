@@ -44,21 +44,17 @@ const FormPage = () => {
     <Box>
       <Container>
         <a href="/api/auth/logout">Logout</a>
-        {user && (
-          <>
-            <ImageList variant="masonry" cols={1}>
-              <ImageListItem key={"applicationpic"}>
-                <img
-                  srcSet={`${applicationpic.src}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${applicationpic.src}?w=248&fit=crop&auto=format`}
-                  alt={"applicationpic"}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            </ImageList>
-            <VerticalLinearStepper />
-          </>
-        )}
+        <ImageList variant="masonry" cols={1}>
+          <ImageListItem key={"applicationpic"}>
+            <img
+              srcSet={`${applicationpic.src}?w=248&fit=crop&auto=format&dpr=2 2x`}
+              src={`${applicationpic.src}?w=248&fit=crop&auto=format`}
+              alt={"applicationpic"}
+              loading="lazy"
+            />
+          </ImageListItem>
+        </ImageList>
+        <VerticalLinearStepper />
       </Container>
     </Box>
   );
