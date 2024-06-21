@@ -6,7 +6,6 @@ import { Box, Button, Chip, Paper } from "@mui/material";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { Status } from "@/data/Status";
 import { useRouter } from "next/navigation";
-import adminpic from "../greeting/adminpic.png";
 import { deepPurple } from "@mui/material/colors";
 
 // Define the DataTableProps interface
@@ -25,7 +24,7 @@ const DataTable: React.FC<DataTableProps> = ({
     {
       field: "avatar",
       headerName: "Avatar",
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <Avatar
           alt="Remy Sharp"
@@ -36,24 +35,11 @@ const DataTable: React.FC<DataTableProps> = ({
       ),
     },
     { field: "fullName", headerName: "Full Name", width: 220 },
-    { field: "registeredOn", headerName: "Registered On", width: 200 },
-    {
-      field: "participatingAs",
-      headerName: "Participating as",
-      width: 180,
-      renderCell: (params) => (
-        <Chip
-          label={params.value}
-          variant="outlined"
-          color="secondary"
-          sx={{ width: "100px" }}
-        />
-      ),
-    },
+    { field: "registeredOn", headerName: "Registered On", width: 220 },
     {
       field: "status",
       headerName: "Status",
-      width: 200,
+      width: 220,
       renderCell: (params) => (
         <Chip
           color={
@@ -68,7 +54,7 @@ const DataTable: React.FC<DataTableProps> = ({
         />
       ),
     },
-    { field: "pairedDuring", headerName: "Paired During", width: 200 },
+    { field: "pairedDuring", headerName: "Paired During", width: 220 },
     {
       field: "assignedMentor",
       headerName: "Paired With",
@@ -103,40 +89,22 @@ const DataTable: React.FC<DataTableProps> = ({
   ];
 
   return (
-    <Box>
-      <Paper elevation={3}>
-        <DataGrid
-          rows={collections}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 20 },
-            },
-          }}
-          onCellClick={(e) =>
-            e.field === "assignedMentor" &&
-            router.push(
-              `/match?q=${e.row?.fullName}&r=${e.row?.participatingAs}`
-            )
-          }
-          pageSizeOptions={[20, 25]}
-          rowSelection
-          sx={{
-            "& .MuiDataGrid-filler": {
-              backgroundColor: "#8F3880",
-            },
-            "& .MuiDataGrid-columnHeader": {
-              backgroundColor: "#8F3880",
-              width: "100%",
-            },
-            "& .MuiDataGrid-columnHeaderTitle  ": { color: "white" },
-            "& .MuiDataGrid-root": {
-              backgroundColor: "pink",
-            },
-          }}
-        />
-      </Paper>
-    </Box>
+    <DataGrid
+      rows={collections}
+      columns={columns}
+      initialState={{
+        pagination: {
+          paginationModel: { page: 0, pageSize: 10 },
+        },
+      }}
+      onCellClick={(e) =>
+        e.field === "assignedMentor" &&
+        router.push(`/match?q=${e.row?.fullName}&r=${e.row?.participatingAs}`)
+      }
+      pageSizeOptions={[10, 20]}
+      sx={{ width: "100%" }}
+      rowSelection
+    />
   );
 };
 

@@ -2,11 +2,10 @@
 
 require("dotenv").config();
 import Box from "@mui/material/Box";
-import LabTabs from "@/components/tabs/tabs";
 import { Container } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
-import ResponsiveAppBar from "@/components/navBar/navigationBar";
+import MiniDrawer from "@/components/sideNav/sideNav";
 
 export default function RootLayout({
   children,
@@ -17,9 +16,10 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <Box>
-          <ResponsiveAppBar />
           <Container maxWidth="xl">
-            <Provider store={store}>{children}</Provider>
+            <Provider store={store}>
+              <MiniDrawer>{children}</MiniDrawer>
+            </Provider>
           </Container>
         </Box>
       </body>

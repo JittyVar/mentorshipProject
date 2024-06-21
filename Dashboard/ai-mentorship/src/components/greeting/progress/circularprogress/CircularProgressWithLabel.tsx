@@ -4,7 +4,7 @@ import CircularProgress, {
 } from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Chip } from "@mui/material";
+import { Chip, Paper } from "@mui/material";
 
 function CircularProgressWithLabel(
   props: CircularProgressProps & { value: number }
@@ -59,60 +59,52 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
 
   return (
     <div style={{ display: "flex", width: "100%", height: "100%", gap: 50 }}>
-      <CircularProgressWithLabel value={progress} size={280} />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          rowGap: 20,
+      {/* <CircularProgressWithLabel value={progress} size={280} /> */}
+      <Paper
+        elevation={3}
+        sx={{
+          width: "200px",
+          height: "70px",
           justifyContent: "center",
-          width: "300px",
-          height: "100%",
+          padding: "1%",
         }}
       >
-        <Chip
-          label={`Total ${displayTotalAs} ${total}`}
-          color="primary"
-          variant="filled"
-          sx={{
-            backgroundColor: "#1E1F42",
-            fontSize: "1.3rem",
-            fontWeight: "bold",
-            height: "60px",
-            width: "100%",
-            color: "#B1F5EA",
-            borderRadius: "5px",
-          }}
-        />
-        <Chip
-          label={`With ${displayWithAs} ${withValue}`}
-          color="primary"
-          variant="outlined"
-          sx={{
-            backgroundColor: "#1E1F42",
-            fontSize: "1.3rem",
-            fontWeight: "bold",
-            height: "60px",
-            width: "100%",
-            color: "#B1F5EA",
-            borderRadius: "5px",
-          }}
-        />
-        <Chip
-          label={`With No ${displayWithAs} ${withNoValue}`}
-          color="primary"
-          variant="outlined"
-          sx={{
-            backgroundColor: "#1E1F42",
-            fontSize: "1.3rem",
-            fontWeight: "bold",
-            height: "60px",
-            width: "100%",
-            color: "#B1F5EA",
-            borderRadius: "5px",
-          }}
-        />
-      </div>
+        <div>{`Total ${displayTotalAs}`}</div>
+        <Typography
+          fontSize={"1.45rem"}
+          fontWeight={"bold"}
+        >{`${total}`}</Typography>
+      </Paper>
+      <Paper
+        elevation={3}
+        sx={{
+          width: "200px",
+          height: "70px",
+          justifyContent: "center",
+          padding: "1%",
+        }}
+      >
+        <div>{`With ${displayWithAs}`}</div>
+        <Typography
+          fontSize={"1.45rem"}
+          fontWeight={"bold"}
+        >{`${withValue}`}</Typography>
+      </Paper>
+      <Paper
+        elevation={3}
+        sx={{
+          width: "200px",
+          height: "70px",
+          justifyContent: "center",
+          padding: "1%",
+        }}
+      >
+        <div>{`Without ${displayWithAs}`}</div>
+        <Typography
+          fontSize={"1.45rem"}
+          fontWeight={"bold"}
+        >{`${withNoValue}`}</Typography>
+      </Paper>
     </div>
   );
 };

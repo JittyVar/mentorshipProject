@@ -16,32 +16,13 @@ const Greetings: React.FC<GreetingsProps> = ({
 }) => {
   return (
     <div style={{ display: "flex", gap: "3%" }}>
-      <Paper
-        elevation={3}
-        sx={{
-          display: "flex",
-          padding: 3,
-          backgroundColor: "#F4F4FA",
-          width: "100%",
-        }}
-      >
-        <div
-          style={{
-            width: "100%",
-            borderRadius: 5,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <ProgressComponent
-            totalValue={menteesData[0]}
-            withValue={menteesData[1]}
-            withNoValue={menteesData[2]}
-            displayTotalAs={displayTotalAs}
-            displayWithAs={displayWithAs}
-          />
-        </div>
-      </Paper>
+      <ProgressComponent
+        totalValue={menteesData[0]}
+        withValue={menteesData[1]}
+        withNoValue={menteesData[2]}
+        displayTotalAs={displayTotalAs}
+        displayWithAs={displayWithAs}
+      />
     </div>
   );
 };

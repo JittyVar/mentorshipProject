@@ -30,6 +30,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   const [mentorName, setMentorName] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
