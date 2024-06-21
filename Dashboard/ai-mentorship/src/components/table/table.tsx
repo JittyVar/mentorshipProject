@@ -20,6 +20,10 @@ const DataTable: React.FC<DataTableProps> = ({
   participatingAs,
 }) => {
   const router = useRouter();
+  const R = require("ramda");
+
+  const statusSort = R.sortWith([R.descend(R.prop("status"))]);
+
   const columns: GridColDef[] = [
     {
       field: "avatar",
@@ -28,7 +32,7 @@ const DataTable: React.FC<DataTableProps> = ({
       renderCell: (params) => (
         <Avatar
           alt="Remy Sharp"
-          sx={{ marginTop: 0.5, bgcolor: deepPurple[500] }}
+          sx={{ marginTop: 0.5, backgroundColor: "#1E1F42" }}
         >
           {params.value}
         </Avatar>
@@ -49,8 +53,9 @@ const DataTable: React.FC<DataTableProps> = ({
               ? "warning"
               : "error"
           }
+          variant="outlined"
           label={params.value}
-          sx={{ borderRadius: "5px", width: "150px" }}
+          sx={{ borderRadius: "5px", width: "150px", fontWeight: "bold" }}
         />
       ),
     },
@@ -68,7 +73,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 variant="contained"
                 value={params.value}
                 sx={{
-                  backgroundColor: "#8F3880",
+                  backgroundColor: "#1E1F42",
                 }}
               >
                 {participatingAs}
@@ -90,7 +95,7 @@ const DataTable: React.FC<DataTableProps> = ({
 
   return (
     <DataGrid
-      rows={collections}
+      rows={statusSort(collections)}
       columns={columns}
       initialState={{
         pagination: {

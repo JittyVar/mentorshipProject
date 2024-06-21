@@ -10,6 +10,7 @@ import { WithNoMentees } from "@/redux/dashboard/actions/withNoMentees";
 import { WithNoMentors } from "@/redux/dashboard/actions/withNoMentors";
 import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { Box } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
@@ -56,13 +57,13 @@ export default function Home() {
   }, [dispatch, firstLog]);
 
   return (
-    <>
+    <Box>
       <LabTabs
         mentorRows={mentorRows}
         menteeRows={menteeRows}
         mentorsData={mentorsData}
         menteesData={menteesData}
       />
-    </>
+    </Box>
   );
 }

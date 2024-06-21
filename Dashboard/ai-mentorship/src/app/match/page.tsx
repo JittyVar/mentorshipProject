@@ -108,7 +108,7 @@ const MatchContent = () => {
               </Box>
             </TabPanel>
             <TabPanel value="2">
-              <Box paddingTop={5}>
+              <Box>
                 <MatchTableComponent
                   collectionData={rows.filter(
                     (e: HomeTableColumns) => e.participatingAs == "Mentee"

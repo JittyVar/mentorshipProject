@@ -30,7 +30,6 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   const [mentorName, setMentorName] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
-  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,9 +104,16 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
     <Paper>
       <Paper
         elevation={3}
-        sx={{ height: "25px", padding: 2, backgroundColor: "#F4E6F2" }}
+        sx={{
+          height: "60px",
+          display: "flex",
+          alignItems: "center",
+          paddingLeft: "20px",
+          backgroundColor: "#1E1F42",
+          color: "white",
+        }}
       >
-        <Typography>RESULTS</Typography>
+        <Typography fontWeight={"bold"}>RESULTS</Typography>
       </Paper>
       {menteeName == null ? (
         <div

@@ -109,20 +109,18 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table
-        sx={{
-          minWidth: "100%",
-          "& .MuiTableCell-root.MuiTableCell-head": {
-            backgroundColor: "#8F3880",
-          },
-        }}
-        aria-label="customized table"
-      >
+      <Table>
         <TableHead
           sx={{
             width: "100%",
+            "& .MuiTableCell-root": {
+              backgroundColor: "white",
+            },
             "& .MuiTableCell-head": {
-              backgroundColor: "F4E6F2",
+              backgroundColor: "#1E1F42",
+              color: "white",
+              borderColor: "grey",
+              borderWidth: "1px",
             },
           }}
         >
@@ -130,7 +128,6 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
             <StyledTableCell>Progress Status</StyledTableCell>
             <StyledTableCell>Avatar</StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Participating as</StyledTableCell>
             <StyledTableCell>Action</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -162,6 +159,7 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                         ? "warning"
                         : "error"
                     }
+                    variant="outlined"
                     label={row.status}
                   />
                 }
@@ -172,7 +170,6 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                 }`}</Avatar>
               </StyledTableCell>
               <StyledTableCell>{row.fullName}</StyledTableCell>
-              <StyledTableCell>{row.participatingAs}</StyledTableCell>
               <StyledTableCell>
                 {row.assignedMentor == "In progress" ? (
                   "---"
@@ -180,7 +177,9 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
                   <Button
                     variant="contained"
                     value={row.assignedMentor}
-                    color="secondary"
+                    sx={{
+                      backgroundColor: "#1E1F42",
+                    }}
                     onClick={() =>
                       handleClick(row.fullName, row.participatingAs)
                     }

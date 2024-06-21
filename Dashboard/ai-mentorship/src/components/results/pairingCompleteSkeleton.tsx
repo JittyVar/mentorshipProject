@@ -4,9 +4,16 @@ const PairingCompleteSkeleton = () => {
     <Paper>
       <Paper
         elevation={3}
-        sx={{ height: "40px", padding: 2, backgroundColor: "#F4E6F2" }}
+        sx={{
+          height: "60px",
+          display: "flex",
+          alignItems: "center",
+          paddingLeft: "20px",
+          backgroundColor: "#1E1F42",
+          color: "white",
+        }}
       >
-        <Typography>RESULTS</Typography>
+        <Typography fontWeight={"bold"}>RESULTS</Typography>
       </Paper>
       <Grid
         container

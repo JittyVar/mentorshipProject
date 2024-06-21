@@ -18,9 +18,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import HomeIcon from "@mui/icons-material/Home";
-import { useRouter } from "next/navigation";
-import Home from "@/app/home/page";
-import Match from "@/app/match/page";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -74,6 +72,7 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
+  backgroundColor: "#1E1F42",
 }));
 
 const Drawer = styled(MuiDrawer, {
@@ -110,9 +109,32 @@ export default function MiniDrawer({
     setIndex(index);
   };
 
+  const searchParams = useSearchParams();
+
+  const qValue = searchParams?.get("q");
+  const rValue = searchParams?.get("r");
+
+  React.useEffect(() => {
+    if (qValue && rValue) {
+      setIndex(1);
+    }
+  }, [qValue, rValue]);
+
   React.useEffect(() => {
     console.log("index", index);
-    index === 0 ? router.push(`/`) : router.push(`/match`);
+    if (index === 0) {
+      router.push(`/`);
+    } else if (index === 2) {
+      router.push(`/`);
+    } else {
+      if (qValue && rValue) {
+        // Parameters are already in the URL
+        router.push(`/match?q=${qValue}&r=${rValue}`);
+      } else {
+        router.push(`/match`);
+      }
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 

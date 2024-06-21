@@ -61,7 +61,7 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
     <div style={{ display: "flex", width: "100%", height: "100%", gap: 50 }}>
       {/* <CircularProgressWithLabel value={progress} size={280} /> */}
       <Paper
-        elevation={3}
+        elevation={5}
         sx={{
           width: "200px",
           height: "70px",
@@ -76,7 +76,7 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
         >{`${total}`}</Typography>
       </Paper>
       <Paper
-        elevation={3}
+        elevation={5}
         sx={{
           width: "200px",
           height: "70px",
@@ -91,7 +91,7 @@ const CircularWithValueLabel: React.FC<CircularWithValueLabelProps> = ({
         >{`${withValue}`}</Typography>
       </Paper>
       <Paper
-        elevation={3}
+        elevation={5}
         sx={{
           width: "200px",
           height: "70px",

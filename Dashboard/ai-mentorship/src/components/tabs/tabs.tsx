@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -37,9 +36,22 @@ const LabTabs: React.FC<LabTabsProps> = ({
     setValue(newValue);
   };
 
+  const [name, setFilterName] = React.useState("");
+  const [filteredRows, setFilteredRows] = React.useState<HomeTableColumns[]>(
+    []
+  );
+
+  React.useEffect(() => {
+    let rowData = value == "1" ? mentorRows : menteeRows;
+    const filtered = rowData.filter((e: HomeTableColumns) =>
+      e.fullName.toLocaleLowerCase().includes(name.toLocaleLowerCase())
+    );
+    setFilteredRows(filtered);
+  }, [menteeRows, mentorRows, name, value]);
+
   return (
     <TabContext value={value}>
-      <div style={{ display: "flex", gap: 55 }}>
+      <div style={{ display: "flex", gap: 55, paddingLeft: "2%" }}>
         <TabList
           onChange={handleChange}
           aria-label="lab API tabs example"
@@ -47,7 +59,7 @@ const LabTabs: React.FC<LabTabsProps> = ({
             "& .MuiTabs-indicator": {
               backgroundColor: "#1E1F42",
             },
-            marginBottom: "2%",
+            marginBottom: "1%",
             width: "50%",
           }}
         >
@@ -56,10 +68,11 @@ const LabTabs: React.FC<LabTabsProps> = ({
         </TabList>
         <TextField
           id="searchField"
-          label="Search"
+          label="Search Name"
           variant="outlined"
           fullWidth
           sx={{ borderRadius: "50px" }}
+          onChange={(e) => setFilterName(e.target.value)}
         />
       </div>
       <TabPanel value="1" sx={{ width: "100%" }}>
@@ -75,7 +88,7 @@ const LabTabs: React.FC<LabTabsProps> = ({
             }}
           >
             <DataTable
-              collections={mentorRows}
+              collections={filteredRows}
               participatingAs={"Assign a Mentee"}
             />
           </div>
@@ -96,7 +109,7 @@ const LabTabs: React.FC<LabTabsProps> = ({
         {menteeRowsStatus == APIStatus.success && (
           <div style={{ marginTop: "2%" }}>
             <DataTable
-              collections={menteeRows}
+              collections={filteredRows}
               participatingAs="Assign a Mentor"
             />
           </div>
