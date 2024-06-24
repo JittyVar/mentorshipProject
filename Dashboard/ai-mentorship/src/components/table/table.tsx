@@ -2,11 +2,11 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
-import { Box, Button, Chip, Paper } from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { Status } from "@/data/Status";
 import { useRouter } from "next/navigation";
-import { deepPurple } from "@mui/material/colors";
+import { useAppSelector } from "@/redux/hook";
 
 // Define the DataTableProps interface
 export interface DataTableProps {
@@ -21,9 +21,21 @@ const DataTable: React.FC<DataTableProps> = ({
 }) => {
   const router = useRouter();
   const R = require("ramda");
+  const withNoMentees = useAppSelector(
+    (state) => state.dashboard.withNoMentees
+  );
+  const withNoMentors = useAppSelector(
+    (state) => state.dashboard.withNoMentors
+  );
 
   const statusSort = R.sortWith([R.descend(R.prop("status"))]);
 
+  console.log(
+    "participatingAs ",
+    participatingAs,
+    "withNoMentees ",
+    withNoMentees
+  );
   const columns: GridColDef[] = [
     {
       field: "avatar",
@@ -68,19 +80,61 @@ const DataTable: React.FC<DataTableProps> = ({
         const actions = params.value;
         if (actions == "Assign a mentee" || actions == "Assign a mentor") {
           if (actions !== "In progress") {
-            return (
-              <Button
-                variant="contained"
-                value={params.value}
-                sx={{
-                  backgroundColor: "#1E1F42",
-                }}
-              >
-                {participatingAs}
-              </Button>
-            );
-          } else {
-            return <div></div>;
+            if (participatingAs == "Assign a Mentee") {
+              if (withNoMentors == 0) {
+                return (
+                  <Chip
+                    variant="outlined"
+                    color="error"
+                    label="No more mentees"
+                    sx={{
+                      borderRadius: "5px",
+                      width: "150px",
+                      fontWeight: "bold",
+                    }}
+                  ></Chip>
+                );
+              } else {
+                return (
+                  <Button
+                    variant="contained"
+                    value={params.value}
+                    sx={{
+                      backgroundColor: "#1E1F42",
+                    }}
+                  >
+                    {participatingAs}
+                  </Button>
+                );
+              }
+            } else {
+              if (withNoMentees == 0) {
+                return (
+                  <Chip
+                    variant="outlined"
+                    color="error"
+                    label="No more mentors"
+                    sx={{
+                      borderRadius: "5px",
+                      width: "150px",
+                      fontWeight: "bold",
+                    }}
+                  ></Chip>
+                );
+              } else {
+                return (
+                  <Button
+                    variant="contained"
+                    value={params.value}
+                    sx={{
+                      backgroundColor: "#1E1F42",
+                    }}
+                  >
+                    {participatingAs}
+                  </Button>
+                );
+              }
+            }
           }
         } else {
           return (

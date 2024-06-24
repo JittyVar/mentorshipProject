@@ -8,7 +8,6 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-
 ```
 
 ```{r, eval = FALSE}
@@ -25,226 +24,236 @@ The data cleaning is specific to the questions asked in the 2023 EOI forms. Demo
 ## Get data from CSV or google forms
 
 ```{r, eval = T,results = 'hide', message=FALSE}
-#install.packages('googlesheets4')
+# install.packages('googlesheets4')
 library(googlesheets4)
 # in the google form, click "link to sheets" (or similar) to create a google sheet with the forms data
 # this requires you to have access to the sheet
 
-#mentor_raw <- read_sheet('https://docs.google.com/spreadsheets/addrestofurlhere')
-#mentee_raw <- read_sheet('https://docs.google.com/spreadsheets/addrestofurlhere')
+# mentor_raw <- read_sheet('https://docs.google.com/spreadsheets/addrestofurlhere')
+# mentee_raw <- read_sheet('https://docs.google.com/spreadsheets/addrestofurlhere')
 
-#OR 
+# OR
 
 mentee_raw <- read_csv("data/mentee_eoi_data.csv")
 mentor_raw <- read_csv("data/mentor_eoi_data.csv")
-
 ```
 ## Clean the mentee data
 
 ```{r}
-mentee_data = mentee_raw  %>% group_by(Name) %>% 
+mentee_data <- mentee_raw %>%
+  group_by(Name) %>%
   arrange(Name) %>%
   # remove duplicate
-  filter(row_number()==n()) %>%
-  #de-select columns
-  select(-Timestamp,    -`Phone number` , 
-         - `Student ID`,
-         -`Which STEM sector are you interested in and why?`,
-         -`What would you hope to get from this program?`,
-         -`Personality Type`
-         ) %>%
-  #rename columns
-  rename("mentee_pref_mentor_type" = `What type of mentor would you prefer?`,
-         "Programme" = `What programme are you currently enrolled in?`,
-         "Major" = `Which major/s are you currently enrolled in?`,
-         "mentee_gender_pref" = `I prefer`,
-         "mentee_name" = Name,
-         "Year" = `Which year of the degree are you?`,
-         "mentee_email" = `Email`) %>%
- 
-  #re order columns
-  select(mentee_name, mentee_pref_mentor_type, mentee_gender_pref, Year, everything()) 
+  filter(row_number() == n()) %>%
+  # de-select columns
+  select(
+    -Timestamp, -`Phone number`,
+    -`Student ID`,
+    -`Which STEM sector are you interested in and why?`,
+    -`What would you hope to get from this program?`,
+    -`Personality Type`
+  ) %>%
+  # rename columns
+  rename(
+    "mentee_pref_mentor_type" = `What type of mentor would you prefer?`,
+    "Programme" = `What programme are you currently enrolled in?`,
+    "Major" = `Which major/s are you currently enrolled in?`,
+    "mentee_gender_pref" = `I prefer`,
+    "mentee_name" = Name,
+    "Year" = `Which year of the degree are you?`,
+    "mentee_email" = `Email`
+  ) %>%
+  # re order columns
+  select(mentee_name, mentee_pref_mentor_type, mentee_gender_pref, Year, everything())
 
 
 
 mentee_data <- mentee_data %>%
-  
-  
-  #recode gender variable to match mentor data
-  mutate(mentee_gender_pref = recode(str_to_lower(mentee_gender_pref),
-    "female mentor" = "female",
-    "female"="female",
-    "male mentor" = "male",
-    "male" = "male",
-    "no preference" = "no_pref"
-  ),
-  
-  
-  # Recode mentor type preference to remove recent grad
-  mentee_pref_mentor_type = case_match(mentee_pref_mentor_type,
-                                       "Academic" ~ "Academic",
-                                       "Industry"~ "Industry",
-                                       "Industry/Recent Grad"~ "Industry",
-                                       "Recent graduate student" ~ "Industry"),
-  
-  
-  # Recode programme
-  mentee_programme = case_match(Programme,
-'Bachelor of Advanced Science (Honours) (BAdvSc(Hons))' ~ 'Sc',
-'Bachelor of Architecture and Future Environments (BAFE)' ~ 'Arc',
-'Bachelor of Computer and Information Sciences (BCIS)' ~ 'CIS',
-'Bachelor of Computer and Information Sciences (Honours) (BCIS(Hons))' ~ 'CIS',
-'Bachelor of Construction (BConst)' ~ 'Arc',
-'Bachelor of Engineering (BE)' ~ 'Eng',
-'Bachelor of Engineering (Honours) (BE(Hons))' ~ 'Eng',
-'Bachelor of Engineering Technology (BEngTech)' ~ 'Eng',
-'Bachelor of Science (BSc)' ~ 'Sc',
-'Bachelor of Science (Honours) (BSc(Hons))' ~ 'Sc',
-'Certificate in Science and Technology (CertScT)' ~ 'Sc',
-'Graduate Certificate in Science (GradCertSc)' ~ 'Sc',
-'Graduate Diploma in Science (GradDipSc)' ~ 'Sc',
-'Master of Analytics (MAnalytics)' ~ 'Sc',
-'Master of Computer and Information Sciences (MCIS)' ~ 'CIS',
-'Master of Construction Management (MCM)' ~ 'Arc',
-'Master of Cyber Security and Digital Forensics (MCSDF)' ~ 'CIS',
-'Master of Engineering (ME)' ~ 'Eng',
-'Master of Engineering Project Management (MEPM)' ~ 'Eng',
-'Master of Science (MSc)' ~ 'Sc',
-'Master of Science (Research) (MSc (Res))' ~ 'Sc',
-'Master of Service-Oriented Computing (MSOC)' ~ 'CIS',
-'PG Certificate in Computer and Information Sciences (PgCertCIS)' ~ 'CIS',
-'PG Certificate in Engineering (PgCertEng)' ~ 'Eng',
-'PG Certificate in Science (PgCertSc)' ~ 'Sc',
-'PG Diploma in Computer and Information Sciences (PgDipCIS)' ~ 'CIS',
-'PG Diploma in Engineering (PgDipEng)' ~ 'Eng',
-'PG Diploma in Science (PgDipSc)' ~ 'Sc',
-'Other' ~ NA,
-                         NA ~ NA
-                        ))
+  # recode gender variable to match mentor data
+  mutate(
+    mentee_gender_pref = recode(str_to_lower(mentee_gender_pref),
+      "female mentor" = "female",
+      "female" = "female",
+      "male mentor" = "male",
+      "male" = "male",
+      "no preference" = "no_pref"
+    ),
+
+
+    # Recode mentor type preference to remove recent grad
+    mentee_pref_mentor_type = case_match(
+      mentee_pref_mentor_type,
+      "Academic" ~ "Academic",
+      "Industry" ~ "Industry",
+      "Industry/Recent Grad" ~ "Industry",
+      "Recent graduate student" ~ "Industry"
+    ),
+
+
+    # Recode programme
+    mentee_programme = case_match(
+      Programme,
+      "Bachelor of Advanced Science (Honours) (BAdvSc(Hons))" ~ "Sc",
+      "Bachelor of Architecture and Future Environments (BAFE)" ~ "Arc",
+      "Bachelor of Computer and Information Sciences (BCIS)" ~ "CIS",
+      "Bachelor of Computer and Information Sciences (Honours) (BCIS(Hons))" ~ "CIS",
+      "Bachelor of Construction (BConst)" ~ "Arc",
+      "Bachelor of Engineering (BE)" ~ "Eng",
+      "Bachelor of Engineering (Honours) (BE(Hons))" ~ "Eng",
+      "Bachelor of Engineering Technology (BEngTech)" ~ "Eng",
+      "Bachelor of Science (BSc)" ~ "Sc",
+      "Bachelor of Science (Honours) (BSc(Hons))" ~ "Sc",
+      "Certificate in Science and Technology (CertScT)" ~ "Sc",
+      "Graduate Certificate in Science (GradCertSc)" ~ "Sc",
+      "Graduate Diploma in Science (GradDipSc)" ~ "Sc",
+      "Master of Analytics (MAnalytics)" ~ "Sc",
+      "Master of Computer and Information Sciences (MCIS)" ~ "CIS",
+      "Master of Construction Management (MCM)" ~ "Arc",
+      "Master of Cyber Security and Digital Forensics (MCSDF)" ~ "CIS",
+      "Master of Engineering (ME)" ~ "Eng",
+      "Master of Engineering Project Management (MEPM)" ~ "Eng",
+      "Master of Science (MSc)" ~ "Sc",
+      "Master of Science (Research) (MSc (Res))" ~ "Sc",
+      "Master of Service-Oriented Computing (MSOC)" ~ "CIS",
+      "PG Certificate in Computer and Information Sciences (PgCertCIS)" ~ "CIS",
+      "PG Certificate in Engineering (PgCertEng)" ~ "Eng",
+      "PG Certificate in Science (PgCertSc)" ~ "Sc",
+      "PG Diploma in Computer and Information Sciences (PgDipCIS)" ~ "CIS",
+      "PG Diploma in Engineering (PgDipEng)" ~ "Eng",
+      "PG Diploma in Science (PgDipSc)" ~ "Sc",
+      "Other" ~ NA,
+      NA ~ NA
+    )
+  )
 
 
 # Split majors into separate columns
-  max_majors = 3#max(mentee_data$Major %>% str_count(",") + 1)
-  
-mentee_data <- mentee_data %>%
-  separate_wider_delim(Major, delim = "," ,too_few = "align_start", names = paste0("Major", 1:max_majors), cols_remove=FALSE)
+max_majors <- 3 # max(mentee_data$Major %>% str_count(",") + 1)
 
 mentee_data <- mentee_data %>%
-                      #, names = paste0("Major", 1:max_majors) %>% 
-  mutate(mentee_major1 = str_trim(Major1),
-         mentee_major2 = str_trim(Major2),
-         mentee_major3 = str_trim(Major3)
+  separate_wider_delim(Major, delim = ",", too_few = "align_start", names = paste0("Major", 1:max_majors), cols_remove = FALSE)
+
+mentee_data <- mentee_data %>%
+  # , names = paste0("Major", 1:max_majors) %>%
+  mutate(
+    mentee_major1 = str_trim(Major1),
+    mentee_major2 = str_trim(Major2),
+    mentee_major3 = str_trim(Major3)
   )
 
 # Code mentee type
-mentee_data <- mentee_data  %>% mutate(
-         
-         mentee_year = case_match(Year,
-           '1st year undergraduate' ~ 1,
-'2nd year undergraduate' ~ 2,
-'3rd year undergraduate' ~ 3,
-'4th year undergraduate' ~ 4,
-'Postgraduate' ~ 5,
-'Other' ~ NA),
-           
-          
-  mentee_type_mentor_required = as.numeric(mentee_year==1)
+mentee_data <- mentee_data %>%
+  mutate(
+    mentee_year = case_match(
+      Year,
+      "1st year undergraduate" ~ 1,
+      "2nd year undergraduate" ~ 2,
+      "3rd year undergraduate" ~ 3,
+      "4th year undergraduate" ~ 4,
+      "Postgraduate" ~ 5,
+      "Other" ~ NA
+    ),
+    mentee_type_mentor_required = as.numeric(mentee_year == 1)
   ) %>%
   select(starts_with("mentee_"))
-  
 ```
 
 ## Clean the mentor data
 
 
 ```{r}
-#names(mentor_raw)
+# names(mentor_raw)
 #
 
 # Initial  cleaning
-mentor_data = mentor_raw  %>% group_by(Name) %>% 
+mentor_data <- mentor_raw %>%
+  group_by(Name) %>%
   arrange(Name) %>%
   # remove duplicate
-  filter(row_number()==n()) %>% 
-  #de-select columns
-  select(-Timestamp,    -`Phone number` , 
-         -`Organisation`,
-         -`Job title`,
-         -`Why I chose to offer myself as a mentor`,
-          -`Short description of your role`,
-         -`What would you hope to get from this program?`,
-         -`Personality Type`,
-         -`Short Bio`,
-         -`Please attach a photo of yourself`
-         ) %>%
-  #rename columns
-  rename("pref_mentee_type" = `What type/s of mentee would you prefer?`  ,
-         "Programme" = `What type of students are best aligned with your expertise?`,
-         "Major" = `Which subjects are best aligned with your expertise?`,
-         "mentor_gender" = `Gender`,
-         "mentor_name" = Name) %>%
- 
-  #re order columns
-  select(mentor_name, mentor_gender, Programme, Major, everything()) 
+  filter(row_number() == n()) %>%
+  # de-select columns
+  select(
+    -Timestamp, -`Phone number`,
+    -`Organisation`,
+    -`Job title`,
+    -`Why I chose to offer myself as a mentor`,
+    -`Short description of your role`,
+    -`What would you hope to get from this program?`,
+    -`Personality Type`,
+    -`Short Bio`,
+    -`Please attach a photo of yourself`
+  ) %>%
+  # rename columns
+  rename(
+    "pref_mentee_type" = `What type/s of mentee would you prefer?`,
+    "Programme" = `What type of students are best aligned with your expertise?`,
+    "Major" = `Which subjects are best aligned with your expertise?`,
+    "mentor_gender" = `Gender`,
+    "mentor_name" = Name
+  ) %>%
+  # re order columns
+  select(mentor_name, mentor_gender, Programme, Major, everything())
 
 
 # Identify industry/academic
 mentor_data <- mentor_data %>% mutate(
   Type = case_when(
-      str_detect(Email, ".ac.") ~ "Academic",
-      TRUE ~ "Industry"
-      ),
+    str_detect(Email, ".ac.") ~ "Academic",
+    TRUE ~ "Industry"
+  ),
   mentor_email = Email,
-  mentor_type = as.numeric(Type == "Academic") ,#1=academic 0 = industry
-   
-# Recode programme
-   mentor_programmes_all = case_match(Programme,
-                                  'Engineering' ~ 'Eng',
-'Computer and Information Sciences' ~ 'CIS',
-'Science (including maths and statistics)' ~ 'Sc',
-'Architecture and Construction' ~ 'Arc',
-'Other' ~ NA,
-NA ~ NA)
-) 
+  mentor_type = as.numeric(Type == "Academic"), # 1=academic 0 = industry
+
+  # Recode programme
+  mentor_programmes_all = case_match(
+    Programme,
+    "Engineering" ~ "Eng",
+    "Computer and Information Sciences" ~ "CIS",
+    "Science (including maths and statistics)" ~ "Sc",
+    "Architecture and Construction" ~ "Arc",
+    "Other" ~ NA,
+    NA ~ NA
+  )
+)
 
 ## Manually edit for 2023 data
-if(FALSE){
-mentor_data[11, "mentor_programmes_all"] = "CIS" #initials SM
-mentor_data[4, "mentor_programmes_all"] = "CIS;Eng;Arc"  #initials CN
-mentor_data[9, "mentor_programmes_all"] = "CIS" #initials RR
+if (FALSE) {
+  mentor_data[11, "mentor_programmes_all"] <- "CIS" # initials SM
+  mentor_data[4, "mentor_programmes_all"] <- "CIS;Eng;Arc" # initials CN
+  mentor_data[9, "mentor_programmes_all"] <- "CIS" # initials RR
 }
 
 
 # Get most relevant programme
 mentor_data <- mentor_data %>%
-  separate_wider_delim(mentor_programmes_all, delim = ";" ,too_few = "align_start", too_many = "drop", 
-                       names = "mentor_programme", cols_remove=FALSE)  
+  separate_wider_delim(mentor_programmes_all,
+    delim = ";", too_few = "align_start", too_many = "drop",
+    names = "mentor_programme", cols_remove = FALSE
+  )
 
 
 # Clean mentor gender
 mentor_data <- mentor_data %>%
-mutate(mentor_gender = str_to_lower(mentor_gender))
+  mutate(mentor_gender = str_to_lower(mentor_gender))
 
 
 # Get mentor subjects/majors
-mentor_data <- mentor_data %>% 
-  mutate( mentor_majors_all = Major) %>%
- separate_wider_delim(Major, delim = "," ,too_few = "align_start", too_many = "drop", names = paste0("Major", 1:6), cols_remove=FALSE)
+mentor_data <- mentor_data %>%
+  mutate(mentor_majors_all = Major) %>%
+  separate_wider_delim(Major, delim = ",", too_few = "align_start", too_many = "drop", names = paste0("Major", 1:6), cols_remove = FALSE)
 
 mentor_data <- mentor_data %>%
-                      #, names = paste0("Major", 1:max_majors) %>% 
-  mutate(mentor_major1 = str_trim(Major1),
-         mentor_major2 = str_trim(Major2),
-         mentor_major3 = str_trim(Major3),
-              mentor_major4 = str_trim(Major4),
-              mentor_major5 = str_trim(Major5),
-              mentor_major6 = str_trim(Major6),
+  # , names = paste0("Major", 1:max_majors) %>%
+  mutate(
+    mentor_major1 = str_trim(Major1),
+    mentor_major2 = str_trim(Major2),
+    mentor_major3 = str_trim(Major3),
+    mentor_major4 = str_trim(Major4),
+    mentor_major5 = str_trim(Major5),
+    mentor_major6 = str_trim(Major6),
   )
 
 mentor_data <- mentor_data %>% select(starts_with("mentor"))
-
-
-
 ```
 
 
@@ -258,8 +267,7 @@ library(lpSolve)
 ```
 
 ```{r, eval = FALSE}
-?get_best_matches #if installed correctly should show (brief) info in help pane.
-
+?get_best_matches # if installed correctly should show (brief) info in help pane.
 ```
 
 
@@ -268,61 +276,67 @@ library(lpSolve)
 ### Matching criteria for heuristic (2 versions)
 
 ```{r}
-
 # version 1
 # this has 11 iterations, each list has 11 elements
 matching_criteria <- list()
-  matching_criteria[[1]] <- tibble(
-    mentee_criteria = list(c("mentee_gender_pref", "mentee_type_mentor_required", "mentee_programme", "mentee_major1", "mentee_major2"),
-                           c( "mentee_type_mentor_required","mentee_programme", "mentee_major1", "mentee_major2"),
-                           c("mentee_gender_pref", "mentee_type_mentor_required", "mentee_programme"),
-                           c( "mentee_type_mentor_required","mentee_programme"),
-                           c( "mentee_gender_pref", "mentee_type_mentor_required"),
-                           c("mentee_type_mentor_required"),
-                           c("mentee_gender_pref"),
-                           c( "mentee_type_mentor_required","mentee_programme"),
-                           c("mentee_type_mentor_required"),
-                           c("mentee_programme"),
-                           c()),
-    mentor_criteria = list(c(  "mentor_gender",  "mentor_type", "mentor_programme", "mentor_major1", "mentor_major2"),
-                           c( "mentor_type", "mentor_programme", "mentor_major1", "mentor_major2"),
-                           c(  "mentor_gender",  "mentor_type", "mentor_programme"),
-                           c( "mentor_type", "mentor_programme"),
-                           c(  "mentor_gender","mentor_type"),
-                           c("mentor_type"),
-                           c("mentor_gender"),
-                           c("mentor_type", "mentor_programme"),
-                           c( "mentor_type"),
-                           c("mentor_programme"),
-                           c()),
-    mentee_filter = list(NULL,  
-                         "mentee_gender_pref == 'no_pref' ",
-                         NULL,  
-                         "mentee_gender_pref == 'no_pref' ",
-                         NULL,
-                         "mentee_gender_pref == 'no_pref' ",
-                         NULL, NULL, NULL, NULL, 
-                         NULL),
-    mentor_filter = list(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-  )
-  
-  
-  
-   
-  # version 2
-  matching_criteria[[2]] <- tibble(
-    mentee_criteria = list(c("mentee_gender_pref", "mentee_type_mentor_required", "mentee_programme"),
-                           c("mentee_gender_pref"),
-                           c()),
-    mentor_criteria = list(c("mentor_gender", "mentor_type", "mentor_programme"),
-                           c("mentor_gender"),
-                           c()),
-    mentee_filter = list(NULL,  NULL,  NULL),
-    mentor_filter = list(NULL, NULL, NULL)
-  )
-  
-  
+matching_criteria[[1]] <- tibble(
+  mentee_criteria = list(
+    c("mentee_gender_pref", "mentee_type_mentor_required", "mentee_programme", "mentee_major1", "mentee_major2"),
+    c("mentee_type_mentor_required", "mentee_programme", "mentee_major1", "mentee_major2"),
+    c("mentee_gender_pref", "mentee_type_mentor_required", "mentee_programme"),
+    c("mentee_type_mentor_required", "mentee_programme"),
+    c("mentee_gender_pref", "mentee_type_mentor_required"),
+    c("mentee_type_mentor_required"),
+    c("mentee_gender_pref"),
+    c("mentee_type_mentor_required", "mentee_programme"),
+    c("mentee_type_mentor_required"),
+    c("mentee_programme"),
+    c()
+  ),
+  mentor_criteria = list(
+    c("mentor_gender", "mentor_type", "mentor_programme", "mentor_major1", "mentor_major2"),
+    c("mentor_type", "mentor_programme", "mentor_major1", "mentor_major2"),
+    c("mentor_gender", "mentor_type", "mentor_programme"),
+    c("mentor_type", "mentor_programme"),
+    c("mentor_gender", "mentor_type"),
+    c("mentor_type"),
+    c("mentor_gender"),
+    c("mentor_type", "mentor_programme"),
+    c("mentor_type"),
+    c("mentor_programme"),
+    c()
+  ),
+  mentee_filter = list(
+    NULL,
+    "mentee_gender_pref == 'no_pref' ",
+    NULL,
+    "mentee_gender_pref == 'no_pref' ",
+    NULL,
+    "mentee_gender_pref == 'no_pref' ",
+    NULL, NULL, NULL, NULL,
+    NULL
+  ),
+  mentor_filter = list(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+)
 
+
+
+
+# version 2
+matching_criteria[[2]] <- tibble(
+  mentee_criteria = list(
+    c("mentee_gender_pref", "mentee_type_mentor_required", "mentee_programme"),
+    c("mentee_gender_pref"),
+    c()
+  ),
+  mentor_criteria = list(
+    c("mentor_gender", "mentor_type", "mentor_programme"),
+    c("mentor_gender"),
+    c()
+  ),
+  mentee_filter = list(NULL, NULL, NULL),
+  mentor_filter = list(NULL, NULL, NULL)
+)
 ```
 
 ### Specify weights for LP
@@ -330,17 +344,13 @@ matching_criteria <- list()
 # for LP only - each row is a different version.
 # used with scoring_criteria to specify what columns should be used
 # names in weights correspond to column names in mentee data
-weights <- tribble(~gender_pref, ~type_mentor_required, ~programme,  ~major1, ~major2, ~name,
-                      0.5, 0.25, 0.1, 0.1, 0.05, "gender priority 1",
-                      0.5, 0.25, 0.15, 0, 0.1, "gender priority 2",
-                     0.2, 0.2, 0.2,  0.2, 0.2,  "equal",
-                    1, 0, 0,0 , 0,  "gender only"
-                     )
-
-
-
-
-
+weights <- tribble(
+  ~gender_pref, ~type_mentor_required, ~programme, ~major1, ~major2, ~name,
+  0.5, 0.25, 0.1, 0.1, 0.05, "gender priority 1",
+  0.5, 0.25, 0.15, 0, 0.1, "gender priority 2",
+  0.2, 0.2, 0.2, 0.2, 0.2, "equal",
+  1, 0, 0, 0, 0, "gender only"
+)
 ```
 
 ### Specify scoring criteria
@@ -355,21 +365,17 @@ or mentee_gender_pref must equal  'no_pref' for a match to occur
 
 
 ```{r}
-
 # used to compare all methods
 scoring_criteria <- tibble(
-  mentee_criteria = c("mentee_gender_pref", "mentee_type_mentor_required", "mentee_programme",  "mentee_major1", "mentee_major2"),
-  mentor_criteria = c("mentor_gender",  "mentor_type", "mentor_programmes_all", "mentor_majors_all",  "mentor_majors_all"),
-  mentee_filter =  c("mentee_gender_pref == 'no_pref'", NA, NA, NA, NA),
-  mentor_filter = c(NA, NA,NA, NA, NA),
-  match_type = c("exact", "exact","subset", "subset", "subset"),
-  weight = c(0.5,0.25, 0.1, 0.1, 0.05)
+  mentee_criteria = c("mentee_gender_pref", "mentee_type_mentor_required", "mentee_programme", "mentee_major1", "mentee_major2"),
+  mentor_criteria = c("mentor_gender", "mentor_type", "mentor_programmes_all", "mentor_majors_all", "mentor_majors_all"),
+  mentee_filter = c("mentee_gender_pref == 'no_pref'", NA, NA, NA, NA),
+  mentor_filter = c(NA, NA, NA, NA, NA),
+  match_type = c("exact", "exact", "subset", "subset", "subset"),
+  weight = c(0.5, 0.25, 0.1, 0.1, 0.05)
 ) %>% mutate(
-  match_name =  str_replace(mentee_criteria, "mentee_", ""))
- 
-
-
-
+  match_name = str_replace(mentee_criteria, "mentee_", "")
+)
 ```
 
 ### Get matches
@@ -379,20 +385,19 @@ Can alter parameter `num_mentees_per_mentor` to change how many mentees are assi
 
 
 ```{r}
-
-results <- get_and_evaluate_matches( mentee_data=mentee_data, mentor_data=mentor_data,
-                        scoring_criteria = scoring_criteria,
-                        weights = weights,
-                        matching_criteria = matching_criteria,
-                        valIfNA = 0,
-                        num_mentees_per_mentor = 2,
-                        compare_original = FALSE, 
-                        #original_matches_clean = sample_matches,
-                        #original_name = "alphabetical",
-                        verbose = TRUE,
-                        saveAllData = TRUE
-                        )
-
+results <- get_and_evaluate_matches(
+  mentee_data = mentee_data, mentor_data = mentor_data,
+  scoring_criteria = scoring_criteria,
+  weights = weights,
+  matching_criteria = matching_criteria,
+  valIfNA = 0,
+  num_mentees_per_mentor = 2,
+  compare_original = FALSE,
+  # original_matches_clean = sample_matches,
+  # original_name = "alphabetical",
+  verbose = TRUE,
+  saveAllData = TRUE
+)
 ```
 
 
@@ -402,12 +407,14 @@ results$all_results
 ```
 
 ```{r, eval = TRUE, results = "hide"}
-best_matches = get_best_matches(results = results 
-, criteria = "mean_score")
+best_matches <- get_best_matches(
+  results = results,
+  criteria = "mean_score"
+)
 
 best_matches$matches
-best_matches$unmatched_mentees  
-best_matches$unmatched_mentors  
+best_matches$unmatched_mentees
+best_matches$unmatched_mentors
 ```
 
 ### Expore matches

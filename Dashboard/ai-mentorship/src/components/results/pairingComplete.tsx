@@ -16,7 +16,6 @@ import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import CustomizedSnackbars from "../snackbar/snackBar";
 import { GetPairMenteeResult } from "@/redux/dashboard/actions/getPairMenteeResults";
 import { GetPairMentorResult } from "@/redux/dashboard/actions/getPairMentorResults";
-import { useRouter } from "next/navigation";
 
 interface PairingCompleteProps {
   chosen: string;
@@ -41,8 +40,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
         setMentorName(null);
         try {
           if (participatingAs == "Mentee") {
-            console.log("getting mentee", chosen);
-            dispatch(GetPairMenteeResult(chosen)); //rename
+            dispatch(GetPairMenteeResult(chosen));
             const matchingResponse = await fetch("/api/pair", {
               next: { revalidate: 60 },
             });
@@ -66,7 +64,6 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
             await dispatch(FetchCollections());
           }
           if (participatingAs == "Mentor") {
-            console.log("getting mentor", chosen);
             await dispatch(GetPairMentorResult(chosen));
             const matchingResponse = await fetch("/api/pair", {
               next: { revalidate: 60 },

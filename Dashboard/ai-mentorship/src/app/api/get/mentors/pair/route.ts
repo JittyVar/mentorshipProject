@@ -9,7 +9,6 @@ import {
 import { NextApiResponse } from "next";
 import { NextRequest } from "next/server";
 import fs from "fs";
-import { matchingResults } from "../../../../../../aut_wit_industrial_proj/output";
 import { Status } from "@/data/Status";
 
 export const dynamic = "force-dynamic";
@@ -17,10 +16,10 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest, res: NextApiResponse) {
   try {
     let converter = require("json-2-csv");
-    const id = req.nextUrl.searchParams.get("slug"); // Access the slug parameter
+    const id = req.nextUrl.searchParams.get("slug");
     console.log("id ", id);
 
-    // Fetch all documents in the "Mentees" collection
+    // Fetch all documents in the "Mentors" collection
     const q = query(
       collection(database, "Mentors"),
       where("documentOf", "==", id)
@@ -143,7 +142,7 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
 
       const csv = await converter.json2csv(jsonData);
 
-      // Specify the file path where you want to save the CSV
+      // Save the CSV
       const filePath = "src/app/api/pair/data/mentor_eoi_data.csv";
 
       fs.writeFileSync(filePath, csv, "utf8");
@@ -269,7 +268,7 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
 
     const csv = await converter.json2csv(jsonData);
 
-    // Specify the file path where you want to save the CSV
+    // Save the CSV
     const filePath = "src/app/api/pair/data/mentee_eoi_data.csv";
 
     fs.writeFileSync(filePath, csv, "utf8");

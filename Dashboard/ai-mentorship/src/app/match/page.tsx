@@ -1,13 +1,7 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import React, {
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { Box, Grid, Tab } from "@mui/material";
 import ResultsComponent from "@/components/results/resultsComponent";
@@ -16,7 +10,6 @@ import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 import { arr } from "@/data/dummyArr";
 import { UpdateStatusToInProgress } from "@/redux/dashboard/actions/updateMenteeStatusToInProgress";
 import { useSearchParams } from "next/navigation";
-import { GetPairMenteeResult } from "@/redux/dashboard/actions/getPairMenteeResults";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -29,13 +22,9 @@ const MatchContent = () => {
   const participatingAs = useSearchParams()?.get("r");
   const firstRender = useRef(true);
   const [value, setValue] = React.useState("1");
-  const [chosenTab, setChosenTab] = React.useState<string | null>(
-    participatingAs
-  );
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-    setChosenTab((newValue = 1 ? "Mentor" : "Mentee"));
   };
 
   useEffect(() => {
