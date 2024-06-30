@@ -378,9 +378,7 @@ model = keras.models.load_model("mentor_recommendation_model_with_personalities.
 # Make predictions
 predictions = model.predict([test_preferences, test_skills_goals, test_personality])
 
-
 # Threshold for binary predictions
-#threshold = np.mean(predictions)
 threshold = 0.7
 
 # Convert predictions to binary values (0 or 1) for each label

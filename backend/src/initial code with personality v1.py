@@ -360,19 +360,28 @@ print('test_personality:', test_personality.shape[1])
 
 
 # Load the saved model
-model = keras.models.load_model("mentor_recommendation_model_without_personalities.h5")
+model = keras.models.load_model("mentor_recommendation_model_with_personalities.h5")
+
 
 # Make predictions
-predictions = model.predict([test_preferences, test_skills_goals])
+predictions = model.predict([test_preferences, test_skills_goals, test_personality])
 
 # Threshold for binary predictions
 threshold = 0.5
 
 # Convert predictions to binary values (0 or 1) for each label
-predicted_classes_cosine = [(prediction > threshold).astype(int) for prediction in predictions[1]]
-
-# Calculate accuracy for each label separately
-accuracy_cosine = np.mean([np.mean(predicted_class == test_labels_cosine) for predicted_class, test_labels_cosine in zip(predicted_classes_cosine, test_labels_cosine)])
+predicted_classes_cosine = [(prediction > threshold).astype(int) for prediction in predictions]
 
 # Print the average accuracy for each label
+accuracy_cosine = np.mean([np.mean(predicted_class == test_labels_cosine) for predicted_class, test_labels_cosine in zip(predicted_classes_cosine, test_labels_cosine)])
 print("Average Model Accuracy (Cosine Similarity):", accuracy_cosine)
+
+
+# Convert the list of predicted classes to a DataFrame
+predicted_classes_cosine_df = pd.DataFrame(predicted_classes_cosine, columns=[f'predicted_cosine_{idx}' for idx in range(len(predicted_classes_cosine[0]))])
+
+# Concatenate the predicted classes DataFrame with the test DataFrame
+padded_df_test = pd.concat([padded_df_test, predicted_classes_cosine_df], axis=1)
+
+# Print the first few rows of the updated DataFrame
+print(padded_df_test.head())
