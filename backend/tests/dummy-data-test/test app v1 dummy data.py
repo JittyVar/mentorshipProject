@@ -17,7 +17,13 @@ from tensorflow.keras.callbacks import History
 from tensorflow.keras import layers
 import keras
 
+#Insert the Data and create a dataframe
 
+#Add mentor data to mentee
+
+#Preprocess the data
+
+#Load the model
 
 
 
