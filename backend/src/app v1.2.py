@@ -259,55 +259,36 @@ def load_labels_cosine(df):
 
     return labels
 
-#selected_columns = [k for k in padded_df_train.columns if (k[:16]=='tokenized_mentee' 
-                                                       #or k[:16]=='tokenized_mentor'
-                                                       #or k[:15]=='tokenized_match' 
-                                                       #or k[:15]=='tokenized_mean_')]
+#selected_columns = [k for k in padded_df_train.columns if k.startswith('token')]
 #df_new_selected_column = padded_df_train[selected_columns]
 
-selected_columns = [k for k in padded_df_train.columns if k.startswith('token')]
-df_new_selected_column = padded_df_train[selected_columns]
-
-num_rows_selected_column = len(df_new_selected_column.columns)
-print('Number of rows - selected column:', num_rows_selected_column)
+#num_rows_selected_column = len(df_new_selected_column.columns)
+#print('Number of rows - selected column:', num_rows_selected_column)
 
 #Columns for skills and goals
-
-#selected_columns_skills_goals = [k for k in padded_df_train.columns if (k[:20]=='tokenized_menteeGoal'
-                                                               #or k[:22]=='tokenized_menteeSkills'
-                                                                   #or k[:22]=='tokenized_mentorSkills')]
+#selected_columns_skills_goals = [k for k in padded_df_train.columns if any(word in k.lower() for word in ['skill', 'goal'])]
 #df_new_skills_goals = padded_df_train[selected_columns_skills_goals]
-
-selected_columns_skills_goals = [k for k in padded_df_train.columns if any(word in k.lower() for word in ['skill', 'goal'])]
-df_new_skills_goals = padded_df_train[selected_columns_skills_goals]
-num_rows_skills_goals = len(df_new_skills_goals.columns)
-print('Number of rows - skills and goals:', num_rows_skills_goals)
+#num_rows_skills_goals = len(df_new_skills_goals.columns)
+#print('Number of rows - skills and goals:', num_rows_skills_goals)
 
 #Columns for personality
-#selected_columns_personality = [k for k in padded_df_train.columns if (k[:27]=='tokenized_menteePersonality'
-                                                               #or k[:27]=='tokenized_mentorPersonality')]
+#selected_columns_personality = [k for k in padded_df_train.columns if any(word in k.lower() for word in ['personality', 'Personality'])]
 #df_new_personality = padded_df_train[selected_columns_personality]
-
-selected_columns_personality = [k for k in padded_df_train.columns if any(word in k.lower() for word in ['personality', 'Personality'])]
-df_new_personality = padded_df_train[selected_columns_personality]
-num_rows_personality = len(df_new_personality.columns)
-print('Number of rows - personality:', num_rows_personality)
+#num_rows_personality = len(df_new_personality.columns)
+#print('Number of rows - personality:', num_rows_personality)
 
 #Columns for labels
-#selected_columns_labels = [k for k in padded_df_train.columns if (k[:15]=='tokenized_mean_')]
+#selected_columns_labels = [k for k in padded_df_train.columns if 'mean_' in k]
 #df_new_labels = padded_df_train[selected_columns_labels]
 
-selected_columns_labels = [k for k in padded_df_train.columns if 'mean_' in k]
-df_new_labels = padded_df_train[selected_columns_labels]
-
-num_rows_labels = len(df_new_labels.columns)
-print('Number of rows - labels:', num_rows_labels)
+#num_rows_labels = len(df_new_labels.columns)
+#print('Number of rows - labels:', num_rows_labels)
 
 #Tuning the Epoch and create CNN model 
 def create_cnn_model_with_two_labels(num_skills_goals_features, num_personality_features, num_preference_features):
     preferences_input = layers.Input(shape=(num_preference_features,))
-    skills_goals_input = layers.Input(shape=(num_skills_goals_features,)) #7
-    personality_input = layers.Input(shape=(num_personality_features,)) #7
+    skills_goals_input = layers.Input(shape=(num_skills_goals_features,))
+    personality_input = layers.Input(shape=(num_personality_features,)) 
 
     # Dense layers for preference processing
     preference_layers = layers.Dense(64, activation='relu')(preferences_input)
@@ -345,24 +326,15 @@ print('skills_goals:', skills_goals.shape[1])
 print('personality:', personality.shape[1])
 
 # Train the model with both labels
-skills_goals_features = skills_goals.shape[1]
-personality_features = personality.shape[1]
-preferences_features = preferences.shape[1]
 
-def train_model(skills_goals, personality, preferences, labels_cosine, num_skills_goals_features, num_personality_features, num_preference_features):
-    # Create the CNN model with two labels
-    model = create_cnn_model_with_two_labels(num_skills_goals_features, num_personality_features, num_preference_features)
-
-    # Train the model with both labels
-    history = model.fit([preferences, skills_goals, personality], 
-                        {"cosine_similarity": labels_cosine},
-                        epochs=15, batch_size=32, validation_split=0.2)
-
-    return history
 
 # Train the model with both labels
-def train_model(skills_goals, personality, preferences, labels_cosine, num_skills_goals_features, num_personality_features, num_preference_features):
+def train_model(skills_goals, personality, preferences, labels_cosine):
     # Create the CNN model with two labels
+    num_skills_goals_features = skills_goals.shape[1]
+    num_personality_features = personality.shape[1]
+    num_preference_features = preferences.shape[1]
+
     model = create_cnn_model_with_two_labels(num_skills_goals_features, num_personality_features, num_preference_features)
 
     # Train the model with both labels
@@ -376,17 +348,9 @@ def train_model(skills_goals, personality, preferences, labels_cosine, num_skill
 
     return history, train_cosine_mae, val_cosine_mae, model
 
-# Example usage
-# Assuming you have the following variables defined:
-# skills_goals, personality, preferences, labels_cosine, num_skills_goals_features, num_personality_features, num_preference_features
-#history = train_model(skills_goals, personality, preferences, labels_cosine, skills_goals_features, personality_features, preferences_features)
-
-# Calculate mean accuracy for cosine_similarity
-
-
 
 # Call the train_model function and assign the returned values to variables
-history, train_cosine_mae, val_cosine_mae, model = train_model(skills_goals, personality, preferences, labels_cosine, skills_goals_features, personality_features, preferences_features)
+history, train_cosine_mae, val_cosine_mae, model = train_model(skills_goals, personality, preferences, labels_cosine)
 
 # Now you can use the train_cosine_mae variable
 print("Training Cosine Similarity Accuracy:", train_cosine_mae)
@@ -395,34 +359,13 @@ mean_val_cosine_accuracy = np.mean(val_cosine_mae)
 
 print("Mean Training Cosine Accuracy:", mean_train_cosine_accuracy)
 print("Mean Validation Cosine Accuracy:", mean_val_cosine_accuracy)
-# Example usage
-# Assuming you have the following variables defined:
-# skills_goals, personality, preferences, labels_cosine, num_skills_goals_features, num_personality_features, num_preference_features
-
-#model = create_cnn_model_with_two_labels(skills_goals_features,personality_features, preferences_features)
-#history = model.fit([preferences, skills_goals, personality], #
-                    #{"cosine_similarity": labels_cosine},
-                    #epochs=15, batch_size=32, validation_split=0.2)
-
-#print(history.history.keys())
-
-# Extract training and validation MAE from the history object
-#train_cosine_mae = history.history['accuracy']
-#val_cosine_mae = history.history['val_accuracy']
 
 # Create an array representing the number of epochs
 epochs = range(1, len(train_cosine_mae) + 1)
 
 # Save the model
-model.save("mentor_recommendation_model_with_personalities_v2.h5")
-print("Model saved as 'mentor_recommendation_model_with_personalities_v2.h5'.")
-
-# Calculate mean accuracy for cosine_similarity
-mean_train_cosine_accuracy = np.mean(train_cosine_mae)
-mean_val_cosine_accuracy = np.mean(val_cosine_mae)
-
-print("Mean Training Cosine Accuracy:", mean_train_cosine_accuracy)
-print("Mean Validation Cosine Accuracy:", mean_val_cosine_accuracy)
+model.save("mentor_recommendation_model_with_personalities_v2.1.h5")
+print("Model saved as 'mentor_recommendation_model_with_personalities_v2.1.h5'.")
 
 test_preferences, test_skills_goals, test_personality = load_dataset(padded_df_test)
 
@@ -434,7 +377,7 @@ print('test_personality:', test_personality.shape[1])
 
 
 # Load the saved model
-model = keras.models.load_model("mentor_recommendation_model_with_personalities_v2.h5")
+model = keras.models.load_model("mentor_recommendation_model_with_personalities_v2.1.h5")
 
 
 # Make predictions
