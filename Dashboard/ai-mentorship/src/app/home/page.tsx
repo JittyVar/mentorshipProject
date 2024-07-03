@@ -1,5 +1,9 @@
 "use client";
 import LabTabs from "@/components/tabs/tabs";
+import app from "@/firestore/appFirestore";
+import database from "@/firestore/firestore";
+import auth from "@/firestore/authFirestore";
+import { AuthSignIn } from "@/redux/dashboard/actions/authSignIn";
 import { FetchMenteeCollections } from "@/redux/dashboard/actions/fetchMenteeCollection";
 import { FetchMentorCollections } from "@/redux/dashboard/actions/fetchMentorCollections";
 import { TotalMentees } from "@/redux/dashboard/actions/totalMentees";
@@ -10,7 +14,13 @@ import { WithNoMentees } from "@/redux/dashboard/actions/withNoMentees";
 import { WithNoMentors } from "@/redux/dashboard/actions/withNoMentors";
 import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { Box } from "@mui/material";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
@@ -28,13 +38,22 @@ export default function Home() {
   const withNoMentors = useAppSelector(
     (state) => state.dashboard.withNoMentors
   );
+  const userData = useAppSelector((state) => state.dashboard.user);
 
   const menteesData = [totalMentees, withMentors, withNoMentors];
   const mentorsData = [totalMentors, withMentees, withNoMentees];
+  const { user, isLoading } = useUser();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      window.location.href = "/api/auth/login";
+    }
+  }, [isLoading, user]);
 
   useEffect(() => {
     if (firstLog.current) {
       const fetchData = async () => {
+        await dispatch(AuthSignIn());
         try {
           await Promise.all([
             dispatch(FetchMenteeCollections()),
@@ -54,16 +73,23 @@ export default function Home() {
       fetchData();
       firstLog.current = false;
     }
-  }, [dispatch, firstLog]);
+  }, [dispatch, firstLog, user, userData]);
+
+  useEffect(() => {
+    console.log("userData ", userData);
+  }, [userData]);
 
   return (
-    <Box>
-      <LabTabs
-        mentorRows={mentorRows}
-        menteeRows={menteeRows}
-        mentorsData={mentorsData}
-        menteesData={menteesData}
-      />
-    </Box>
+    userData && (
+      <Box>
+        <a href="/api/auth/logout">Logout</a>
+        <LabTabs
+          mentorRows={mentorRows}
+          menteeRows={menteeRows}
+          mentorsData={mentorsData}
+          menteesData={menteesData}
+        />
+      </Box>
+    )
   );
 }

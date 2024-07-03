@@ -8,7 +8,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import React, { useEffect, useState } from "react";
 import { restartpairingResultsStatus } from "@/redux/dashboard/dashboardSlice";
 import { UpdateStatus } from "@/redux/dashboard/actions/updateStatus";
@@ -30,11 +30,13 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
 
   const dispatch = useAppDispatch();
 
+  const userData = useAppSelector((state) => state.dashboard.user);
+
   useEffect(() => {
     const fetchData = async () => {
       setMenteeName(null);
       setMentorName(null);
-      if (chosen) {
+      if (chosen && userData) {
         dispatch(restartpairingResultsStatus());
         setMenteeName(null);
         setMentorName(null);
@@ -98,156 +100,158 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   }, [chosen!]);
 
   return (
-    <Paper>
-      <Paper
-        elevation={3}
-        sx={{
-          height: "60px",
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: "20px",
-          backgroundColor: "#1E1F42",
-          color: "white",
-        }}
-      >
-        <Typography fontWeight={"bold"}>RESULTS</Typography>
-      </Paper>
-      {menteeName == null ? (
-        <div
-          style={{
-            width: "100%",
+    userData && (
+      <Paper>
+        <Paper
+          elevation={3}
+          sx={{
+            height: "60px",
             display: "flex",
-            height: "300px",
-            justifyContent: "center",
             alignItems: "center",
+            paddingLeft: "20px",
+            backgroundColor: "#1E1F42",
+            color: "white",
           }}
         >
-          <CircularProgress color="secondary" size={100} />
-        </div>
-      ) : (
-        <>
-          <Grid
-            container
-            spacing={2}
-            sx={{
-              widht: "100%",
-              height: "350px",
-              padding: 3,
-              paddingTop: "20px",
-              paddingBottom: "20px",
+          <Typography fontWeight={"bold"}>RESULTS</Typography>
+        </Paper>
+        {menteeName == null ? (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              height: "300px",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <Grow in={true}>
-              <Grid
-                item
-                xs={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Avatar
-                    style={{
-                      width: "200px",
-                      height: "200px",
-                    }}
-                  >
-                    {`${menteeName.split(" ")[0][0]}${
-                      menteeName.split(" ")[1][0]
-                    }`}
-                  </Avatar>
-                  {menteeName != null && (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "50px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "10%",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography fontWeight={"bold"} fontSize={20}>
-                          Mentee
-                        </Typography>
-                        <Typography fontWeight={"light"}>
-                          {menteeName}
-                        </Typography>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </Grid>
-            </Grow>
-            <Grow
-              in={true}
-              style={{ transformOrigin: "0 0 0" }}
-              {...(true ? { timeout: 1000 } : {})}
+            <CircularProgress color="secondary" size={100} />
+          </div>
+        ) : (
+          <>
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                widht: "100%",
+                height: "350px",
+                padding: 3,
+                paddingTop: "20px",
+                paddingBottom: "20px",
+              }}
             >
-              <Grid
-                item
-                xs={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Avatar
-                    style={{
-                      width: "200px",
-                      height: "200px",
-                    }}
-                  >{`${mentorName!.split(" ")[0][0]}${
-                    mentorName!.split(" ")[1][0]
-                  }`}</Avatar>
-                  {mentorName != null && (
-                    <div
+              <Grow in={true}>
+                <Grid
+                  item
+                  xs={6}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <Avatar
                       style={{
-                        width: "100%",
-                        height: "50px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "10%",
+                        width: "200px",
+                        height: "200px",
                       }}
                     >
+                      {`${menteeName.split(" ")[0][0]}${
+                        menteeName.split(" ")[1][0]
+                      }`}
+                    </Avatar>
+                    {menteeName != null && (
                       <div
                         style={{
+                          width: "100%",
+                          height: "50px",
                           display: "flex",
-                          flexDirection: "column",
                           justifyContent: "center",
                           alignItems: "center",
+                          marginTop: "10%",
                         }}
                       >
-                        <Typography fontWeight={"bold"} fontSize={20}>
-                          Mentor
-                        </Typography>
-                        <Typography fontWeight={"light"}>
-                          {mentorName}
-                        </Typography>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography fontWeight={"bold"} fontSize={20}>
+                            Mentee
+                          </Typography>
+                          <Typography fontWeight={"light"}>
+                            {menteeName}
+                          </Typography>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </Grid>
-            </Grow>
-          </Grid>
-          <CustomizedSnackbars success={true} />
-        </>
-      )}
-    </Paper>
+                    )}
+                  </div>
+                </Grid>
+              </Grow>
+              <Grow
+                in={true}
+                style={{ transformOrigin: "0 0 0" }}
+                {...(true ? { timeout: 1000 } : {})}
+              >
+                <Grid
+                  item
+                  xs={6}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <Avatar
+                      style={{
+                        width: "200px",
+                        height: "200px",
+                      }}
+                    >{`${mentorName!.split(" ")[0][0]}${
+                      mentorName!.split(" ")[1][0]
+                    }`}</Avatar>
+                    {mentorName != null && (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "50px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: "10%",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography fontWeight={"bold"} fontSize={20}>
+                            Mentor
+                          </Typography>
+                          <Typography fontWeight={"light"}>
+                            {mentorName}
+                          </Typography>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </Grid>
+              </Grow>
+            </Grid>
+            <CustomizedSnackbars success={true} />
+          </>
+        )}
+      </Paper>
+    )
   );
 };
 

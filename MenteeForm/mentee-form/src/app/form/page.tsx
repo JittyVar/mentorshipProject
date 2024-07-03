@@ -3,7 +3,6 @@ import React from "react";
 //import RegistrationEnd from "./registrationEndedComponent";
 import VerticalLinearStepper from "@/components/verticalStepper";
 import { Box, Container, ImageList, ImageListItem } from "@mui/material";
-import Image from "next/image";
 import applicationpic from "../../../public/mentorshipapplication.png";
 // interface FormPageProps {
 //   isAuthenticated: boolean;

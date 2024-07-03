@@ -14,6 +14,7 @@ import { FetchCollections } from "./actions/fetchCollection";
 import { GetPairMenteeResult } from "./actions/getPairMenteeResults";
 import { GetPairMentorResult } from "./actions/getPairMentorResults";
 import { GetMatchingAlgorithm } from "./actions/getMatchingAlgorithm";
+import { AuthSignIn } from "./actions/authSignIn";
 
 export enum APIStatus {
   idle = "idle",
@@ -48,6 +49,7 @@ export interface HomeDataRows {
   pairingResultsStatus: APIStatus;
   getMenteeDataStatus: APIStatus;
   getMentorDataStatus: APIStatus;
+  user: string;
 }
 
 export const initialState: HomeDataRows = {
@@ -69,6 +71,7 @@ export const initialState: HomeDataRows = {
   pairingResultsStatus: APIStatus.idle,
   getMenteeDataStatus: APIStatus.idle,
   getMentorDataStatus: APIStatus.idle,
+  user: "",
 };
 
 export const dashboardSlice = createSlice({
@@ -210,6 +213,9 @@ export const dashboardSlice = createSlice({
       .addCase(GetMatchingAlgorithm.rejected, (state) => {
         state.pairingResultsStatus = APIStatus.error;
       });
+    builder.addCase(AuthSignIn.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
   },
 });
 

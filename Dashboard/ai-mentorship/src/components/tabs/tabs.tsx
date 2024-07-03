@@ -11,6 +11,7 @@ import { useAppSelector } from "@/redux/hook";
 import { Backdrop, CircularProgress, TextField } from "@mui/material";
 import { APIStatus } from "@/redux/dashboard/dashboardSlice";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface LabTabsProps {
   mentorRows: HomeTableColumns[];
@@ -41,13 +42,17 @@ const LabTabs: React.FC<LabTabsProps> = ({
     []
   );
 
+  const { user, error, isLoading } = useUser();
+
   React.useEffect(() => {
-    let rowData = value == "1" ? mentorRows : menteeRows;
-    const filtered = rowData.filter((e: HomeTableColumns) =>
-      e.fullName.toLocaleLowerCase().includes(name.toLocaleLowerCase())
-    );
-    setFilteredRows(filtered);
-  }, [menteeRows, mentorRows, name, value]);
+    if (user) {
+      let rowData = value == "1" ? mentorRows : menteeRows;
+      const filtered = rowData.filter((e: HomeTableColumns) =>
+        e.fullName.toLocaleLowerCase().includes(name.toLocaleLowerCase())
+      );
+      setFilteredRows(filtered);
+    }
+  }, [menteeRows, mentorRows, name, user, value]);
 
   return (
     <TabContext value={value}>

@@ -22,6 +22,7 @@ const MatchContent = () => {
   const participatingAs = useSearchParams()?.get("r");
   const firstRender = useRef(true);
   const [value, setValue] = React.useState("1");
+  const userData = useAppSelector((state) => state.dashboard.user);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -29,95 +30,98 @@ const MatchContent = () => {
 
   useEffect(() => {
     const fetchDataFirstRender = async () => {
-      if (firstRender.current) {
+      if (firstRender.current && userData) {
         await dispatch(FetchCollections());
       }
     };
 
     firstRender.current = false;
     fetchDataFirstRender();
-  }, [dispatch, firstRender]);
+  }, [dispatch, firstRender, userData]);
 
   // Update isLoading state when participatingAs is set
   useEffect(() => {
-    try {
-      const paramArr = [
-        {
-          url:
-            participatingAs === "Mentee"
-              ? "/api/put/mentees/inProgressStatus"
-              : "/api/put/mentors/inProgressStatus",
-          param: chosenData,
-        },
-      ];
+    const paramArr = [
+      {
+        url:
+          participatingAs === "Mentee"
+            ? "/api/put/mentees/inProgressStatus"
+            : "/api/put/mentors/inProgressStatus",
+        param: chosenData,
+      },
+    ];
+    const updateStatus = async () => {
+      await Promise.all([
+        dispatch(UpdateStatusToInProgress(paramArr)).then(() => {
+          dispatch(FetchCollections());
+        }),
+      ]);
+    };
 
-      dispatch(UpdateStatusToInProgress(paramArr)).then(() => {
-        dispatch(FetchCollections());
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    updateStatus();
   }, [chosenData, dispatch, participatingAs]);
 
   return (
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-      <Grid item xs={6}>
-        <Box
-          sx={{
-            width: "100%",
-            typography: "body1",
-            marginTop: "2%",
-            marginBottom: "2%",
-          }}
-        >
-          <TabContext value={value}>
-            <Box>
-              <TabList
-                onChange={handleChange}
-                aria-label="lab API tabs example"
-                sx={{
-                  "& .MuiTabs-indicator": {
-                    backgroundColor: "#1E1F42",
-                  },
-                }}
-              >
-                <Tab label="MENTORS" value="1" />
-                <Tab label="MENTEES" value="2" />
-              </TabList>
-            </Box>
-            <TabPanel value="1">
+    userData && (
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid item xs={6}>
+          <Box
+            sx={{
+              width: "100%",
+              typography: "body1",
+              marginTop: "2%",
+              marginBottom: "2%",
+            }}
+          >
+            <TabContext value={value}>
               <Box>
-                <MatchTableComponent
-                  collectionData={rows.filter(
-                    (e: HomeTableColumns) => e.participatingAs == "Mentor"
-                  )}
-                  chosenData={chosenData}
-                  participatingAs={participatingAs!}
-                />
+                <TabList
+                  onChange={handleChange}
+                  aria-label="lab API tabs example"
+                  sx={{
+                    "& .MuiTabs-indicator": {
+                      backgroundColor: "#1E1F42",
+                    },
+                  }}
+                >
+                  <Tab label="MENTORS" value="1" />
+                  <Tab label="MENTEES" value="2" />
+                </TabList>
               </Box>
-            </TabPanel>
-            <TabPanel value="2">
-              <Box>
-                <MatchTableComponent
-                  collectionData={rows.filter(
-                    (e: HomeTableColumns) => e.participatingAs == "Mentee"
-                  )}
-                  chosenData={chosenData}
-                  participatingAs={participatingAs!}
-                />
-              </Box>
-            </TabPanel>
-          </TabContext>
-        </Box>
+              <TabPanel value="1">
+                <Box>
+                  <MatchTableComponent
+                    collectionData={rows.filter(
+                      (e: HomeTableColumns) => e.participatingAs == "Mentor"
+                    )}
+                    chosenData={chosenData}
+                    participatingAs={participatingAs!}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="2">
+                <Box>
+                  <MatchTableComponent
+                    collectionData={rows.filter(
+                      (e: HomeTableColumns) => e.participatingAs == "Mentee"
+                    )}
+                    chosenData={chosenData}
+                    participatingAs={participatingAs!}
+                  />
+                </Box>
+              </TabPanel>
+            </TabContext>
+          </Box>
+        </Grid>
+        <Grid item xs={6} sx={{ marginTop: "6%" }}>
+          <ResultsComponent
+            data={arr}
+            dataOf={chosenData}
+            participatingAs={participatingAs}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={6} sx={{ marginTop: "6%" }}>
-        <ResultsComponent
-          data={arr}
-          dataOf={chosenData}
-          participatingAs={participatingAs}
-        />
-      </Grid>
-    </Grid>
+    )
   );
 };
 

@@ -14,7 +14,7 @@ import { Status } from "@/data/Status";
 import { Avatar, Button, Chip } from "@mui/material";
 import { HomeTableColumns } from "@/data/HomeTableColumns";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { APIStatus, restartStatus } from "@/redux/dashboard/dashboardSlice";
 import { FetchCollections } from "@/redux/dashboard/actions/fetchCollection";
 
@@ -65,6 +65,7 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [matchMeClicked, setMatchedMeClicked] = useState(false);
+  const userData = useAppSelector((state) => state.dashboard.user);
 
   useEffect(() => {
     // Map over the collectionData and create rows using createData function
@@ -88,111 +89,115 @@ const MatchTableComponent: React.FC<MatchTableComponentProps> = ({
 
   const handleClick = async (name: string, participating: string) => {
     try {
-      dispatch(restartStatus(APIStatus.idle));
-      setChosenName(name);
-      setMatchedMeClicked(true);
-      dispatch(FetchCollections());
-      router.push(`/match?q=${encodeURIComponent(name)}&r=${participating}`);
+      if (userData) {
+        dispatch(restartStatus(APIStatus.idle));
+        setChosenName(name);
+        setMatchedMeClicked(true);
+        dispatch(FetchCollections());
+        router.push(`/match?q=${encodeURIComponent(name)}&r=${participating}`);
+      }
     } catch (error) {
       throw error;
     }
   };
 
   useEffect(() => {
-    if (chosenName != null && !matchMeClicked) {
+    if (chosenName != null && !matchMeClicked && userData) {
       router.push(
         `/match?q=${encodeURIComponent(chosenName)}&r=${participatingAs}`
       );
       setMatchedMeClicked(false);
     }
-  }, [chosenName, router, participatingAs, matchMeClicked]);
+  }, [chosenName, router, participatingAs, matchMeClicked, userData]);
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead
-          sx={{
-            width: "100%",
-            "& .MuiTableCell-root": {
-              backgroundColor: "white",
-            },
-            "& .MuiTableCell-head": {
-              backgroundColor: "#1E1F42",
-              color: "white",
-              borderColor: "grey",
-              borderWidth: "1px",
-            },
-          }}
-        >
-          <TableRow>
-            <StyledTableCell>Progress Status</StyledTableCell>
-            <StyledTableCell>Avatar</StyledTableCell>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Action</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow
-              key={row.fullName}
-              sx={
-                row.fullName == chosenName
-                  ? {
-                      "& .MuiTableCell-body": {
-                        backgroundColor: "#F4E6F2",
-                      },
-                    }
-                  : { backgroundColor: "white" }
-              }
-              onClick={() => {
-                row.status == Status.InProgress &&
-                  handleClick(row.fullName, row.participatingAs);
-              }}
-            >
-              <StyledTableCell component="th" scope="row">
-                {
-                  <Chip
-                    color={
-                      row.status === Status.Completed
-                        ? "success"
-                        : row.status === Status.InProgress
-                        ? "warning"
-                        : "error"
-                    }
-                    variant="outlined"
-                    label={row.status}
-                  />
+    userData && (
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead
+            sx={{
+              width: "100%",
+              "& .MuiTableCell-root": {
+                backgroundColor: "white",
+              },
+              "& .MuiTableCell-head": {
+                backgroundColor: "#1E1F42",
+                color: "white",
+                borderColor: "grey",
+                borderWidth: "1px",
+              },
+            }}
+          >
+            <TableRow>
+              <StyledTableCell>Progress Status</StyledTableCell>
+              <StyledTableCell>Avatar</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Action</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <StyledTableRow
+                key={row.fullName}
+                sx={
+                  row.fullName == chosenName
+                    ? {
+                        "& .MuiTableCell-body": {
+                          backgroundColor: "#F4E6F2",
+                        },
+                      }
+                    : { backgroundColor: "white" }
                 }
-              </StyledTableCell>
-              <StyledTableCell>
-                <Avatar>{`${row.fullName.split(" ")[0][0]}${
-                  row.fullName.split(" ")[0][0]
-                }`}</Avatar>
-              </StyledTableCell>
-              <StyledTableCell>{row.fullName}</StyledTableCell>
-              <StyledTableCell>
-                {row.assignedMentor == "In progress" ? (
-                  "---"
-                ) : (
-                  <Button
-                    variant="contained"
-                    value={row.assignedMentor}
-                    sx={{
-                      backgroundColor: "#1E1F42",
-                    }}
-                    onClick={() =>
-                      handleClick(row.fullName, row.participatingAs)
-                    }
-                  >
-                    MATCH ME
-                  </Button>
-                )}
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                onClick={() => {
+                  row.status == Status.InProgress &&
+                    handleClick(row.fullName, row.participatingAs);
+                }}
+              >
+                <StyledTableCell component="th" scope="row">
+                  {
+                    <Chip
+                      color={
+                        row.status === Status.Completed
+                          ? "success"
+                          : row.status === Status.InProgress
+                          ? "warning"
+                          : "error"
+                      }
+                      variant="outlined"
+                      label={row.status}
+                    />
+                  }
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Avatar>{`${row.fullName.split(" ")[0][0]}${
+                    row.fullName.split(" ")[0][0]
+                  }`}</Avatar>
+                </StyledTableCell>
+                <StyledTableCell>{row.fullName}</StyledTableCell>
+                <StyledTableCell>
+                  {row.assignedMentor == "In progress" ? (
+                    "---"
+                  ) : (
+                    <Button
+                      variant="contained"
+                      value={row.assignedMentor}
+                      sx={{
+                        backgroundColor: "#1E1F42",
+                      }}
+                      onClick={() =>
+                        handleClick(row.fullName, row.participatingAs)
+                      }
+                    >
+                      MATCH ME
+                    </Button>
+                  )}
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )
   );
 };
 

@@ -6,6 +6,7 @@ import { Container } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import MiniDrawer from "@/components/sideNav/sideNav";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 export default function RootLayout({
   children,
@@ -18,7 +19,9 @@ export default function RootLayout({
         <Box>
           <Container maxWidth="xl">
             <Provider store={store}>
-              <MiniDrawer>{children}</MiniDrawer>
+              <UserProvider>
+                <MiniDrawer>{children}</MiniDrawer>
+              </UserProvider>
             </Provider>
           </Container>
         </Box>

@@ -30,12 +30,6 @@ const DataTable: React.FC<DataTableProps> = ({
 
   const statusSort = R.sortWith([R.descend(R.prop("status"))]);
 
-  console.log(
-    "participatingAs ",
-    participatingAs,
-    "withNoMentees ",
-    withNoMentees
-  );
   const columns: GridColDef[] = [
     {
       field: "avatar",
