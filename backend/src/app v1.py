@@ -1,5 +1,5 @@
 import os
-import pandas as pd # type: ignore
+import pandas as pd  # type: ignore
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import tensorflow as tf
@@ -34,7 +34,7 @@ df_raw['unique_id'] = df_raw['unique_id'].astype(str)
 df_raw.to_csv('data/trainingDataNew.csv', index=False)
 
 # Print the resulting DataFrame with unique IDs
-#print("Padded DataFrame with unique IDs and mentors:")
+# print("Padded DataFrame with unique IDs and mentors:")
 
 
 # Read the original CSV file
@@ -46,26 +46,31 @@ df['unique_id'] = df['unique_id'].astype(str)
 
 mentor_database = df[['unique_id', 'mentorName', 'menteeName']]
 
-#Replacing the headers to remove spaces and special characters in headers of the CSV file
+# Replacing the headers to remove spaces and special characters in headers of the CSV file
+
+
 def process_columns(df, columns):
     new_df = pd.DataFrame()
     for column in columns:
         new_column = column
-        new_df[new_column] = df[column].str.lower().replace('[^\w\s]', '', regex=True)
+        new_df[new_column] = df[column].str.lower().replace(
+            '[^\w\s]', '', regex=True)
     return new_df
+
 
 column_to_process = df.columns
 
 df_new = process_columns(df, column_to_process)
 
 
-
 def preprocess_data(df, column_to_preprocess):
     # Convert NaN to empty lists and ensure strings for specific columns
     for column in column_to_preprocess:
-        df[column] = df[column].apply(lambda x: [] if pd.isna(x) and isinstance(x, list) else '' if pd.isna(x) else x)
-    
+        df[column] = df[column].apply(lambda x: [] if pd.isna(
+            x) and isinstance(x, list) else '' if pd.isna(x) else x)
+
     return df
+
 
 columns_to_preprocess = df_new.columns.tolist()
 
@@ -76,52 +81,64 @@ df_new = preprocess_data(df_new, columns_to_preprocess)
 print("df_new")
 print(df_new.head())
 
+
 def calculate_cosine_similarity_mean(row):
-    
-    #Mentor and Mentee Skills
+
+    # Mentor and Mentee Skills
     mentor_skills_expert = row['mentorSkillsExpert']
     mentee_skills_expert = row['menteeSkillsExpert']
     mentee_skills_competent = row['menteeSkillsCompetent']
     mentee_skills_basics = row['menteeSkillsBasics']
 
-    #Mentor and Mentee Job Title
+    # Mentor and Mentee Job Title
     mentee_job_title = row['menteeJobTitle']
     mentor_job_title = row['mentorJobTitle']
 
-    #Mentor and Mentee Personality Type
+    # Mentor and Mentee Personality Type
     mentee_personality_type = row['menteePersonalityType']
     mentor_personality_type = row['mentorPersonalityType']
 
-    #Mentor and Mentee Goals
+    # Mentor and Mentee Goals
     mentee_goals = row['menteeGoals']
-    mentor_goals = row['mentorSkillsExpert']    
+    mentor_goals = row['mentorSkillsExpert']
 
     # Use TF-IDF to transform the text data into numerical representations
     vectorizer = TfidfVectorizer()
-    vectors_skills = vectorizer.fit_transform([mentor_skills_expert, mentee_skills_expert, mentee_skills_competent, mentee_skills_basics,])
-    vectors_job_title = vectorizer.fit_transform([mentee_job_title, mentor_job_title, mentor_personality_type, mentor_goals])
+    vectors_skills = vectorizer.fit_transform(
+        [mentor_skills_expert, mentee_skills_expert, mentee_skills_competent, mentee_skills_basics,])
+    vectors_job_title = vectorizer.fit_transform(
+        [mentee_job_title, mentor_job_title, mentor_personality_type, mentor_goals])
     vectors_goals = vectorizer.fit_transform([mentee_goals, mentor_goals])
-    vectors_personality_type = vectorizer.fit_transform([mentee_personality_type, mentor_personality_type])
-    
-    
+    vectors_personality_type = vectorizer.fit_transform(
+        [mentee_personality_type, mentor_personality_type])
+
     # Calculate cosine similarity for goals and skills
-    similarity_skills_expert = cosine_similarity(vectors_skills[0:1], vectors_skills[1:2])[0][0] # Cosine similarity for expert skills
-    similarity_skills_competent = cosine_similarity(vectors_skills[0:1], vectors_skills[2:3])[0][0] # Cosine similarity for competent skills
-    similarity_skills_basics = cosine_similarity(vectors_skills[0:1], vectors_skills[3:4])[0][0] # Cosine similarity for basics skills
-    similarity_personality_type = cosine_similarity(vectors_personality_type)[0][1] # Cosine similarity for personality type
-    similarity_goals = cosine_similarity(vectors_goals)[0][1] # Cosine similarity for goals
+    similarity_skills_expert = cosine_similarity(vectors_skills[0:1], vectors_skills[1:2])[
+        0][0]  # Cosine similarity for expert skills
+    similarity_skills_competent = cosine_similarity(vectors_skills[0:1], vectors_skills[2:3])[
+        0][0]  # Cosine similarity for competent skills
+    similarity_skills_basics = cosine_similarity(vectors_skills[0:1], vectors_skills[3:4])[
+        0][0]  # Cosine similarity for basics skills
+    similarity_personality_type = cosine_similarity(vectors_personality_type)[
+        0][1]  # Cosine similarity for personality type
+    similarity_goals = cosine_similarity(
+        vectors_goals)[0][1]  # Cosine similarity for goals
     similarity_job_title = cosine_similarity(vectors_job_title)[0][1]
-    
+
     # Calculate the mean of cosine similarity for goals and skills
-    mean_similarity = ((similarity_skills_expert + similarity_skills_competent + similarity_skills_basics + similarity_job_title + similarity_personality_type + similarity_goals) / 6.0) * 100
+    mean_similarity = ((similarity_skills_expert + similarity_skills_competent + similarity_skills_basics +
+                       similarity_job_title + similarity_personality_type + similarity_goals) / 6.0) * 100
     mean_similarity = round(mean_similarity, 0)
     return mean_similarity
 
-# Calculate the mean of cosine similarity for each row and add it as a new column
-df_new['mean_cosine_similarity'] = df_new.apply(calculate_cosine_similarity_mean, axis=1)
-df_new['mean_cosine_similarity'] = df_new['mean_cosine_similarity'].astype(float)
 
-#Add the cosine similarity to the mentor_database dataframe
+# Calculate the mean of cosine similarity for each row and add it as a new column
+df_new['mean_cosine_similarity'] = df_new.apply(
+    calculate_cosine_similarity_mean, axis=1)
+df_new['mean_cosine_similarity'] = df_new['mean_cosine_similarity'].astype(
+    float)
+
+# Add the cosine similarity to the mentor_database dataframe
 mentor_database['mean_cosine_similarity'] = df_new['mean_cosine_similarity']
 
 # Calculate the mean of the 'values_float' column in the new DataFrame
@@ -134,25 +151,27 @@ print(df_new.head())
 
 print('Cosine Mean: ', mean_cosine_value)
 
+
 def tokenize_text_columns(df, columns):
     new_df = pd.DataFrame()
     tokenizer = Tokenizer()
-    
+
     for column in columns:
-        if column == 'unique_id': #Skip tokenising the 'unique_id' column
-            new_df[column] = df[column] #.apply(lambda x: [x])
+        if column == 'unique_id':  # Skip tokenising the 'unique_id' column
+            new_df[column] = df[column]  # .apply(lambda x: [x])
         else:
             new_column = 'tokenized_' + column
             texts = df[column].tolist()
-        
+
             tokenizer.fit_on_texts(texts)
             sequences = tokenizer.texts_to_sequences(texts)
             padded_sequences = pad_sequences(sequences, padding='post')
-        
+
             new_column = 'tokenized_' + column
             new_df[new_column] = padded_sequences.tolist()
-    
+
     return new_df
+
 
 columns_to_tokenize = df_new.columns
 
@@ -175,29 +194,29 @@ for col_name in df_new.columns:
     else:
         # Get the column data
         column_data = df_new[col_name]
-    
+
         # Initialize an empty list to store the padded values
         padded_values = []
-    
+
         # Iterate through each element in the column
         for value in column_data:
             # Pad the list with zeros to reach the maximum length
             padded_value = value + [0] * (max_length - len(value))
             padded_values.append(padded_value)
-    
+
         # Create new column names based on the original column name
         new_col_names = [f'{col_name}_{idx}' for idx in range(max_length)]
-    
+
         # Create a DataFrame from the padded values and new column names
         padded_col_df = pd.DataFrame(padded_values, columns=new_col_names)
-    
+
         # Concatenate the padded DataFrame with the main padded DataFrame
         padded_df = pd.concat([padded_df, padded_col_df], axis=1)
 
 # Print the resulting padded DataFrame
 print(padded_df.head)
 
-#Dividing the data into training and testing data
+# Dividing the data into training and testing data
 
 # Calculate the number of rows for training and testing data
 total_rows = padded_df.shape[0]
@@ -218,116 +237,129 @@ print('Number of rows for training:', num_rows_train)
 num_rows_test = len(padded_df_test)
 print('Number of rows for test:', num_rows_test)
 
-#Machine Learning Model
+# Machine Learning Model
 
 # Define the number of preference features
 NUM_PREFERENCE_FEATURES = padded_df.shape[1] - 1
 
 # Function to preprocess the preference data
+
+
 def preprocess_preferences(preferences):
     return np.array(preferences)
 
 # Load and preprocess the dataset
+
+
 def load_dataset(df):
-    
-    selected_columns = [k for k in df.columns if (k[:16]=='tokenized_mentee' or k[:16]=='tokenized_mentor'
-                                                 or k[:15]=='tokenized_mean_')]
+
+    selected_columns = [k for k in df.columns if (k[:16] == 'tokenized_mentee' or k[:16] == 'tokenized_mentor'
+                                                  or k[:15] == 'tokenized_mean_')]
     df_new = df[selected_columns]
     preferences = df_new.values
-    
+
     # DEFINE THE INPUTE LAYER
-    selected_columns_skills_goals = [k for k in df.columns if (k[:20]=='tokenized_menteeGoal'
-                                                               or k[:22]=='tokenized_menteeSkills'
-                                                              or k[:22]=='tokenized_mentorSkills')]
+    selected_columns_skills_goals = [k for k in df.columns if (k[:20] == 'tokenized_menteeGoal'
+                                                               or k[:22] == 'tokenized_menteeSkills'
+                                                               or k[:22] == 'tokenized_mentorSkills')]
     df_new_skills_goals = df[selected_columns_skills_goals]
     skills_goals = df_new_skills_goals.values
 
-    #DEFINE THE PERSONALITY LAYER
-    selected_columns_personality = [k for k in df.columns if (k[:27]=='tokenized_menteePersonality'
-                                                               or k[:27]=='tokenized_mentorPersonality')]
+    # DEFINE THE PERSONALITY LAYER
+    selected_columns_personality = [k for k in df.columns if (k[:27] == 'tokenized_menteePersonality'
+                                                              or k[:27] == 'tokenized_mentorPersonality')]
     df_new_personality = df[selected_columns_personality]
     personality = df_new_personality.values
-    
+
     return preferences, skills_goals, personality
 
+
 def load_labels_cosine(df):
-    
-    # DEFINE THE LABELS/OUTPUT    
-    selected_columns_labels = [k for k in df.columns if (k[:15]=='tokenized_mean_')]
+
+    # DEFINE THE LABELS/OUTPUT
+    selected_columns_labels = [
+        k for k in df.columns if (k[:15] == 'tokenized_mean_')]
     df_new_labels = df[selected_columns_labels]
     labels = df_new_labels.values
-    
 
     return labels
 
-selected_columns = [k for k in padded_df_train.columns if (k[:16]=='tokenized_mentee' 
-                                                       or k[:16]=='tokenized_mentor'
-                                                       or k[:15]=='tokenized_match' 
-                                                       or k[:15]=='tokenized_mean_')]
+
+selected_columns = [k for k in padded_df_train.columns if (k[:16] == 'tokenized_mentee'
+                                                           or k[:16] == 'tokenized_mentor'
+                                                           or k[:15] == 'tokenized_match'
+                                                           or k[:15] == 'tokenized_mean_')]
 df_new_selected_column = padded_df_train[selected_columns]
 
 num_rows_selected_column = len(df_new_selected_column.columns)
 print('Number of rows - selected column:', num_rows_selected_column)
 
-#Columns for skills and goals
+# Columns for skills and goals
 
-selected_columns_skills_goals = [k for k in padded_df_train.columns if (k[:20]=='tokenized_menteeGoal'
-                                                               or k[:22]=='tokenized_menteeSkills'
-                                                                   or k[:22]=='tokenized_mentorSkills')]
+selected_columns_skills_goals = [k for k in padded_df_train.columns if (k[:20] == 'tokenized_menteeGoal'
+                                                                        or k[:22] == 'tokenized_menteeSkills'
+                                                                        or k[:22] == 'tokenized_mentorSkills')]
 df_new_skills_goals = padded_df_train[selected_columns_skills_goals]
 
 num_rows_skills_goals = len(df_new_skills_goals.columns)
 print('Number of rows - skills and goals:', num_rows_skills_goals)
 
-#Columns for skills and goals
+# Columns for skills and goals
 
-selected_columns_personality = [k for k in padded_df_train.columns if (k[:27]=='tokenized_menteePersonality'
-                                                               or k[:27]=='tokenized_mentorPersonality')]
+selected_columns_personality = [k for k in padded_df_train.columns if (k[:27] == 'tokenized_menteePersonality'
+                                                                       or k[:27] == 'tokenized_mentorPersonality')]
 df_new_personality = padded_df_train[selected_columns_personality]
 
 num_rows_personality = len(df_new_personality.columns)
 print('Number of rows - personality:', num_rows_personality)
 
-#Columns for labels
-selected_columns_labels = [k for k in padded_df_train.columns if (k[:15]=='tokenized_mean_')]
+# Columns for labels
+selected_columns_labels = [
+    k for k in padded_df_train.columns if (k[:15] == 'tokenized_mean_')]
 df_new_labels = padded_df_train[selected_columns_labels]
 
 num_rows_labels = len(df_new_labels.columns)
 print('Number of rows - labels:', num_rows_labels)
 
-#Tuning the Epoch and create CNN model 
+# Tuning the Epoch and create CNN model
+
+
 def create_cnn_model_with_two_labels():
     preferences_input = layers.Input(shape=(NUM_PREFERENCE_FEATURES,))
-    skills_goals_input = layers.Input(shape=(130,)) #7
-    personality_input = layers.Input(shape=(52,)) #7
+    skills_goals_input = layers.Input(shape=(130,))  # 7
+    personality_input = layers.Input(shape=(52,))  # 7
 
     # Dense layers for preference processing
     preference_layers = layers.Dense(64, activation='relu')(preferences_input)
     preference_layers = layers.Dense(32, activation='relu')(preference_layers)
-    
+
     # Skills/Goals processing layers
-    skills_goals_layers = layers.Dense(16, activation='relu')(skills_goals_input)
+    skills_goals_layers = layers.Dense(
+        16, activation='relu')(skills_goals_input)
     personality_layers = layers.Dense(16, activation='relu')(personality_input)
-    
+
     # Concatenate preference output and skills/goals input
-    combined_layers = layers.concatenate([preference_layers, skills_goals_layers, personality_layers])
+    combined_layers = layers.concatenate(
+        [preference_layers, skills_goals_layers, personality_layers])
 
     # Final dense layers for classification
     combined_layers = layers.Dense(32, activation='relu')(combined_layers)
 
     # Output layers for each label
-    output_cosine = layers.Dense(26, activation='sigmoid', name='cosine_similarity')(combined_layers)
+    output_cosine = layers.Dense(
+        26, activation='sigmoid', name='cosine_similarity')(combined_layers)
 
     model = keras.Model(inputs=[preferences_input, skills_goals_input, personality_input],
                         outputs=[output_cosine])
-    
+
     model.compile(optimizer='adam',
                   loss={'cosine_similarity': 'binary_crossentropy'},
                   metrics={'cosine_similarity': 'accuracy'})
-    
+
     return model
 
-# Load and split the dataset 
+
+# Load and split the dataset
 preferences, skills_goals, personality = load_dataset(padded_df_train)
 
 labels_cosine = load_labels_cosine(padded_df_train)
@@ -338,7 +370,7 @@ print('personality:', personality.shape[1])
 
 # Train the model with both labels
 model = create_cnn_model_with_two_labels()
-history = model.fit([preferences, skills_goals, personality], 
+history = model.fit([preferences, skills_goals, personality],
                     {"cosine_similarity": labels_cosine},
                     epochs=15, batch_size=32, validation_split=0.2)
 
@@ -362,7 +394,8 @@ mean_val_cosine_accuracy = np.mean(val_cosine_mae)
 print("Mean Training Cosine Accuracy:", mean_train_cosine_accuracy)
 print("Mean Validation Cosine Accuracy:", mean_val_cosine_accuracy)
 
-test_preferences, test_skills_goals, test_personality = load_dataset(padded_df_test)
+test_preferences, test_skills_goals, test_personality = load_dataset(
+    padded_df_test)
 
 test_labels_cosine = load_labels_cosine(padded_df_test)
 
@@ -372,28 +405,36 @@ print('test_personality:', test_personality.shape[1])
 
 
 # Load the saved model
-model = keras.models.load_model("mentor_recommendation_model_with_personalities.h5")
+model = keras.models.load_model(
+    "mentor_recommendation_model_with_personalities.h5")
 
 
 # Make predictions
-predictions = model.predict([test_preferences, test_skills_goals, test_personality])
+predictions = model.predict(
+    [test_preferences, test_skills_goals, test_personality])
 
 # Threshold for binary predictions
 threshold = 0.7
 
 # Convert predictions to binary values (0 or 1) for each label
-predicted_classes_cosine = [(prediction > threshold).astype(int) for prediction in predictions]
+predicted_classes_cosine = [(prediction > threshold).astype(int)
+                            for prediction in predictions]
 
-accuracy_cosine = np.mean([np.mean(predicted_class == test_labels_cosine) for predicted_class, test_labels_cosine in zip(predicted_classes_cosine, test_labels_cosine)])
+accuracy_cosine = np.mean([np.mean(predicted_class == test_labels_cosine)
+                          for predicted_class, test_labels_cosine in zip(predicted_classes_cosine, test_labels_cosine)])
 print("Average Model Accuracy (Cosine Similarity):", accuracy_cosine)
 
-accuracy_values = ([np.mean(predicted_class == test_labels_cosine) for predicted_class, test_labels_cosine in zip(predicted_classes_cosine, test_labels_cosine)])
+accuracy_values = ([np.mean(predicted_class == test_labels_cosine) for predicted_class,
+                   test_labels_cosine in zip(predicted_classes_cosine, test_labels_cosine)])
 
 # Convert predictions to float values for each label
 # Function to convert each array in the list to a single float value using the mean
+
+
 def convert_arrays_to_floats(arrays):
     float_values = [np.mean(array) for array in arrays]
     return float_values
+
 
 # Convert using mean
 predicted_classes_cosine = convert_arrays_to_floats(predicted_classes_cosine)
@@ -403,12 +444,14 @@ actual_classes_cosine = convert_arrays_to_floats(test_labels_cosine)
 padded_df_test['predicted_cosine_similarity'] = predicted_classes_cosine
 padded_df_test['actual'] = actual_classes_cosine
 padded_df_test['accuracy_values'] = accuracy_values
-#print(padded_df_test.head())
+# print(padded_df_test.head())
 # Print the average accuracy for each label
 
-merged_df = padded_df_test.merge(mentor_database[['unique_id','mentorName', 'mean_cosine_similarity']], on='unique_id', how='left')
+merged_df = padded_df_test.merge(mentor_database[[
+                                 'unique_id', 'mentorName', 'mean_cosine_similarity']], on='unique_id', how='left')
 
 
-final_df = merged_df[['unique_id','mentorName','mean_cosine_similarity', 'predicted_cosine_similarity', 'actual', 'accuracy_values']]
+final_df = merged_df[['unique_id', 'mentorName', 'mean_cosine_similarity',
+                      'predicted_cosine_similarity', 'actual', 'accuracy_values']]
 
 print(final_df)
