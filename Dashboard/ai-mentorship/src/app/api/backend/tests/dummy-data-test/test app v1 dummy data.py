@@ -19,8 +19,10 @@ import keras
 
 # Insert the Data and create a dataframe
 
-mentee_database = pd.read_csv('mentee-dummy-data.csv')
-mentor_database = pd.read_csv('mentor-dummy-data.csv')
+mentee_database = pd.read_csv(
+    '/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/mentee-dummy-data.csv')
+mentor_database = pd.read_csv(
+    '/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/mentor-dummy-data.csv')
 
 # Adding a prefix mentor_ to all the column headers of mentor database
 mentor_database.columns = ['mentor_' + col for col in mentor_database.columns]
@@ -246,18 +248,18 @@ final_df = merged_df[['unique_id', 'fullName',
 # Print the sorted DataFrame
 print("The Initial Output")
 print(final_df.head())
-
+final_df.to_csv('/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/proposed_matches.csv', index=False)
 # Sort the final_df DataFrame by 'fullName' and 'predicted_cosine_similarity' in descending order
-final_df = final_df.sort_values(
-    by=['fullName', 'predicted_cosine_similarity'], ascending=[True, False])
+# final_df = final_df.sort_values(
+# by=['fullName', 'predicted_cosine_similarity'], ascending=[True, False])
 
 # Remove duplicate mentee names
-final_df = final_df.drop_duplicates(subset='fullName', keep='first')
+# final_df = final_df.drop_duplicates(subset='fullName', keep='first')
 
 # Create a new DataFrame called 'mentors'
-mentors = final_df[['unique_id', 'fullName',
-                    'mentor_fullName', 'predicted_cosine_similarity']]
+# mentors = final_df[['unique_id', 'fullName',
+# 'mentor_fullName', 'predicted_cosine_similarity']]
 
 # Print the 'mentors' DataFrame
-print("Final Dataset")
-print(mentors.head())
+# print("Final Dataset")
+# print(mentors.head())

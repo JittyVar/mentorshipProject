@@ -8,7 +8,7 @@ const Bio = () => {
   const dispatch = useAppDispatch();
   const uploadphoto = async () => {
     try {
-      const rResponse = await fetch("/api/backend/test-pair", {
+      const rResponse = await fetch("/api/test-pair", {
         next: { revalidate: 60 },
       });
       if (rResponse.ok) {

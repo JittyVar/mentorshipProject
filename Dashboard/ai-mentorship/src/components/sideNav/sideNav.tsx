@@ -125,7 +125,7 @@ export default function MiniDrawer({
     if (index === 0) {
       router.push(`/`);
     } else if (index === 2) {
-      router.push(`/`);
+      router.push(`/bio`);
     } else {
       if (qValue && rValue) {
         // Parameters are already in the URL
