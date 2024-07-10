@@ -231,15 +231,17 @@ final_df = merged_df[['unique_id','fullName', 'mentor_fullName','predicted_cosin
 print("The Initial Output")
 print(final_df.head())
 
+final_df.to_csv('proposed_matches.csv', index=False)
+
 # Sort the final_df DataFrame by 'fullName' and 'predicted_cosine_similarity' in descending order
-final_df = final_df.sort_values(by=['fullName', 'predicted_cosine_similarity'], ascending=[True, False])
+#final_df = final_df.sort_values(by=['fullName', 'predicted_cosine_similarity'], ascending=[True, False])
 
 # Remove duplicate mentee names
-final_df = final_df.drop_duplicates(subset='fullName', keep='first')
+#final_df = final_df.drop_duplicates(subset='fullName', keep='first')
 
 # Create a new DataFrame called 'mentors'
-mentors = final_df[['unique_id', 'fullName', 'mentor_fullName', 'predicted_cosine_similarity']]
+#mentors = final_df[['unique_id', 'fullName', 'mentor_fullName', 'predicted_cosine_similarity']]
 
 # Print the 'mentors' DataFrame
-print("Final Dataset")
-print(mentors.head())
+#print("Final Dataset")
+#print(mentors.head())
