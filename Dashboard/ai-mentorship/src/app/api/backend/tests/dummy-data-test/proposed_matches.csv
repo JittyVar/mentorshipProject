@@ -1,13 +1,3 @@
 unique_id,fullName,mentor_fullName,predicted_cosine_similarity
-1000000,Mentee 1,Zoey Zhou ,0.23076923076923078
-1000001,Mentee 1,Bingo Liu,0.2692307692307692
-1000002,Mentee 1,Jeff kilby,0.2692307692307692
-1000003,Mentee Alyssa,Zoey Zhou ,0.2692307692307692
-1000004,Mentee Alyssa,Bingo Liu,0.2692307692307692
-1000005,Mentee Alyssa,Jeff kilby,0.2692307692307692
-1000006,mentee name 3,Zoey Zhou ,0.23076923076923078
-1000007,mentee name 3,Bingo Liu,0.23076923076923078
-1000008,mentee name 3,Jeff kilby,0.23076923076923078
-1000009,mentee name 4,Zoey Zhou ,0.23076923076923078
-1000010,mentee name 4,Bingo Liu,0.23076923076923078
-1000011,mentee name 4,Jeff kilby,0.23076923076923078
+1000000,Mentee 1,Bingo Liu,0.3076923076923077
+1000001,Mentee 1,Jeff kilby,0.3076923076923077

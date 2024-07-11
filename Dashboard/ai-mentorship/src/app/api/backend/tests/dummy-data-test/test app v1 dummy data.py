@@ -20,9 +20,9 @@ import keras
 # Insert the Data and create a dataframe
 
 mentee_database = pd.read_csv(
-    '/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/mentee-dummy-data.csv')
+    '/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/mentee_eoi_data2.csv')
 mentor_database = pd.read_csv(
-    '/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/mentor-dummy-data.csv')
+    '/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/mentor_eoi_data2.csv')
 
 # Adding a prefix mentor_ to all the column headers of mentor database
 mentor_database.columns = ['mentor_' + col for col in mentor_database.columns]

@@ -9,7 +9,6 @@ import {
 import { NextApiResponse } from "next";
 import { NextRequest } from "next/server";
 import fs from "fs";
-import { matchingResults } from "../../../../../../aut_wit_industrial_proj/output";
 import { Status } from "@/data/Status";
 
 export const dynamic = "force-dynamic";
