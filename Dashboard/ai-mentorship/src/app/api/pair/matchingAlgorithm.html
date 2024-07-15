@@ -11,7 +11,7 @@
 
 <meta name="author" content="Sarah Marshall" />
 
-<meta name="date" content="2024-07-11" />
+<meta name="date" content="2024-07-15" />
 
 <title>AUT WIT Mentoring</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">AUT WIT Mentoring</h1>
 <h4 class="author">Sarah Marshall</h4>
-<h4 class="date">2024-07-11</h4>
+<h4 class="date">2024-07-15</h4>
 
 </div>
 
@@ -700,7 +700,7 @@ many mentees are assigned to each mentor.</p>
                         verbose = TRUE,
                         saveAllData = TRUE
                         )</code></pre>
-<pre><code>## Computing matches for 1 mentees and 1 mentors. 
+<pre><code>## Computing matches for 4 mentees and 1 mentors. 
 ## Computing matches using  2 rule-based heuristics: 1  2  
 ## Running LP models with 4 combinations of weights: 1  2  3  4</code></pre>
 <p>Inspect performance of algorithms</p>
@@ -708,12 +708,12 @@ many mentees are assigned to each mentor.</p>
 <pre><code>## # A tibble: 6 × 25
 ##   alg        name     alg_id    id total_score mean_score median_score min_score
 ##   &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;  &lt;int&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
-## 1 rule-based &quot;  11&quot;   rule-…    11           0          0            0         0
-## 2 rule-based &quot;  3&quot;    rule-…     3           0          0            0         0
-## 3 LP         &quot;gender… LP_1      NA           0          0            0         0
-## 4 LP         &quot;gender… LP_2      NA           0          0            0         0
-## 5 LP         &quot;equal&quot;  LP_3      NA           0          0            0         0
-## 6 LP         &quot;gender… LP_4      NA           0          0            0         0
+## 1 rule-based &quot;  11&quot;   rule-…    11        0.75       0.75         0.75      0.75
+## 2 rule-based &quot;  3&quot;    rule-…     3        0.75       0.75         0.75      0.75
+## 3 LP         &quot;gender… LP_1      NA        1.5        0.75         0.75      0.75
+## 4 LP         &quot;gender… LP_2      NA        1.5        0.75         0.75      0.75
+## 5 LP         &quot;equal&quot;  LP_3      NA        1.5        0.75         0.75      0.75
+## 6 LP         &quot;gender… LP_4      NA        1.5        0.75         0.75      0.75
 ## # ℹ 17 more variables: max_score &lt;dbl&gt;, lq_score &lt;dbl&gt;, uq_score &lt;dbl&gt;,
 ## #   matched_mentees_num &lt;int&gt;, matched_mentees_perc &lt;dbl&gt;,
 ## #   match_gender_pref_num &lt;dbl&gt;, match_gender_pref_perc &lt;dbl&gt;,

@@ -18,6 +18,20 @@ import { GetPairMenteeResult } from "@/redux/dashboard/actions/getPairMenteeResu
 import { GetPairMentorResult } from "@/redux/dashboard/actions/getPairMentorResults";
 import { useRouter } from "next/navigation";
 
+interface MahsaResult {
+  mentee_email: string;
+  mentee_name: string;
+  mentor_email: string;
+  mentor_name: string;
+}
+
+interface data {
+  unique_id: string;
+  fullName: string;
+  mentor_fullName: string;
+  predicted_cosine_similarity: string;
+}
+
 interface PairingCompleteProps {
   chosen: string;
   participatingAs: string;
@@ -26,8 +40,10 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   chosen,
   participatingAs,
 }) => {
+  const [test, setTest] = useState<MahsaResult[]>([]);
   const [menteeName, setMenteeName] = useState<string | null>(null);
   const [mentorName, setMentorName] = useState<string | null>(null);
+  const [results, setResults] = useState<data[] | null>([]);
 
   const dispatch = useAppDispatch();
 
@@ -39,6 +55,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
         dispatch(restartpairingResultsStatus());
         setMenteeName(null);
         setMentorName(null);
+        setResults(null);
         try {
           if (participatingAs == "Mentee") {
             console.log("getting mentee", chosen);
@@ -51,7 +68,12 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
               throw new Error("failed to fetch data");
             }
 
-            const matchingResults = await matchingResponse.json();
+            const matchingResults: MahsaResult[] =
+              await matchingResponse.json();
+            const filtermatchingResults = matchingResults
+              .filter((doc) => doc.mentee_name !== "NA")
+              .slice(0, 3);
+            setTest(filtermatchingResults);
             setMenteeName(matchingResults[0].mentee_name);
             setMentorName(matchingResults[0].mentor_name);
 
@@ -98,7 +120,12 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
               throw new Error("failed to fetch data");
             }
 
-            const matchingResults = await matchingResponse.json();
+            const matchingResults: MahsaResult[] =
+              await matchingResponse.json();
+            const filtermatchingResults = matchingResults
+              .filter((doc) => doc.mentor_name !== "NA")
+              .slice(0, 3);
+            setTest(filtermatchingResults);
             setMenteeName(matchingResults[0].mentee_name);
             setMentorName(matchingResults[0].mentor_name);
 
@@ -144,47 +171,6 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chosen!]);
 
-  interface data {
-    unique_id: string;
-    fullName: string;
-    mentor_fullName: string;
-    predicted_cosine_similarity: string;
-  }
-
-  const [results, setResults] = useState<data[]>([]);
-
-  const uploadphoto = async () => {
-    try {
-      const rResponse1 = await fetch(
-        "/api/get/mentees/pair2?slug=${encodedId}",
-        {
-          next: { revalidate: 60 },
-        }
-      );
-      if (rResponse1.ok) {
-        const responseR = await rResponse1.json();
-        console.log(responseR);
-      } else {
-        console.log("Failed to fetch R data");
-      }
-      const rResponse2 = await fetch("/api/test-pair", {
-        next: { revalidate: 60 },
-      });
-      if (rResponse2.ok) {
-        const responseR = await rResponse2.json();
-        setResults(responseR);
-      } else {
-        console.log("Failed to fetch R data");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    uploadphoto();
-  }, []);
-
   return (
     <Paper>
       <Paper
@@ -200,7 +186,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
       >
         <Typography fontWeight={"bold"}>RESULTS</Typography>
       </Paper>
-      {menteeName == null ? (
+      {test.length === 0 ? (
         <div
           style={{
             width: "100%",
@@ -213,19 +199,16 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
           <CircularProgress color="secondary" size={100} />
         </div>
       ) : (
-        <>
-          <Grid
-            container
-            spacing={2}
-            sx={{
-              widht: "100%",
-              height: "350px",
-              padding: 3,
-              paddingTop: "20px",
-              paddingBottom: "20px",
-            }}
-          >
-            <Grow in={true}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "left",
+            justifyContent: "center",
+            marginTop: "10%",
+          }}
+        >
+          {test.map((doc, id) => (
+            <div key={id}>
               <Grid
                 item
                 xs={6}
@@ -235,18 +218,31 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                   alignItems: "center",
                 }}
               >
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: "20px",
+                  }}
+                >
                   <Avatar
                     style={{
-                      width: "200px",
-                      height: "200px",
+                      width: "100px",
+                      height: "100px",
                     }}
                   >
-                    {`${menteeName.split(" ")[0][0]}${
-                      menteeName.split(" ")[1][0]
-                    }`}
+                    {participatingAs == "Mentee" &&
+                      (doc.mentor_name !== "NA" || doc.mentee_name !== "NA") &&
+                      `${doc.mentor_name.split(" ")[0][0]}${
+                        doc.mentor_name.split(" ")[1][0]
+                      }`}
+                    {participatingAs == "Mentor" &&
+                      (doc.mentor_name !== "NA" || doc.mentee_name !== "NA") &&
+                      `${doc.mentee_name.split(" ")[0][0]}${
+                        doc.mentee_name.split(" ")[1][0]
+                      }`}
                   </Avatar>
-                  {menteeName != null && (
+                  {test != null && (
                     <div
                       style={{
                         width: "100%",
@@ -266,82 +262,110 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
                         }}
                       >
                         <Typography fontWeight={"bold"} fontSize={20}>
-                          Mentee
+                          {participatingAs == "Mentee" ? "Mentor" : "Mentee"}
                         </Typography>
                         <Typography fontWeight={"light"}>
-                          {menteeName}
+                          {participatingAs == "Mentee"
+                            ? doc.mentor_name
+                            : doc.mentee_name}
                         </Typography>
                       </div>
                     </div>
                   )}
                 </div>
               </Grid>
-            </Grow>
-            <Grow
-              in={true}
-              style={{ transformOrigin: "0 0 0" }}
-              {...(true ? { timeout: 1000 } : {})}
-            >
-              <Grid
-                item
-                xs={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Avatar
-                    style={{
-                      width: "200px",
-                      height: "200px",
-                    }}
-                  >{`${mentorName!.split(" ")[0][0]}${
-                    mentorName!.split(" ")[1][0]
-                  }`}</Avatar>
-                  {mentorName != null && (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "50px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "10%",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography fontWeight={"bold"} fontSize={20}>
-                          Mentor
-                        </Typography>
-                        <Typography fontWeight={"light"}>
-                          {mentorName}
-                        </Typography>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </Grid>
-            </Grow>
-          </Grid>
-          <CustomizedSnackbars success={true} />
-        </>
+            </div>
+          ))}
+        </div>
       )}
-      <div>
-        {results.map((doc, id) => (
-          <>
-            Mentee Name= {doc.fullName} Mentor Name = {doc.mentor_fullName}
-            <br />
-          </>
-        ))}
+      <div style={{ paddingBottom: "10%", marginTop: "10%" }}>
+        {results == null ? (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <CircularProgress color="secondary" size={100} />
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {results.map((doc, id) => (
+              <div key={id}>
+                <Grid
+                  item
+                  xs={6}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: "20px",
+                    }}
+                  >
+                    <Avatar
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                      }}
+                    >
+                      {participatingAs == "Mentee" &&
+                        `${doc.mentor_fullName.split(" ")[0][0]}${
+                          doc.mentor_fullName.split(" ")[1][0]
+                        }`}
+                      {participatingAs == "Mentor" &&
+                        `${doc.fullName.split(" ")[0][0]}${
+                          doc.fullName.split(" ")[1][0]
+                        }`}
+                    </Avatar>
+                    {results != null && (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "50px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: "10%",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography fontWeight={"bold"} fontSize={20}>
+                            {participatingAs == "Mentee" ? "Mentor" : "Mentee"}
+                          </Typography>
+                          <Typography fontWeight={"light"}>
+                            {participatingAs == "Mentee"
+                              ? doc.mentor_fullName
+                              : doc.fullName}
+                          </Typography>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </Grid>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </Paper>
   );

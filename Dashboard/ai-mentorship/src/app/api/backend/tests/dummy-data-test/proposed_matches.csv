@@ -1,3 +1,5 @@
 unique_id,fullName,mentor_fullName,predicted_cosine_similarity
-1000000,Mentee 1,Bingo Liu,0.3076923076923077
-1000001,Mentee 1,Jeff kilby,0.3076923076923077
+1000000,Mentee 1,Jeff kilby,0.23076923076923078
+1000001,Mentee Alyssa,Jeff kilby,0.23076923076923078
+1000002,mentee name 3,Jeff kilby,0.23076923076923078
+1000003,mentee name 4,Jeff kilby,0.23076923076923078
