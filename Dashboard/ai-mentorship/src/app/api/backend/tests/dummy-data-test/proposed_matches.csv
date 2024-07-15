@@ -1,5 +1,4 @@
 unique_id,fullName,mentor_fullName,predicted_cosine_similarity
-1000000,Mentee 1,Jeff kilby,0.23076923076923078
-1000001,Mentee Alyssa,Jeff kilby,0.23076923076923078
-1000002,mentee name 3,Jeff kilby,0.23076923076923078
-1000003,mentee name 4,Jeff kilby,0.23076923076923078
+1000000,Shweta Sharma,Zoey Zhou ,0.2692307692307692
+1000001,Shweta Sharma,Bingo Liu,0.2692307692307692
+1000002,Shweta Sharma,Jeff kilby,0.2692307692307692

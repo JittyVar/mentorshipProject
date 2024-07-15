@@ -43,7 +43,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
   const [test, setTest] = useState<MahsaResult[]>([]);
   const [menteeName, setMenteeName] = useState<string | null>(null);
   const [mentorName, setMentorName] = useState<string | null>(null);
-  const [results, setResults] = useState<data[] | null>([]);
+  const [results, setResults] = useState<data[]>([]);
 
   const dispatch = useAppDispatch();
 
@@ -55,7 +55,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
         dispatch(restartpairingResultsStatus());
         setMenteeName(null);
         setMentorName(null);
-        setResults(null);
+        setResults([]);
         try {
           if (participatingAs == "Mentee") {
             console.log("getting mentee", chosen);
@@ -101,7 +101,8 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
             });
             if (rResponse2.ok) {
               const responseR = await rResponse2.json();
-              setResults(responseR);
+              const filterResponse: data[] = responseR;
+              setResults(filterResponse.slice(0, 3)); //HARDCODED
             } else {
               console.log("Failed to fetch R data");
             }
@@ -153,7 +154,8 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
             });
             if (rResponse2.ok) {
               const responseR = await rResponse2.json();
-              setResults(responseR);
+              const filterResponse: data[] = responseR;
+              setResults(filterResponse.slice(0, 3)); //HARDCODED
             } else {
               console.log("Failed to fetch R data");
             }
@@ -279,7 +281,7 @@ const PairingComplete: React.FC<PairingCompleteProps> = ({
         </div>
       )}
       <div style={{ paddingBottom: "10%", marginTop: "10%" }}>
-        {results == null ? (
+        {results.length === 0 ? (
           <div
             style={{
               display: "flex",
