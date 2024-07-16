@@ -66,6 +66,9 @@ const GoalsComponent = () => {
             },
           }}
         />
+        <Typography sx={{ margin: "1%" }}>
+          What is one short-term goal you have?
+        </Typography>
         <TextField
           fullWidth
           helperText="e.g.  To complete a front-end web certification course"
@@ -83,6 +86,9 @@ const GoalsComponent = () => {
             },
           }}
         />
+        <Typography sx={{ margin: "1%" }}>
+          What is another short-term goal you have?
+        </Typography>
         <TextField
           fullWidth
           helperText="e.g.  To improve interpersonal skills by next year"
