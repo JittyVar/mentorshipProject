@@ -47,7 +47,8 @@ df.insert(0, 'unique_id', unique_ids)
 df['unique_id'] = df['unique_id'].astype(str)
 
 # Save the new DataFrame with unique IDs to 'trainingDataNew.csv'
-df.to_csv('dummyDataMerged.csv', index=False)
+df.to_csv(
+    'dummyDataMerged.csv', index=False)
 # print(df.head())
 
 # Saving the main database
@@ -247,19 +248,23 @@ final_df = merged_df[['unique_id', 'fullName',
 
 # Print the sorted DataFrame
 print("The Initial Output")
-print(final_df.head())
-final_df.to_csv('/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/proposed_matches.csv', index=False)
+# print(final_df.head())
+print(final_df)
+
+# final_df.to_csv('proposed_matches.csv', index=False)
+
 # Sort the final_df DataFrame by 'fullName' and 'predicted_cosine_similarity' in descending order
-# final_df = final_df.sort_values(
-# by=['fullName', 'predicted_cosine_similarity'], ascending=[True, False])
+final_df = final_df.sort_values(
+    by=['fullName', 'predicted_cosine_similarity'], ascending=[True, False])
 
-# Remove duplicate mentee names
-# final_df = final_df.drop_duplicates(subset='fullName', keep='first')
+# Group the DataFrame by 'fullName'
+grouped_df = final_df.groupby('fullName')
 
-# Create a new DataFrame called 'mentors'
-# mentors = final_df[['unique_id', 'fullName',
-# 'mentor_fullName', 'predicted_cosine_similarity']]
+# Select the top 3 rows for each group
+top_3_df = grouped_df.head(3)
 
-# Print the 'mentors' DataFrame
-# print("Final Dataset")
-# print(mentors.head())
+# Print the top 3 DataFrame
+print("Top 3 Mentors per Mentee:")
+print(top_3_df)
+top_3_df.to_csv(
+    '/Users/alyssapausanos/mentorshipProject/Dashboard/ai-mentorship/src/app/api/backend/tests/dummy-data-test/proposed_matches.csv', index=False)

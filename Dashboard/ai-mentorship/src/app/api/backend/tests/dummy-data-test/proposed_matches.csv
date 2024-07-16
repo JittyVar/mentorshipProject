@@ -1,4 +1,4 @@
 unique_id,fullName,mentor_fullName,predicted_cosine_similarity
-1000000,Shweta Sharma,Zoey Zhou ,0.2692307692307692
-1000001,Shweta Sharma,Bingo Liu,0.2692307692307692
-1000002,Shweta Sharma,Jeff kilby,0.2692307692307692
+1000002,Sarah Smith,Jeff kilby,0.2692307692307692
+1000000,Sarah Smith,Zoey Zhou ,0.23076923076923078
+1000001,Sarah Smith,Bingo Liu,0.23076923076923078
