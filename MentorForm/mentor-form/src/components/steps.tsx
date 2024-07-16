@@ -19,6 +19,10 @@ export const menteeSteps = [
     content: <MenteePreferencesComponent />,
   },
   {
+    label: "Skills",
+    content: <SkillsComponent />,
+  },
+  {
     label: "Goals",
     content: <GoalsComponent />,
   },

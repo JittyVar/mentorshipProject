@@ -17,15 +17,16 @@ import { createMenteeContinuation } from "@/redux/actions/createMenteeContinuati
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/firestore/firestore";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { createMenteeContinuationSkills } from "@/redux/actions/createMenteeContinuationSkills";
 
 export default function VerticalLinearStepper() {
-  const { user, error, isLoading } = useUser();
   const [activeStep, setActiveStep] = React.useState(0);
   const [personalDetailsValid, setPersonalDetailsValid] = React.useState(false);
   const [professionalDetailsValid, setProfessionalDetailsValid] =
     React.useState(false);
   const [preferenceDetailsValid, setPreferenceDetailsValid] =
     React.useState(false);
+  const [skillsValid, setSkillsValid] = React.useState(false);
   const [goalsValid, setgoalsValid] = React.useState(false);
   const [personalityValid, setPersonalityValid] = React.useState(false);
   const dispatch = useAppDispatch();
@@ -45,12 +46,6 @@ export default function VerticalLinearStepper() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
-  React.useEffect(() => {
-    if (!isLoading && !user) {
-      window.location.href = "/api/auth/login";
-    }
-  }, [isLoading, user]);
 
   React.useEffect(() => {
     if (activeStep == 0) {
@@ -80,6 +75,13 @@ export default function VerticalLinearStepper() {
       }
     }
     if (activeStep == 3) {
+      if (registrationState?.mentorSkillsValid) {
+        setSkillsValid(true);
+      } else {
+        setSkillsValid(false);
+      }
+    }
+    if (activeStep == 4) {
       if (
         registrationState?.goals?.motivation !== undefined &&
         registrationState?.goals?.motivation.trim() !== "" &&
@@ -91,7 +93,7 @@ export default function VerticalLinearStepper() {
         setgoalsValid(false);
       }
     }
-    if (activeStep == 4) {
+    if (activeStep == 5) {
       if (
         registrationState?.personalityType?.personalityType !== undefined &&
         registrationState?.personalityType?.personalityType.trim() !== ""
@@ -105,6 +107,7 @@ export default function VerticalLinearStepper() {
     activeStep,
     registrationState?.goals?.motivation,
     registrationState?.goals?.outcome,
+    registrationState?.mentorSkillsValid,
     registrationState?.mentorProfessionalStateValid,
     registrationState?.mentorStateValid,
     registrationState?.personalityType?.personalityType,
@@ -114,9 +117,10 @@ export default function VerticalLinearStepper() {
 
   React.useEffect(() => {
     const createMentorDocumentAction = async () => {
-      if (activeStep == 5) {
+      if (activeStep == 6) {
         await dispatch(createMenteeDocument());
         await dispatch(createMenteeContinuation());
+        await dispatch(createMenteeContinuationSkills());
         if (photoUrl && photoUrl?.photo) {
           const selectedImageName = photoUrl.photo.name;
           const storageRef = ref(
@@ -145,25 +149,17 @@ export default function VerticalLinearStepper() {
       return preferenceDetailsValid;
     }
     if (activeStep == 3) {
-      return goalsValid;
+      return skillsValid;
     }
     if (activeStep == 4) {
+      return goalsValid;
+    }
+    if (activeStep == 5) {
       return personalityValid;
     }
   };
 
-  return isLoading || !user ? (
-    <Backdrop
-      sx={{
-        color: "black",
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-        backgroundColor: "#F4E6F2",
-      }}
-      open={isLoading}
-    >
-      <CircularProgress color="inherit" />
-    </Backdrop>
-  ) : (
+  return (
     <Box
       sx={{
         backgroundColor: "#F4E6F2",

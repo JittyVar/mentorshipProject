@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Skills } from "@/redux/states/skills/skills";
 import { BasicSkills } from "@/redux/states/skills/basicSkills";
 import { ExpertSkills } from "@/redux/states/skills/expertSkills";
-import { skillsDetails } from "@/redux/registrationSlice";
+import { mentorSkillsValid, skillsDetails } from "@/redux/registrationSlice";
 
 const SkillsComponent = () => {
   const dispatch = useAppDispatch();
@@ -59,6 +59,35 @@ const SkillsComponent = () => {
     dispatch(skillsDetails(menteeSkills));
   });
 
+  useEffect(() => {
+    if (
+      skillState?.basicSkills?.firstBasicIndustrySkill !== undefined &&
+      skillState?.basicSkills?.firstBasicIndustrySkill.trim() !== "" &&
+      skillState?.basicSkills?.firstBasicSoftSkill !== undefined &&
+      skillState?.basicSkills?.firstBasicSoftSkill.trim() !== "" &&
+      skillState?.basicSkills?.secondBasicIndustrySkill !== undefined &&
+      skillState?.basicSkills?.secondBasicIndustrySkill.trim() !== "" &&
+      skillState?.expertSkills?.firstExpertIndustrySkill !== undefined &&
+      skillState?.expertSkills?.firstExpertIndustrySkill.trim() !== "" &&
+      skillState?.expertSkills?.firstExpertSoftSkill !== undefined &&
+      skillState?.expertSkills?.firstExpertSoftSkill.trim() !== "" &&
+      skillState?.expertSkills?.secondExpertIndustrySkill !== undefined &&
+      skillState?.expertSkills?.secondExpertIndustrySkill.trim() !== ""
+    ) {
+      dispatch(mentorSkillsValid(true));
+    } else {
+      dispatch(mentorSkillsValid(false));
+    }
+  }, [
+    dispatch,
+    skillState?.basicSkills?.firstBasicIndustrySkill,
+    skillState?.basicSkills?.firstBasicSoftSkill,
+    skillState?.basicSkills?.secondBasicIndustrySkill,
+    skillState?.expertSkills?.firstExpertIndustrySkill,
+    skillState?.expertSkills?.firstExpertSoftSkill,
+    skillState?.expertSkills?.secondExpertIndustrySkill,
+  ]);
+
   return (
     <Box>
       <div>
@@ -70,6 +99,24 @@ const SkillsComponent = () => {
           >
             Three (3) basic skills
           </Typography>
+          <Typography sx={{ m: 1 }}>First Basic Soft Skill</Typography>
+          <TextField
+            fullWidth
+            helperText="e.g. Active Listening"
+            onChange={(e) =>
+              handleSoftBasicInputChange("firstBasicSoftSkill", e.target.value)
+            }
+            placeholder={skillState?.basicSkills?.firstBasicSoftSkill || ""}
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
+          />
+          <Typography sx={{ m: 1 }}>First Basic Industry Skill</Typography>
           <TextField
             fullWidth
             helperText="e.g. Communication Skill"
@@ -79,27 +126,38 @@ const SkillsComponent = () => {
                 e.target.value
               )
             }
-            label="Basic Industry Skill"
+            placeholder={skillState?.basicSkills?.firstBasicIndustrySkill || ""}
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
+          <Typography sx={{ m: 1 }}>Second Basic Industry Skill</Typography>
           <TextField
-            fullWidth
-            helperText="e.g. Active Listening"
-            onChange={(e) =>
-              handleSoftBasicInputChange("firstBasicSoftSkill", e.target.value)
-            }
-            label="Basic Soft Skill"
-          />
-          <TextField
-            sx={{ marginBottom: "5%" }}
+            sx={{
+              marginBottom: "5%",
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
             fullWidth
             helperText="e.g. Event Planning"
+            placeholder={
+              skillState?.basicSkills?.secondBasicIndustrySkill || ""
+            }
             onChange={(e) =>
               handleSoftBasicInputChange(
                 "secondBasicIndustrySkill",
                 e.target.value
               )
             }
-            label="Basic Industy Skill"
           />
         </Container>
         <Container
@@ -110,36 +168,67 @@ const SkillsComponent = () => {
           >
             Three (3) expert skills
           </Typography>
+          <Typography sx={{ m: 1 }}>First Expert Soft Skill</Typography>
+          <TextField
+            fullWidth
+            placeholder={skillState?.expertSkills?.firstExpertSoftSkill || ""}
+            helperText="eg. Cloud Computing"
+            onChange={(e) =>
+              handleExpertInputChange("firstExpertSoftSkill", e.target.value)
+            }
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
+          />
+          <Typography sx={{ m: 1 }}>First Expert Industry Skill</Typography>
           <TextField
             fullWidth
             helperText="eg. Conflict Resolution"
+            placeholder={
+              skillState?.expertSkills?.firstExpertIndustrySkill || ""
+            }
             onChange={(e) =>
               handleExpertInputChange(
                 "firstExpertIndustrySkill",
                 e.target.value
               )
             }
-            label="Expert Industry Skill"
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
           />
+          <Typography sx={{ m: 1 }}>Second Expert Industry Skill</Typography>
           <TextField
-            fullWidth
-            helperText="eg. Cloud Computing"
-            onChange={(e) =>
-              handleExpertInputChange("firstExpertSoftSkill", e.target.value)
-            }
-            label="Expert Soft Skill"
-          />
-          <TextField
-            sx={{ marginBottom: "5%" }}
+            sx={{
+              marginBottom: "5%",
+              "& .MuiOutlinedInput-input": {
+                backgroundColor: "white",
+                border: 1,
+                borderRadius: 2,
+                borderColor: "black",
+              },
+            }}
             fullWidth
             helperText="eg. Product Management"
+            placeholder={
+              skillState?.expertSkills?.secondExpertIndustrySkill || ""
+            }
             onChange={(e) =>
               handleExpertInputChange(
                 "secondExpertIndustrySkill",
                 e.target.value
               )
             }
-            label="Expert Industry Skill"
           />
         </Container>
       </div>

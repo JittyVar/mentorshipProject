@@ -31,34 +31,70 @@ const GoalsComponent = () => {
   return (
     <Box>
       <Container sx={{ "& > div:not(:last-child)": { marginBottom: "20px" } }}>
-        {/* <Typography sx={{ margin: "1%" }}>
+        <Typography sx={{ margin: "1%" }}>
           What is one long-term goal you have?
         </Typography>
         <TextField
           fullWidth
           helperText="e.g. To establish a successful tech startup"
-          label="Long Term Goal"
-          variant="outlined"
+          placeholder={goalsState?.longTermGoal || ""}
+          multiline
+          rows={2}
+          sx={{
+            m: 1,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: "white",
+              border: 1,
+              borderRadius: 2,
+              borderColor: "black",
+            },
+          }}
           onChange={(e) => handleInputChange("longTermGoal", e.target.value)}
         />
+        <Typography sx={{ margin: "1%" }}>
+          What is one short-term goal you have?
+        </Typography>
         <TextField
           fullWidth
           helperText="e.g.  To complete a front-end web certification course"
-          label="First Short Term Goal"
-          variant="outlined"
+          placeholder={goalsState?.firstShortTermGoal || ""}
+          multiline
+          rows={2}
+          sx={{
+            m: 1,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: "white",
+              border: 1,
+              borderRadius: 2,
+              borderColor: "black",
+            },
+          }}
           onChange={(e) =>
             handleInputChange("firstShortTermGoal", e.target.value)
           }
         />
+        <Typography sx={{ margin: "1%" }}>
+          What is another short-term goal you have?
+        </Typography>
         <TextField
           fullWidth
           helperText="e.g.  To improve interpersonal skills by next year"
-          label="Second Short Term Goal"
-          variant="outlined"
+          placeholder={goalsState?.secondShortTermGoal || ""}
+          multiline
+          rows={2}
+          sx={{
+            m: 1,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: "white",
+              border: 1,
+              borderRadius: 2,
+              borderColor: "black",
+            },
+          }}
           onChange={(e) =>
             handleInputChange("secondShortTermGoal", e.target.value)
           }
-        /> */}
+        />
         <div style={{ paddingBottom: "2%" }}>
           <Typography sx={{ margin: "1%" }}>
             What would you hope to get from this program?

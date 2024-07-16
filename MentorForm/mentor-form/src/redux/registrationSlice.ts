@@ -10,6 +10,7 @@ import { PersonalityType } from "./states/personalityType";
 import { store } from "./store";
 import { createMenteeContinuation } from "./actions/createMenteeContinuation";
 import { PhotoUrl } from "./states/photoUrl";
+import { createMenteeContinuationSkills } from "./actions/createMenteeContinuationSkills";
 
 export enum APIStatus {
   idle = "idle",
@@ -32,6 +33,7 @@ export interface registrationForm {
   personalityType: PersonalityType;
   photoUrl: FileMetadata;
   mentorStateValid: boolean;
+  mentorSkillsValid: boolean;
   mentorProfessionalStateValid: boolean;
 }
 
@@ -48,6 +50,7 @@ const initialState: registrationForm = {
   personalityType: {} as PersonalityType,
   photoUrl: {} as FileMetadata,
   mentorStateValid: false,
+  mentorSkillsValid: false,
   mentorProfessionalStateValid: false,
 };
 
@@ -98,6 +101,9 @@ export const registrationSlice = createSlice({
     mentorStateValid: (state, action: PayloadAction<boolean>) => {
       state.mentorStateValid = action.payload;
     },
+    mentorSkillsValid: (state, action: PayloadAction<boolean>) => {
+      state.mentorSkillsValid = action.payload;
+    },
     mentorProfessionalStateValid: (state, action: PayloadAction<boolean>) => {
       state.mentorProfessionalStateValid = action.payload;
     },
@@ -127,6 +133,18 @@ export const registrationSlice = createSlice({
       .addCase(createMenteeContinuation.rejected, (state) => {
         state.status = APIStatus.error;
       });
+    builder
+      .addCase(createMenteeContinuationSkills.pending, (state) => {
+        state.status = APIStatus.loading;
+        console.log("pending");
+      })
+      .addCase(createMenteeContinuationSkills.fulfilled, (state) => {
+        state.status = APIStatus.success;
+        console.log("mentor created");
+      })
+      .addCase(createMenteeContinuationSkills.rejected, (state) => {
+        state.status = APIStatus.error;
+      });
   },
 });
 
@@ -139,6 +157,7 @@ export const {
   personalityTypeDetails,
   photoUrl,
   mentorStateValid,
+  mentorSkillsValid,
   mentorProfessionalStateValid,
 } = registrationSlice.actions;
 export default registrationSlice.reducer;
