@@ -16,7 +16,7 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            {children}
+            <UserProvider>{children}</UserProvider>
           </PersistGate>
         </Provider>
       </body>

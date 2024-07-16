@@ -20,6 +20,7 @@ import { Backdrop, CircularProgress } from "@mui/material";
 import { createMenteeContinuationSkills } from "@/redux/actions/createMenteeContinuationSkills";
 
 export default function VerticalLinearStepper() {
+  const { user, error, isLoading } = useUser();
   const [activeStep, setActiveStep] = React.useState(0);
   const [personalDetailsValid, setPersonalDetailsValid] = React.useState(false);
   const [professionalDetailsValid, setProfessionalDetailsValid] =
@@ -46,6 +47,12 @@ export default function VerticalLinearStepper() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+  React.useEffect(() => {
+    if (!isLoading && !user) {
+      window.location.href = "/api/auth/login";
+    }
+  }, [isLoading, user]);
 
   React.useEffect(() => {
     if (activeStep == 0) {
@@ -159,7 +166,18 @@ export default function VerticalLinearStepper() {
     }
   };
 
-  return (
+  return isLoading || !user ? (
+    <Backdrop
+      sx={{
+        color: "black",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        backgroundColor: "#F4E6F2",
+      }}
+      open={isLoading}
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  ) : (
     <Box
       sx={{
         backgroundColor: "#F4E6F2",
