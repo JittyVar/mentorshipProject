@@ -50,6 +50,10 @@ export default function VerticalLinearStepper() {
     (state) => state.registration?.educationalBackground
   );
 
+  const menteeProfessionalDetails = useAppSelector(
+    (state) => state.registration?.professionalBackground
+  );
+
   const menteePreferenceDetails = useAppSelector(
     (state) => state.registration?.preferences
   );
@@ -67,12 +71,29 @@ export default function VerticalLinearStepper() {
       }
     }
 
-    if (activeStep == 1) {
+    if (
+      activeStep == 1 &&
+      registrationState?.mentee?.currentStage != "Professional"
+    ) {
       if (
         menteeBackgroundDetails?.majors?.length != 0 &&
         menteeBackgroundDetails?.programs?.length != 0 &&
         menteeBackgroundDetails?.yearOfDegree != undefined &&
         menteeBackgroundDetails?.yearOfDegree.trim() !== ""
+      ) {
+        setBackgroundDetailsComplete(true);
+      } else {
+        setBackgroundDetailsComplete(false);
+      }
+    }
+    if (
+      activeStep == 1 &&
+      registrationState?.mentee?.currentStage == "Professional"
+    ) {
+      if (
+        menteeProfessionalDetails?.jobTitle != undefined &&
+        menteeProfessionalDetails?.jobTitle.trim() !== "" &&
+        menteeProfessionalDetails?.industrySector?.length != 0
       ) {
         setBackgroundDetailsComplete(true);
       } else {
@@ -124,7 +145,10 @@ export default function VerticalLinearStepper() {
     menteePersonalDetailsValid,
     menteePreferenceDetails?.preferences?.length,
     menteePreferenceDetails?.stemSector?.length,
+    menteeProfessionalDetails?.industrySector?.length,
+    menteeProfessionalDetails?.jobTitle,
     menteeSkillsDetails,
+    registrationState?.mentee?.currentStage,
     registrationState?.menteeGoalsValid,
     registrationState?.personalityType?.personalityType,
   ]);
@@ -227,7 +251,10 @@ export default function VerticalLinearStepper() {
               {step.label}
             </StepLabel>
             <StepContent>
-              {step.content}
+              {index !== 1 ||
+              registrationState?.mentee?.currentStage !== "Professional"
+                ? step.content
+                : step.content2}
               <Box sx={{ mb: 2 }}>
                 <div>
                   <Button

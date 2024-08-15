@@ -4,6 +4,7 @@ import ProfilePhotoComponent from "@/components/subforms/page";
 import PersonalityTypeComponent from "@/components/subforms/personalityType/personalityType";
 import MenteePreferencesComponent from "@/components/subforms/preferences/preferences";
 import SkillsComponent from "@/components/subforms/skills/skills";
+import ProfessionalEducationalBackground from "./subforms/background/professionalBackgroundDetails";
 
 export const menteeSteps = [
   {
@@ -13,6 +14,7 @@ export const menteeSteps = [
   {
     label: "Background",
     content: <EducationalBackgroundComponent />,
+    content2: <ProfessionalEducationalBackground />,
   },
   {
     label: "Preferences",
