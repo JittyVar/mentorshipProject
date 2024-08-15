@@ -73,7 +73,7 @@ const ProfessionalEducationalBackground = () => {
           fullWidth
           required
           onChange={(e) => handleChange("linkedInUrl", e.target.value)}
-          placeholder={professionalBackgroundState?.jobTitle || ""}
+          placeholder={professionalBackgroundState?.linkedInUrl || ""}
           sx={{
             "& .MuiOutlinedInput-input": {
               backgroundColor: "white",
