@@ -1,6 +1,6 @@
 interface ProfessionalBackground {
   jobTitle: string;
-  industrySector: string[];
+  linkedInUrl: string;
 }
 
 export default ProfessionalBackground;

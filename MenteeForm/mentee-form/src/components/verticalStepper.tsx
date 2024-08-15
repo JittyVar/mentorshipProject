@@ -93,7 +93,8 @@ export default function VerticalLinearStepper() {
       if (
         menteeProfessionalDetails?.jobTitle != undefined &&
         menteeProfessionalDetails?.jobTitle.trim() !== "" &&
-        menteeProfessionalDetails?.industrySector?.length != 0
+        menteeProfessionalDetails?.linkedInUrl != undefined &&
+        menteeProfessionalDetails?.linkedInUrl.trim() !== ""
       ) {
         setBackgroundDetailsComplete(true);
       } else {
@@ -145,8 +146,8 @@ export default function VerticalLinearStepper() {
     menteePersonalDetailsValid,
     menteePreferenceDetails?.preferences?.length,
     menteePreferenceDetails?.stemSector?.length,
-    menteeProfessionalDetails?.industrySector?.length,
     menteeProfessionalDetails?.jobTitle,
+    menteeProfessionalDetails?.linkedInUrl,
     menteeSkillsDetails,
     registrationState?.mentee?.currentStage,
     registrationState?.menteeGoalsValid,

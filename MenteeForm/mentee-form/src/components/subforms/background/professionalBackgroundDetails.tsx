@@ -1,27 +1,14 @@
 "use client";
 
-import {
-  Box,
-  Container,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Container, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import React from "react";
-import EducationalBackground from "@/redux/states/background";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import MultipleSelector from "@/components/multipleSelector";
 import { useAppDispatch } from "@/redux/hooks";
-import {
-  backgroundDetails,
-  professionalDetails,
-} from "@/redux/registrationSlice";
+import { professionalDetails } from "@/redux/registrationSlice";
 import Programs from "@/components/data/programs";
-import Majors from "@/components/data/majors";
 import ProfessionalBackground from "@/redux/states/professionalBackground";
 
 const ProfessionalEducationalBackground = () => {
@@ -33,19 +20,15 @@ const ProfessionalEducationalBackground = () => {
   const [professionalBackground, setProfessionalBackground] =
     useState<ProfessionalBackground>({
       jobTitle: professionalBackgroundState?.jobTitle,
-      industrySector: professionalBackgroundState?.industrySector,
+      linkedInUrl: professionalBackgroundState?.linkedInUrl,
     });
-
-  const [chosenIndustrySector, setChosenIndustrySector] = React.useState<
-    string[]
-  >([]);
 
   useEffect(() => {
     setProfessionalBackground({
       jobTitle: professionalBackground.jobTitle,
-      industrySector: chosenIndustrySector,
+      linkedInUrl: professionalBackground.linkedInUrl,
     });
-  }, [chosenIndustrySector, professionalBackground.jobTitle]);
+  }, [professionalBackground.linkedInUrl, professionalBackground.jobTitle]);
 
   const handleChange = (
     fieldName: keyof ProfessionalBackground,
@@ -84,14 +67,21 @@ const ProfessionalEducationalBackground = () => {
             },
           }}
         />
-        <Typography sx={{ margin: "1%" }}>
-          Industry Sector you work in
-        </Typography>
-        <MultipleSelector
-          data={Programs}
-          chosenData={(data: string[]) => setChosenIndustrySector(data)}
-          hideTypography={true}
-          prevData={professionalBackgroundState?.industrySector}
+        <Typography sx={{ margin: "1%" }}>Your linkedin URL</Typography>
+        <TextField
+          id="linkedInUrl"
+          fullWidth
+          required
+          onChange={(e) => handleChange("linkedInUrl", e.target.value)}
+          placeholder={professionalBackgroundState?.jobTitle || ""}
+          sx={{
+            "& .MuiOutlinedInput-input": {
+              backgroundColor: "white",
+              border: 1,
+              borderRadius: 2,
+              borderColor: "black",
+            },
+          }}
         />
       </Container>
     </Box>
