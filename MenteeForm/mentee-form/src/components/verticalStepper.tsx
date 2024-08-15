@@ -292,7 +292,8 @@ export default function VerticalLinearStepper() {
           }}
         >
           <Typography fontFamily={"Arial"} color={"white"} fontWeight={"bold"}>
-            Submission completed. You will soon receive a confirmation email.
+            Submission completed. Our team will soon reach out with a
+            confirmation email.
           </Typography>
         </Paper>
       ) : (

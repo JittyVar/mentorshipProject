@@ -58,6 +58,7 @@ const PersonalityTypeComponent = () => {
           display: "flex",
           gap: "15px",
           alignItems: "center",
+          flexWrap: "wrap",
         }}
       >
         <Typography fontWeight={"bold"}>
