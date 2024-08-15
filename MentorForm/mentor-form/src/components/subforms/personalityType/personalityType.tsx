@@ -5,9 +5,11 @@ import {
   Box,
   FormControl,
   InputLabel,
+  Link,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Typography,
 } from "@mui/material";
 import { personalityTypeDetails } from "@/redux/registrationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -16,9 +18,11 @@ import { PersonalityTypeData } from "@/components/data/personalityTypes";
 
 const PersonalityTypeComponent = () => {
   const dispatch = useAppDispatch();
-  const [personalityType, setPersonalityType] = React.useState("");
   const personalityTypeState = useAppSelector(
     (state) => state?.registration?.personalityType
+  );
+  const [personalityType, setPersonalityType] = React.useState(
+    personalityTypeState?.personalityType
   );
   const [value, setValue] = useState<PersonalityType>({
     personalityType: personalityTypeState?.personalityType,
@@ -48,6 +52,20 @@ const PersonalityTypeComponent = () => {
 
   return (
     <Box sx={{ minWidth: 120 }}>
+      <div
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          gap: "15px",
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <Typography fontWeight={"bold"}>
+          Please complete the following test:
+        </Typography>
+        <Link> https://www.16personalities.com/free-personality-test</Link>
+      </div>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Personality Type</InputLabel>
         <Select

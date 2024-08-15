@@ -31,7 +31,7 @@ const ProfilePhotoComponent = () => {
           flexDirection: "column",
         }}
       >
-        <Typography>Please upload a recent photo of yourself</Typography>
+        {/* <Typography>Please upload a recent photo of yourself</Typography>
 
         {selectedImage && (
           <div>
@@ -60,7 +60,7 @@ const ProfilePhotoComponent = () => {
           >
             Select file
           </Button>
-        </label>
+        </label> */}
         <PersonalDetails />
       </Container>
     </Box>

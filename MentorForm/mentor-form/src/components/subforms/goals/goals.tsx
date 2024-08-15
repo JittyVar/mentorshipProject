@@ -73,7 +73,7 @@ const GoalsComponent = () => {
             handleInputChange("firstShortTermGoal", e.target.value)
           }
         />
-        <Typography sx={{ margin: "1%" }}>
+        {/* <Typography sx={{ margin: "1%" }}>
           What is another short-term goal you have?
         </Typography>
         <TextField
@@ -94,7 +94,7 @@ const GoalsComponent = () => {
           onChange={(e) =>
             handleInputChange("secondShortTermGoal", e.target.value)
           }
-        />
+        /> */}
         <div style={{ paddingBottom: "2%" }}>
           <Typography sx={{ margin: "1%" }}>
             What would you hope to get from this program?
@@ -116,7 +116,7 @@ const GoalsComponent = () => {
             onChange={(e) => handleInputChange("outcome", e.target.value)}
           />
         </div>
-        <div style={{ paddingBottom: "2%" }}>
+        {/* <div style={{ paddingBottom: "2%" }}>
           <Typography sx={{ margin: "1%" }}>
             Why I chose to offer myself as a mentor?
           </Typography>
@@ -136,7 +136,7 @@ const GoalsComponent = () => {
             placeholder={goalsState?.motivation || ""}
             onChange={(e) => handleInputChange("motivation", e.target.value)}
           />
-        </div>
+        </div> */}
       </Container>
     </Box>
   );

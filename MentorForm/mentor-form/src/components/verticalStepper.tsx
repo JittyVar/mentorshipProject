@@ -128,16 +128,16 @@ export default function VerticalLinearStepper() {
         await dispatch(createMenteeDocument());
         await dispatch(createMenteeContinuation());
         await dispatch(createMenteeContinuationSkills());
-        if (photoUrl && photoUrl?.photo) {
-          const selectedImageName = photoUrl.photo.name;
-          const storageRef = ref(
-            storage,
-            `images/mentors2024/${mentorName}/${selectedImageName}`
-          );
+        // if (photoUrl && photoUrl?.photo) {
+        //   const selectedImageName = photoUrl.photo.name;
+        //   const storageRef = ref(
+        //     storage,
+        //     `images/mentors2024/${mentorName}/${selectedImageName}`
+        //   );
 
-          // Upload the selected image file to Firebase Storage
-          uploadBytesResumable(storageRef, photoUrl.photo);
-        }
+        //   // Upload the selected image file to Firebase Storage
+        //   uploadBytesResumable(storageRef, photoUrl.photo);
+        // }
       }
     };
 
@@ -260,7 +260,8 @@ export default function VerticalLinearStepper() {
           }}
         >
           <Typography fontFamily={"Arial"} color={"white"} fontWeight={"bold"}>
-            Submission completed. You will soon receive a confirmation email.
+            Submission completed. Our team will soon reach out with a
+            confirmation email.
           </Typography>
         </Paper>
       ) : (

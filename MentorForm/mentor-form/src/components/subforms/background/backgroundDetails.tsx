@@ -114,9 +114,7 @@ const ProfessionalBackgroundComponent = () => {
         />
       </div>
       <div style={{ paddingTop: "2%" }}>
-        <Typography sx={{ margin: "1%" }}>
-          Short description of your role
-        </Typography>
+        <Typography sx={{ margin: "1%" }}>Your LinkedIn URL</Typography>
         <TextField
           id="gender"
           sx={{
