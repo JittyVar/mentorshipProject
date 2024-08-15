@@ -5,9 +5,11 @@ import {
   Box,
   FormControl,
   InputLabel,
+  Link,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Typography,
 } from "@mui/material";
 import { personalityTypeDetails } from "@/redux/registrationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -50,7 +52,24 @@ const PersonalityTypeComponent = () => {
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth sx={{ backgroundColor: "white" }}>
+      <div
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          gap: "15px",
+          alignItems: "center",
+        }}
+      >
+        <Typography fontWeight={"bold"}>
+          Please complete the following test:
+        </Typography>
+        <Link> https://www.16personalities.com/free-personality-test</Link>
+      </div>
+
+      <FormControl
+        fullWidth
+        sx={{ backgroundColor: "white", marginTop: "25px" }}
+      >
         <InputLabel id="demo-simple-select-label">Personality Type</InputLabel>
         <Select
           labelId="demo-simple-select-label"
