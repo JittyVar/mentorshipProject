@@ -169,17 +169,17 @@ export default function VerticalLinearStepper() {
         await dispatch(createMenteeDocumentSkills());
         await dispatch(createMenteeDocumentPreferences());
         await dispatch(createMenteeDocumentGoals());
-        if (photoUrl && photoUrl?.photo) {
-          const selectedImageName = photoUrl.photo.name;
-          console.log("name", menteeName);
-          const storageRef = ref(
-            storage,
-            `images/mentees2024/${menteeName}/${selectedImageName}`
-          );
+        // if (photoUrl && photoUrl?.photo) {
+        //   const selectedImageName = photoUrl.photo.name;
+        //   console.log("name", menteeName);
+        //   const storageRef = ref(
+        //     storage,
+        //     `images/mentees2024/${menteeName}/${selectedImageName}`
+        //   );
 
-          // Upload the selected image file to Firebase Storage
-          uploadBytesResumable(storageRef, photoUrl.photo);
-        }
+        //   // Upload the selected image file to Firebase Storage
+        //   uploadBytesResumable(storageRef, photoUrl.photo);
+        // }
       }
     };
 
