@@ -28,15 +28,26 @@ export async function POST(req: Request, context: any) {
         // Assuming there's only one mentor document with documentOf="name"
         const menteeDocRef = menteeQuerySnapshot.docs[0].ref;
 
-        const backgroundDetailsCollectionRef = collection(
-          menteeDocRef,
-          "Background Details"
-        );
-        await addDoc(backgroundDetailsCollectionRef, {
-          programs: data.educationalBackground.programs,
-          majors: data.educationalBackground.majors,
-          yearOfDegree: data.educationalBackground.yearOfDegree,
-        });
+        if (data?.mentee?.currentStage != "Professional") {
+          const backgroundDetailsCollectionRef = collection(
+            menteeDocRef,
+            "Background Details"
+          );
+          await addDoc(backgroundDetailsCollectionRef, {
+            programs: data?.educationalBackground?.programs,
+            majors: data?.educationalBackground?.majors,
+            yearOfDegree: data?.educationalBackground?.yearOfDegree,
+          });
+        } else {
+          const professionalDetailsCollectionRef = collection(
+            menteeDocRef,
+            "Professional Details"
+          );
+          await addDoc(professionalDetailsCollectionRef, {
+            jobTitle: data?.professionalBackground?.jobTitle,
+            linkedInURL: data?.professionalBackground?.linkedInUrl,
+          });
+        }
 
         const menteePreferencesCollectionRef = collection(
           menteeDocRef,
