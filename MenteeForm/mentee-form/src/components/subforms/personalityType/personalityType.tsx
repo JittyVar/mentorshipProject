@@ -67,10 +67,7 @@ const PersonalityTypeComponent = () => {
         <Link> https://www.16personalities.com/free-personality-test</Link>
       </div>
 
-      <FormControl
-        fullWidth
-        sx={{ backgroundColor: "white", marginTop: "25px" }}
-      >
+      <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Personality Type</InputLabel>
         <Select
           labelId="demo-simple-select-label"
