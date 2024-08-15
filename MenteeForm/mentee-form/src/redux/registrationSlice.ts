@@ -11,6 +11,7 @@ import { store } from "./store";
 import { createMenteeDocumentSkills } from "./actions/createMenteeDocumentSkills";
 import { createMenteeDocumentGoals } from "./actions/createMenteeDocumentGoals";
 import { createMenteeDocumentPreferences } from "./actions/createMenteeDocumentPreferences";
+import ProfessionalBackground from "./states/professionalBackground";
 
 export enum APIStatus {
   idle = "idle",
@@ -27,6 +28,7 @@ export interface registrationForm {
   status: "idle" | "loading" | "success" | "error";
   mentee: MenteeState;
   educationalBackground: EducationalBackground;
+  professionalBackground: ProfessionalBackground;
   preferences: Preferences;
   skills: Skills;
   goals: Goals;
@@ -41,6 +43,7 @@ const initialState: registrationForm = {
   status: "idle",
   mentee: {} as MenteeState,
   educationalBackground: {} as EducationalBackground,
+  professionalBackground: {} as ProfessionalBackground,
   preferences: {} as Preferences,
   skills: {
     basicSkills: {} as BasicSkills,
@@ -85,6 +88,12 @@ export const registrationSlice = createSlice({
       action: PayloadAction<EducationalBackground>
     ) => {
       state.educationalBackground = action.payload;
+    },
+    professionalDetails: (
+      state,
+      action: PayloadAction<ProfessionalBackground>
+    ) => {
+      state.professionalBackground = action.payload;
     },
     preferencesDetails: (state, action: PayloadAction<Preferences>) => {
       state.preferences = action.payload;
@@ -166,6 +175,7 @@ export const registrationSlice = createSlice({
 export const {
   menteePersonalDetails,
   backgroundDetails,
+  professionalDetails,
   preferencesDetails,
   skillsDetails,
   goalsDetails,
