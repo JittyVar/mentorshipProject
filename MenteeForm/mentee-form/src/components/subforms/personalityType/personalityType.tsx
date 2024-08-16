@@ -59,6 +59,7 @@ const PersonalityTypeComponent = () => {
           gap: "15px",
           alignItems: "center",
           flexWrap: "wrap",
+          marginBottom: "20px",
         }}
       >
         <Typography fontWeight={"bold"}>
@@ -75,6 +76,12 @@ const PersonalityTypeComponent = () => {
           value={personalityTypeState?.personalityType}
           label="personality type"
           onChange={handleChange}
+          sx={{
+            backgroundColor: "white",
+            border: 1,
+            borderRadius: 2,
+            borderColor: "black",
+          }}
         >
           {PersonalityTypeData.map((value) => (
             <MenuItem key={value} value={value}>
