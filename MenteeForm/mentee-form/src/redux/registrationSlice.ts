@@ -102,7 +102,10 @@ export const registrationSlice = createSlice({
       state.skills = action.payload;
     },
     goalsDetails: (state, action: PayloadAction<Goals>) => {
-      state.goals = action.payload;
+      state.goals.firstShortTermGoal = action.payload.firstShortTermGoal;
+      state.goals.longTermGoal = action.payload.longTermGoal;
+      state.goals.outcome = action.payload.outcome;
+      state.goals.secondShortTermGoal = "random short term goal";
     },
     personalityTypeDetails: (state, action: PayloadAction<PersonalityType>) => {
       state.personalityType = action.payload;

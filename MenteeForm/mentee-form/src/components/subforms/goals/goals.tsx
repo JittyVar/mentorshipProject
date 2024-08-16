@@ -86,7 +86,7 @@ const GoalsComponent = () => {
             },
           }}
         />
-        <Typography sx={{ margin: "1%" }}>
+        {/* <Typography sx={{ margin: "1%" }}>
           What is another short-term goal you have?
         </Typography>
         <TextField
@@ -105,7 +105,7 @@ const GoalsComponent = () => {
               borderColor: "black",
             },
           }}
-        />
+        /> */}
         <div style={{ paddingBottom: "2%" }}>
           <Typography sx={{ margin: "1%" }}>
             What would you hope to get from this program?
