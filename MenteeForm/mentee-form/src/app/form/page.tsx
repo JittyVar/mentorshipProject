@@ -1,16 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 //import RegistrationEnd from "./registrationEndedComponent";
-import VerticalLinearStepper from "@/components/verticalStepper";
-import { Box, Container, ImageList, ImageListItem } from "@mui/material";
+import {
+  Box,
+  Container,
+  ImageList,
+  ImageListItem,
+  Paper,
+  Typography,
+} from "@mui/material";
 import applicationpic from "../../../public/mentorshipapplication.png";
-// interface FormPageProps {
-//   isAuthenticated: boolean;
-// }
+import Link from "next/link";
+
 const FormPage = () => {
-  // if (!isAuthenticated) {
-  //   return <RegistrationEnd />;
-  // }
   return (
     <Box>
       <Container>
@@ -24,8 +26,36 @@ const FormPage = () => {
             />
           </ImageListItem>
         </ImageList>
-        {/* <Image src={applicationpic.src} alt="pic" width={835} height={200} /> */}
-        <VerticalLinearStepper />
+        <Paper
+          square
+          elevation={0}
+          sx={{
+            p: 3,
+            backgroundColor: "#1E1F42",
+            borderRadius: "5px",
+            margin: "3%",
+          }}
+        >
+          <Typography fontFamily={"Arial"} color={"white"} fontWeight={"bold"}>
+            Submissions for the 2nd cohort are now closed.
+          </Typography>
+          <Typography
+            fontFamily={"Arial"}
+            color={"white"}
+            fontWeight={"bold"}
+            marginBottom={"10px"}
+          >
+            Click the link below to RSVP for next year&apos;s program
+          </Typography>
+          <Link
+            href={
+              " https://docs.google.com/forms/d/e/1FAIpQLSeiNe0btTXNLsJeIsMape05630fK1SLdldO9Ty3x8QbLd6B6w/viewform"
+            }
+            style={{ color: "white" }}
+          >
+            MENTORSHIP PROGRAM 2025
+          </Link>
+        </Paper>
       </Container>
     </Box>
   );
