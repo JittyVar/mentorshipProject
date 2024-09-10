@@ -32,7 +32,7 @@ const GoalsComponent = () => {
     <Box>
       <Container sx={{ "& > div:not(:last-child)": { marginBottom: "20px" } }}>
         <Typography sx={{ margin: "1%" }}>
-          What is one long-term goal you have?
+          What is a long-term goal you would like your mentee to aspire to?
         </Typography>
         <TextField
           fullWidth
@@ -73,28 +73,7 @@ const GoalsComponent = () => {
             handleInputChange("firstShortTermGoal", e.target.value)
           }
         />
-        {/* <Typography sx={{ margin: "1%" }}>
-          What is another short-term goal you have?
-        </Typography>
-        <TextField
-          fullWidth
-          helperText="e.g.  To improve interpersonal skills by next year"
-          placeholder={goalsState?.secondShortTermGoal || ""}
-          multiline
-          rows={2}
-          sx={{
-            m: 1,
-            "& .MuiOutlinedInput-root": {
-              backgroundColor: "white",
-              border: 1,
-              borderRadius: 2,
-              borderColor: "black",
-            },
-          }}
-          onChange={(e) =>
-            handleInputChange("secondShortTermGoal", e.target.value)
-          }
-        /> */}
+
         <div style={{ paddingBottom: "2%" }}>
           <Typography sx={{ margin: "1%" }}>
             What would you hope to get from this program?
