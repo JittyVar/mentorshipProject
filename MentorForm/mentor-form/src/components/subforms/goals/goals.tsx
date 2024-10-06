@@ -52,7 +52,7 @@ const GoalsComponent = () => {
           onChange={(e) => handleInputChange("longTermGoal", e.target.value)}
         />
         <Typography sx={{ margin: "1%" }}>
-          What is one short-term goal you have?
+          What is a short-term goal you would like your mentee to aspire to?
         </Typography>
         <TextField
           fullWidth
