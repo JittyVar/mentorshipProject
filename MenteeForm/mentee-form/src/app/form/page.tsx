@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import applicationpic from "../../../public/mentorshipapplication.png";
 import Link from "next/link";
+import VerticalLinearStepper from "@/components/verticalStepper";
 
 const FormPage = () => {
   return (
@@ -26,7 +27,7 @@ const FormPage = () => {
             />
           </ImageListItem>
         </ImageList>
-        <Paper
+        {/* <Paper
           square
           elevation={0}
           sx={{
@@ -55,7 +56,8 @@ const FormPage = () => {
           >
             MENTORSHIP PROGRAM 2025
           </Link>
-        </Paper>
+        </Paper> */}
+        <VerticalLinearStepper />
       </Container>
     </Box>
   );
