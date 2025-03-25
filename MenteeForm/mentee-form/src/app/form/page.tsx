@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import applicationpic from "../../../public/mentorshipapplication.png";
 import Link from "next/link";
-import VerticalLinearStepper from "@/components/verticalStepper";
 
 const FormPage = () => {
   return (
@@ -27,7 +26,7 @@ const FormPage = () => {
             />
           </ImageListItem>
         </ImageList>
-        {/* <Paper
+        <Paper
           square
           elevation={0}
           sx={{
@@ -38,7 +37,8 @@ const FormPage = () => {
           }}
         >
           <Typography fontFamily={"Arial"} color={"white"} fontWeight={"bold"}>
-            Submissions for the 2nd cohort are now closed.
+            Submissions for She Sharp Mentorship Program 2025 Cycle 1 are now
+            closed.
           </Typography>
           <Typography
             fontFamily={"Arial"}
@@ -49,15 +49,13 @@ const FormPage = () => {
             Click the link below to RSVP for next year&apos;s program
           </Typography>
           <Link
-            href={
-              " https://docs.google.com/forms/d/e/1FAIpQLSeiNe0btTXNLsJeIsMape05630fK1SLdldO9Ty3x8QbLd6B6w/viewform"
-            }
+            href={"https://forms.gle/BRZYaQCp68vUDQVB8"}
             style={{ color: "white" }}
           >
-            MENTORSHIP PROGRAM 2025
+            MENTORSHIP PROGRAM 2025 CYCLE 2
           </Link>
-        </Paper> */}
-        <VerticalLinearStepper />
+        </Paper>
+        {/* <VerticalLinearStepper /> */}
       </Container>
     </Box>
   );
